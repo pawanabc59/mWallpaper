@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/white_black"
+    tools:context=".MainActivity">
+
+<!--    <android.support.v7.widget.Toolbar-->
+<!--        android:id="@+id/toolbar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="?attr/actionBarSize"-->
+<!--        android:background="?attr/colorPrimary"-->
+<!--        android:elevation="@dimen/_4sdp"-->
+<!--        app:titleTextColor="?attr/textcolor" />-->
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_navigation"
+        android:background="?attr/white_black" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="?attr/colorPrimary"
+        app:itemIconTint="@drawable/bottom_tab_colors"
+        app:itemTextColor="@drawable/bottom_tab_colors"
+        app:menu="@menu/bottom_navigation"
+        tools:ignore="MissingConstraints" />
+
+</RelativeLayout>

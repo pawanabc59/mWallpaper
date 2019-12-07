@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/white_black"
+    tools:context=".Fragments.ProfileFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/white_black">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/profile_image_cardview"
+                app:cardBackgroundColor="?attr/colorPrimary"
+                app:cardCornerRadius="@dimen/_75sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:background="?attr/cardbackground">
+
+                <ImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="@dimen/_155sdp"
+                    android:layout_height="@dimen/_155sdp"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="centerCrop"
+                    />
+
+            </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/btnEditPhoto"
+                android:layout_width="@dimen/_120sdp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/profile_image_cardview"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:text="Edit Photo"/>
+
+            <LinearLayout
+                android:id="@+id/layout_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btnEditPhoto"
+                android:layout_marginTop="@dimen/_14sdp"
+                android:background="?attr/colorPrimary"
+                android:gravity="center"
+                android:orientation="horizontal"
+                >
+
+                <ImageView
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_email" />
+
+                <TextView
+                    android:id="@+id/showEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/_11sdp"
+                    android:gravity="center"
+                    android:text="Email"
+                    android:textColor="?attr/textcolor"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_night_mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout_text"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:background="?attr/colorPrimary"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/_25sdp"
+                android:paddingVertical="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Night Mode "
+                    android:textColor="?attr/textcolor"
+                    android:textSize="20sp" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/night_switch"
+                    app:thumbTint="?attr/gray_blue"
+                    app:trackTint="?attr/gray_blue"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:focusable="auto"
+                    android:textOff="Off"
+                    android:textOn="On" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txtmyUploads"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/linear_night_mode"
+                android:textColor="?attr/textcolor"
+                android:textStyle="normal"
+                android:textSize="20sp"
+                android:text="My Uploads"
+                android:paddingHorizontal="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                />
+
+            <Button
+                android:id="@+id/btnlogout"
+                android:layout_width="@dimen/_200sdp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/txtmyUploads"
+                android:layout_marginTop="@dimen/_40sdp"
+                android:text="LOGOUT" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</FrameLayout>

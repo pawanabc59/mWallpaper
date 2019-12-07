@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home"
+        android:title="HOME"
+        />
+
+    <item
+        android:id="@+id/nav_favourite"
+        android:icon="@drawable/ic_favorite"
+        android:title="FAVOURITE"
+        />
+
+    <item
+        android:id="@+id/nav_categories"
+        android:icon="@drawable/ic_view"
+        android:title="CATEGORIES"
+        />
+
+<!--    <item-->
+<!--        android:id="@+id/nav_upload"-->
+<!--        android:icon="@drawable/ic_file_upload"-->
+<!--        android:title="UPLOAD"-->
+<!--        />-->
+
+    <item
+        android:id="@+id/nav_account"
+        android:icon="@drawable/ic_person"
+        android:title="ACCOUNT"
+        />
+
+</menu>

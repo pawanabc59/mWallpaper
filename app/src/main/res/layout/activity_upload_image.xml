@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/white_black"
+    tools:context=".UploadImageActivity">
+
+    <ImageView
+        android:id="@+id/uploadImagePreview"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_360sdp"
+        android:layout_margin="@dimen/_10sdp"
+        android:scaleType="fitXY"
+        />
+
+    <Button
+        android:id="@+id/btnChooseImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Upload"
+        android:layout_below="@+id/uploadImagePreview"
+        />
+
+    <Spinner
+        android:id="@+id/categorySpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp"
+        android:layout_below="@+id/btnChooseImage"
+        android:background="?attr/cardbackground"
+        android:backgroundTint="?attr/textcolor"
+        />
+
+    <Button
+        android:id="@+id/btnUploadImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Upload"
+        android:layout_below="@+id/categorySpinner"
+        android:layout_marginTop="@dimen/_10sdp"
+        />
+
+</RelativeLayout>
