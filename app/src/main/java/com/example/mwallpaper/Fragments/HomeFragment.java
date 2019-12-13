@@ -1,6 +1,8 @@
 package com.example.mwallpaper.Fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,11 +18,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.mwallpaper.Adapter.WallpaperItemAdapter;
+import com.example.mwallpaper.MainActivity;
 import com.example.mwallpaper.Model.WallpaperItemModel;
 import com.example.mwallpaper.R;
 import com.example.mwallpaper.SessionManager;
 import com.example.mwallpaper.UploadImageActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,6 +42,8 @@ public class HomeFragment extends Fragment {
     ArrayList<WallpaperItemModel> wallpaperItemModels;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference mRef;
+    FirebaseAuth firebaseAuth;
+    FirebaseUser user;
 
     String action = "favourite";
 
@@ -65,15 +72,18 @@ public class HomeFragment extends Fragment {
         firebaseDatabase = FirebaseDatabase.getInstance();
         mRef = firebaseDatabase.getReference("wallpaper").child("recentlyUploadedImages");
 
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
+
         wallpaperItemModels = new ArrayList<>();
-        wallpaperItemAdapter = new WallpaperItemAdapter(getContext(), wallpaperItemModels,action);
+        wallpaperItemAdapter = new WallpaperItemAdapter(getContext(), wallpaperItemModels,action, getActivity());
 
         mRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
                     try {
-                        wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("thumbnail").getValue().toString()));
+                        wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("thumbnail").getValue().toString(), dataSnapshot1.child("userId").getValue().toString()));
                         wallpaperItemAdapter.notifyDataSetChanged();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -90,9 +100,23 @@ public class HomeFragment extends Fragment {
         floatingUploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), UploadImageActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                getActivity().startActivity(intent);
+                if (user == null){
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("Login First!")
+                            .setMessage("You need to login first to Upload the wallpapers.")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            }).show();
+                }
+                else {
+
+                    Intent intent = new Intent(getContext(), UploadImageActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    getActivity().startActivity(intent);
+                }
             }
         });
 

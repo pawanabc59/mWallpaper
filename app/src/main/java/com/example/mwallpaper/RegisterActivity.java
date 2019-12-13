@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,6 +25,7 @@ public class RegisterActivity extends AppCompatActivity {
     TextInputLayout textRegisterEmail, textRegisterPassword, textRegistercPassword;
     TextInputEditText editRegisterEmail, editRegisterPassword, editRegistercPassword;
     Button btnRegister;
+    ProgressBar registerProgressBar;
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference mRef,mRef2;
@@ -59,10 +61,14 @@ public class RegisterActivity extends AppCompatActivity {
         editRegistercPassword = findViewById(R.id.editRegistercPassword);
 
         btnRegister = findViewById(R.id.btnRegister);
+        registerProgressBar = findViewById(R.id.registerProgressBar);
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                btnRegister.setVisibility(View.GONE);
+                registerProgressBar.setVisibility(View.VISIBLE);
+
                 String email = editRegisterEmail.getText().toString().trim();
                 String password = editRegisterPassword.getText().toString().trim();
                 String c_password = editRegistercPassword.getText().toString().trim();
@@ -101,6 +107,9 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
                             Toast.makeText(getApplicationContext(), "User Created", Toast.LENGTH_SHORT).show();
+                            registerProgressBar.setVisibility(View.GONE);
+                            btnRegister.setVisibility(View.VISIBLE);
+
 //                            String key = mRef.push().getKey();
 //                            mRef2 = mRef.child(key);
 //                            mRef2.child("email").setValue(email);
@@ -108,6 +117,8 @@ public class RegisterActivity extends AppCompatActivity {
                         else {
                             if (task.getException() instanceof FirebaseAuthUserCollisionException){
                                 Toast.makeText(getApplicationContext(), "User Alerdy exist!!!",Toast.LENGTH_SHORT).show();
+                                registerProgressBar.setVisibility(View.GONE);
+                                btnRegister.setVisibility(View.VISIBLE);
                             }
                         }
                     }

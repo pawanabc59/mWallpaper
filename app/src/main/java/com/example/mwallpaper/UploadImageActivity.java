@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -30,20 +31,24 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
 import java.io.IOException;
+
+import id.zelory.compressor.Compressor;
 
 public class UploadImageActivity extends AppCompatActivity {
 
     ImageView uploadImagePreview;
     Button btnUploadImage,btnChooseImage;
     Spinner categorySpinner;
+    ProgressBar uploadProgressBar;
 
     String categorySelected;
     String userId;
     String TAG = "my";
 
     Bitmap bitmap;
-    Uri filepath;
+    Uri filepath, filePath2;
     SessionManager sessionManager;
 
     FirebaseDatabase firebaseDatabase;
@@ -71,6 +76,7 @@ public class UploadImageActivity extends AppCompatActivity {
         btnUploadImage = findViewById(R.id.btnUploadImage);
         btnChooseImage = findViewById(R.id.btnChooseImage);
         categorySpinner = findViewById(R.id.categorySpinner);
+        uploadProgressBar = findViewById(R.id.uploadProgressBar);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         mRef = firebaseDatabase.getReference("wallpaper");
@@ -119,6 +125,19 @@ public class UploadImageActivity extends AppCompatActivity {
         btnUploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                btnUploadImage.setVisibility(View.GONE);
+                uploadProgressBar.setVisibility(View.VISIBLE);
+
+////                File imageFile = new File(filepath.getPath());
+//                File compressedImageFile = null;
+//                try {
+//                    compressedImageFile = new Compressor(getApplicationContext()).compressToFile(new File(filepath.getLastPathSegment()));
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                filePath2 = Uri.fromFile(compressedImageFile);
+
                 final StorageReference storageReference1 = storageReference.child("categories").child(categorySelected).child(filepath.getLastPathSegment());
 
                 storageReference1.putFile(filepath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -132,16 +151,24 @@ public class UploadImageActivity extends AppCompatActivity {
 
 //                                upload to firebase database in user
                                 mRef.child("users").child(userId).child("uploadedImages").child(pushId).child("uploadedImage").setValue(task.getResult().toString());
+                                mRef.child("users").child(userId).child("uploadedImages").child(pushId).child("category").setValue(categorySelected);
+                                mRef.child("users").child(userId).child("uploadedImages").child(pushId).child("userId").setValue(userId);
 
 //                                upload to database
                                 mRef.child("images").child(categorySelected).child(pushId).child("thumbnail").setValue(task.getResult().toString());
+                                mRef.child("images").child(categorySelected).child(pushId).child("userId").setValue(userId);
 
 //                                upload to firebase database recently uploaded
                                 mRef.child("recentlyUploadedImages").child(pushId).child("thumbnail").setValue(task.getResult().toString());
+                                mRef.child("recentlyUploadedImages").child(pushId).child("userId").setValue(userId);
+
+                                uploadProgressBar.setVisibility(View.GONE);
+                                btnUploadImage.setVisibility(View.VISIBLE);
 
                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
+                                finish();
                             }
                         });
                     }
@@ -155,6 +182,7 @@ public class UploadImageActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 2 && resultCode == Activity.RESULT_OK && data != null){
+
             filepath = data.getData();
             try{
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filepath );

@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:background="#000"
+                android:background="#808080"
                 />
 
             <ImageView
@@ -53,6 +53,14 @@
                 android:layout_marginTop="@dimen/_170sdp"
                 android:layout_marginLeft="@dimen/_100sdp"
                 android:visibility="visible"/>
+            
+            <ProgressBar
+                android:id="@+id/imageProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleX="1.1"
+                android:scaleY="1.1"
+                android:layout_gravity="center"/>
 
         </FrameLayout>
 

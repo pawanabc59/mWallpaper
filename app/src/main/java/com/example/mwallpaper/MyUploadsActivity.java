@@ -57,14 +57,18 @@ public class MyUploadsActivity extends AppCompatActivity {
         myUploadsRecyclerView = findViewById(R.id.myUploadRecyclerView);
 
         wallpaperItemModels = new ArrayList<>();
-        wallpaperItemAdapter = new WallpaperItemAdapter(getApplicationContext(), wallpaperItemModels, action);
+        wallpaperItemAdapter = new WallpaperItemAdapter(getApplicationContext(), wallpaperItemModels, action, MyUploadsActivity.this);
 
-        mRef.child(userId).child("uploadedImages").addValueEventListener(new ValueEventListener() {
+        mRef.child(userId).child("uploadedImages").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
-                    wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("uploadedImage").getValue().toString()));
+                    try {
+                        wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("uploadedImage").getValue().toString(), dataSnapshot1.child("userId").getValue().toString()));
                     wallpaperItemAdapter.notifyDataSetChanged();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -78,5 +82,11 @@ public class MyUploadsActivity extends AppCompatActivity {
         myUploadsRecyclerView.setLayoutManager(gridLayoutManager);
         myUploadsRecyclerView.setAdapter(wallpaperItemAdapter);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        getSupportFragmentManager().popBackStack();
     }
 }

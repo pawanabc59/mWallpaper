@@ -65,6 +65,10 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
         <Button
             android:id="@+id/btnRegister"
             android:layout_width="wrap_content"
@@ -72,6 +76,16 @@
             android:text="Register"
             android:layout_marginVertical="@dimen/_10sdp"
             android:layout_gravity="center"/>
+
+        <ProgressBar
+            android:id="@+id/registerProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/_10sdp"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
+
+        </FrameLayout>
 
     </LinearLayout>
 

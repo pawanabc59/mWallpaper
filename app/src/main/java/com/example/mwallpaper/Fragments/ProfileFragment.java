@@ -173,8 +173,9 @@ public class ProfileFragment extends Fragment {
 
     public void ReCreateApp(){
         Intent intent = new Intent(getContext(), MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         getActivity().startActivity(intent);
+        getActivity().finish();
     }
 
     @Override

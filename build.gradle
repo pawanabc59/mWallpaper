@@ -5,11 +5,26 @@ buildscript {
         google()
         jcenter()
 
+//        maven {
+//            url 'https://maven.fabric.io/public'
+//        }
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.0'
         classpath 'com.google.gms:google-services:4.3.2'
-        
+
+//        // Add the Fabric Crashlytics plugin.
+//        classpath 'io.fabric.tools:gradle:1.31.2'
+//
+//        // Add the dependency for the Performance Monitoring plugin
+//        classpath 'com.google.firebase:perf-plugin:1.3.1'  // Performance Monitoring plugin
+//
+//        // Replace the standard Performance Monitoring plugin dependency line, as follows:
+//        classpath ('com.google.firebase:perf-plugin:1.1.0') {
+//            exclude group: 'com.google.guava', module: 'guava-jdk5'
+//        }
+
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }

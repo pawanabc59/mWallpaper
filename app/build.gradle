@@ -1,5 +1,10 @@
 apply plugin: 'com.android.application'
 
+//apply plugin: 'io.fabric'
+
+// Apply the Performance Monitoring plugin
+//apply plugin: 'com.google.firebase.firebase-perf'
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -28,6 +33,8 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 
+//    implementation 'androidx.multidex:multidex:2.0.1'
+
 //    dependency for recyclerview
     implementation "androidx.recyclerview:recyclerview:1.1.0"
 
@@ -43,6 +50,12 @@ dependencies {
     //    sdp library to position the elements on the right position in all sizes of device
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
 
+//    library for floating action button
+    implementation 'com.github.clans:fab:1.6.4'
+
+//    library for compressing image
+    implementation 'id.zelory:compressor:2.1.0'
+
     implementation 'com.github.karanchuri:PermissionManager:0.1.0'
 
     implementation 'com.google.firebase:firebase-core:17.2.1'
@@ -52,6 +65,15 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:19.2.0'
 
     implementation 'com.google.firebase:firebase-storage:19.1.0'
+
+    // (Recommended) Add the Google Analytics dependency.
+//    implementation 'com.google.firebase:firebase-analytics:17.2.1'
+
+    // Add the Firebase Crashlytics dependency.
+//    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
+
+    // Add the dependency for the Performance Monitoring library
+//    implementation 'com.google.firebase:firebase-perf:19.0.3'
 }
 
 apply plugin: 'com.google.gms.google-services'

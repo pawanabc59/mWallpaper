@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,8 +28,11 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class AccountFragment extends Fragment {
 
@@ -36,6 +40,7 @@ public class AccountFragment extends Fragment {
     TextInputEditText editEmail, editPassword;
     Button btnLogin;
     TextView textRegister;
+    ProgressBar loginProgressBar;
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference mRef,mRef2;
@@ -73,6 +78,7 @@ public class AccountFragment extends Fragment {
         editPassword = view.findViewById(R.id.editPassword);
 
         btnLogin = view.findViewById(R.id.btnLogin);
+        loginProgressBar = view.findViewById(R.id.loginProgressBar);
 
         textRegister = view.findViewById(R.id.textRegister);
 
@@ -88,6 +94,9 @@ public class AccountFragment extends Fragment {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                btnLogin.setVisibility(View.GONE);
+                loginProgressBar.setVisibility(View.VISIBLE);
+
                 String memail = editEmail.getText().toString().trim();
                 String mpassword = editPassword.getText().toString().trim();
                 if (memail.isEmpty()){
@@ -122,12 +131,37 @@ public class AccountFragment extends Fragment {
                             String uid = firebaseUser.getUid();
                             mRef2 = mRef.child(uid);
                             mRef2.child("email").setValue(email);
-                            mRef2.child("profileImage").setValue("null");
+
+//                            this is to add the profile of the user if user has uploaded the profile image earlier then that url will be loaded otherwise the null value will be set.
+                            mRef2.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    try{
+                                        String profileImagePath = dataSnapshot.child("profileImage").getValue().toString();
+                                        mRef2.child("profileImage").setValue(profileImagePath);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        mRef2.child("profileImage").setValue("null");
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+//                          this was earlier code :  mRef2.child("profileImage").setValue("null");
+
+                            loginProgressBar.setVisibility(View.GONE);
+                            btnLogin.setVisibility(View.VISIBLE);
                             Intent intent = new Intent(getContext(), MainActivity.class);
                             getActivity().startActivity(intent);
 
                         }
                         else {
+                            loginProgressBar.setVisibility(View.GONE);
+                            btnLogin.setVisibility(View.VISIBLE);
                             Toast.makeText(getContext(), "Sorry! Login failed", Toast.LENGTH_SHORT);
                         }
                     }

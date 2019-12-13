@@ -19,7 +19,7 @@
         android:id="@+id/btnChooseImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Upload"
+        android:text="Choose Image"
         android:layout_below="@+id/uploadImagePreview"
         />
 
@@ -33,13 +33,28 @@
         android:backgroundTint="?attr/textcolor"
         />
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/categorySpinner"
+        >
+
     <Button
         android:id="@+id/btnUploadImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Upload"
-        android:layout_below="@+id/categorySpinner"
         android:layout_marginTop="@dimen/_10sdp"
         />
+
+        <ProgressBar
+            android:id="@+id/uploadProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:visibility="gone"
+            />
+
+    </FrameLayout>
 
 </RelativeLayout>

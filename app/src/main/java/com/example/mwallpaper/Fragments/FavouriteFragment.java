@@ -68,11 +68,10 @@ public class FavouriteFragment extends Fragment {
         mRef = firebaseDatabase.getReference("wallpaper").child("users");
 
         wallpaperItemModels = new ArrayList<>();
-        wallpaperItemAdapter = new WallpaperItemAdapter(getContext(), wallpaperItemModels, action);
+        wallpaperItemAdapter = new WallpaperItemAdapter(getContext(), wallpaperItemModels, action, getActivity());
 
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
-        userId = user.getUid();
 
         favouriteRecyclerView = view.findViewById(R.id.favoriteRecyclerView);
         mbImage = view.findViewById(R.id.mbImage);
@@ -88,9 +87,10 @@ public class FavouriteFragment extends Fragment {
             Log.d(TAG, "onCreateView: it is in the not login if part");
 
         } else {
+            userId = user.getUid();
             Log.d(TAG, "onCreateView: it comes abouve null favourite");
             try {
-                mRef.child(userId).child("favouriteImages").addValueEventListener(new ValueEventListener() {
+                mRef.child(userId).child("favouriteImages").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (!dataSnapshot.exists()) {
@@ -106,12 +106,12 @@ public class FavouriteFragment extends Fragment {
                             showText.setVisibility(View.GONE);
                             favouriteRecyclerView.setVisibility(View.VISIBLE);
 
-                            mRef.child(userId).child("favouriteImages").addValueEventListener(new ValueEventListener() {
+                            mRef.child(userId).child("favouriteImages").addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                                         try {
-                                            wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("thumbnail").getValue().toString()));
+                                            wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("thumbnail").getValue().toString(), dataSnapshot1.child("userId").getValue().toString()));
                                             wallpaperItemAdapter.notifyDataSetChanged();
                                         } catch (Exception e) {
                                             e.printStackTrace();

@@ -23,6 +23,7 @@
         android:textSize="25sp"
         android:textStyle="bold"
         android:textColor="?attr/textcolor"
+        android:text="Add Favourite to see them here"
         android:layout_gravity="center_horizontal"
         android:layout_marginHorizontal="@dimen/_40sdp"
         android:layout_marginTop="@dimen/_260sdp"
