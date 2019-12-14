@@ -20,4 +20,6 @@
     <color name="white">#ffffff</color>
 
     <color name="red">#E53935</color>
+
+    <color name="icon_color">#658B9A</color>
 </resources>

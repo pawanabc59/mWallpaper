@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
@@ -24,7 +25,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     TextInputLayout textRegisterEmail, textRegisterPassword, textRegistercPassword;
     TextInputEditText editRegisterEmail, editRegisterPassword, editRegistercPassword;
-    Button btnRegister;
+    MaterialButton btnRegister;
     ProgressBar registerProgressBar;
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;

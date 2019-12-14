@@ -13,8 +13,6 @@
         android:background="?attr/white_black"
         android:layout_margin="@dimen/_5sdp">
 
-
-
     </androidx.recyclerview.widget.RecyclerView>
 
 
@@ -27,6 +25,8 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="@dimen/_55sdp"
         android:layout_marginRight="@dimen/_20sdp"
+        android:background="@color/colorAccent"
+        android:backgroundTint="@color/colorAccent"
         />
 
 </RelativeLayout>

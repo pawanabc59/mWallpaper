@@ -6,7 +6,23 @@
 
     <string-array name="categoryArray">
         <item>Others</item>
+        <item>Animals</item>
         <item>Anime</item>
+        <item>Art</item>
+        <item>Cartoon</item>
+        <item>Cinematic</item>
+        <item>Fantasy</item>
+        <item>Flowers</item>
+        <item>Food</item>
+        <item>Games</item>
         <item>Nature</item>
+        <item>Religious</item>
+        <item>Scenery</item>
+        <item>Sea</item>
+        <item>Sky</item>
+        <item>Space</item>
+        <item>Superhero</item>
+        <item>Vehicle</item>
+        <item>Words</item>
     </string-array>
 </resources>

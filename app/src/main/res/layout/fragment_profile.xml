@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?attr/white_black"
     tools:context=".Fragments.ProfileFragment">
 
@@ -19,32 +19,40 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/profile_image_cardview"
-                app:cardBackgroundColor="?attr/colorPrimary"
-                app:cardCornerRadius="@dimen/_75sdp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/_25sdp"
-                android:background="?attr/cardbackground">
+                android:background="?attr/cardbackground"
+                app:cardBackgroundColor="?attr/colorPrimary"
+                app:cardCornerRadius="@dimen/_75sdp">
 
                 <ImageView
                     android:id="@+id/profile_image"
                     android:layout_width="@dimen/_155sdp"
                     android:layout_height="@dimen/_155sdp"
                     android:layout_centerHorizontal="true"
-                    android:scaleType="centerCrop"
-                    />
+                    android:scaleType="centerCrop" />
 
             </androidx.cardview.widget.CardView>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnEditPhoto"
-                android:layout_width="@dimen/_120sdp"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="@dimen/_140sdp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/profile_image_cardview"
+                android:layout_below="@id/profile_image_cardview"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:text="Edit Photo"/>
+                android:layout_marginTop="@dimen/_20sdp"
+                android:background="@color/white"
+                android:padding="@dimen/_10sdp"
+                android:text="Edit photo"
+                android:textColor="@color/colorAccent"
+                android:theme="@style/customMaterialButtonStyle"
+                app:cornerRadius="@dimen/_20sdp"
+                app:rippleColor="#33AAAAAA"
+                app:strokeColor="@color/colorAccent"
+                app:strokeWidth="2dp" />
 
             <LinearLayout
                 android:id="@+id/layout_text"
@@ -52,10 +60,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/btnEditPhoto"
                 android:layout_marginTop="@dimen/_14sdp"
-                android:background="?attr/colorPrimary"
                 android:gravity="center"
-                android:orientation="horizontal"
-                >
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="@dimen/_30sdp"
@@ -82,7 +88,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/layout_text"
                 android:layout_marginTop="@dimen/_20sdp"
-                android:background="?attr/colorPrimary"
                 android:orientation="horizontal"
                 android:paddingHorizontal="@dimen/_25sdp"
                 android:paddingVertical="10dp">
@@ -92,40 +97,86 @@
                     android:layout_height="wrap_content"
                     android:text="Night Mode "
                     android:textColor="?attr/textcolor"
-                    android:textSize="20sp" />
+                    android:textSize="18sp"
+                    android:textStyle="normal"/>
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/night_switch"
-                    app:thumbTint="?attr/gray_blue"
-                    app:trackTint="?attr/gray_blue"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:focusable="auto"
                     android:textOff="Off"
-                    android:textOn="On" />
+                    android:textOn="On"
+                    app:thumbTint="?attr/gray_blue"
+                    app:trackTint="?attr/gray_blue" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/txtmyUploads"
+            <Button
+                android:id="@+id/btnmyUploads"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/linear_night_mode"
-                android:textColor="?attr/textcolor"
-                android:textStyle="normal"
-                android:textSize="20sp"
-                android:text="My Uploads"
-                android:paddingHorizontal="@dimen/_25sdp"
                 android:layout_marginTop="@dimen/_15sdp"
-                />
+                android:background="@android:color/transparent"
+                android:paddingHorizontal="@dimen/_25sdp"
+                android:text="My Uploads"
+                android:textAlignment="viewStart"
+                android:textColor="?attr/textcolor"
+                android:textSize="16sp"
+                android:textStyle="normal" />
 
             <Button
-                android:id="@+id/btnlogout"
-                android:layout_width="@dimen/_200sdp"
+                android:id="@+id/btnDisclaimer"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/btnmyUploads"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@android:color/transparent"
+                android:paddingHorizontal="@dimen/_25sdp"
+                android:text="Disclaimer"
+                android:textAlignment="viewStart"
+                android:textColor="?attr/textcolor"
+                android:textSize="16sp"
+                android:textStyle="normal" />
+
+            <!--            <androidx.cardview.widget.CardView-->
+            <!--                android:layout_width="@dimen/_200sdp"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="@dimen/_40sdp"-->
+            <!--                android:layout_below="@+id/btnmyUploads"-->
+            <!--                android:layout_centerHorizontal="true"-->
+            <!--                app:cardCornerRadius="@dimen/_20sdp"-->
+            <!--                app:cardBackgroundColor="@color/red"-->
+            <!--                >-->
+
+            <!--            <Button-->
+            <!--                android:id="@+id/btnlogout"-->
+            <!--                android:layout_width="@dimen/_200sdp"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                android:text="LOGOUT"-->
+            <!--                android:background="@color/white"-->
+            <!--                android:layout_margin="2dp"-->
+            <!--                android:textColor="@color/red" />-->
+
+            <!--            </androidx.cardview.widget.CardView>-->
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnlogout"
+                style="@style/customMaterialButtonStyle"
+                android:layout_width="@dimen/_140sdp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btnDisclaimer"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:background="@color/white"
+                android:padding="@dimen/_10sdp"
+                android:text="LOGOUT"
                 android:layout_centerHorizontal="true"
-                android:layout_below="@+id/txtmyUploads"
-                android:layout_marginTop="@dimen/_40sdp"
-                android:text="LOGOUT" />
+                android:textColor="@color/red"
+                android:theme="@style/customMaterialButtonStyle"
+                app:cornerRadius="@dimen/_20sdp"
+                app:rippleColor="#33AAAAAA"
+                app:strokeColor="@color/red"
+                app:strokeWidth="2dp" />
 
         </RelativeLayout>
 

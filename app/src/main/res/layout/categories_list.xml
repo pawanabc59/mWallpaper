@@ -29,13 +29,18 @@
                 android:id="@+id/categories_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="?attr/textcolor"
+                android:textColor="@color/white"
                 android:text="akshdgalksjfhbnaio"
-                android:textSize="22sp"
+                android:textSize="24sp"
                 android:layout_gravity="bottom"
                 android:textAlignment="center"
-                android:background="?attr/gray_lightblue"
-                android:textStyle="bold"
+                android:textStyle="bold|italic"
+                android:gravity="bottom"
+                android:inputType="textCapSentences"
+                android:padding="@dimen/_10sdp"
+                android:background="#59000000"
+                android:textAllCaps="true"
+                android:typeface="serif"
                 />
 
         </FrameLayout>

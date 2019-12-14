@@ -15,13 +15,24 @@
         android:scaleType="fitXY"
         />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnChooseImage"
-        android:layout_width="match_parent"
+        style="@style/customMaterialButtonStyle"
+        android:layout_width="@dimen/_140sdp"
         android:layout_height="wrap_content"
-        android:text="Choose Image"
+        android:layout_marginTop="@dimen/_10sdp"
         android:layout_below="@+id/uploadImagePreview"
-        />
+        android:background="@color/white"
+        android:padding="@dimen/_10sdp"
+        android:text="Choose Image"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/colorAccent"
+        android:theme="@style/customMaterialButtonStyle"
+        app:cornerRadius="@dimen/_20sdp"
+        app:rippleColor="#33AAAAAA"
+        app:strokeColor="@color/colorAccent"
+        app:strokeWidth="2dp" />
 
     <Spinner
         android:id="@+id/categorySpinner"
@@ -30,7 +41,9 @@
         android:layout_margin="@dimen/_10sdp"
         android:layout_below="@+id/btnChooseImage"
         android:background="?attr/cardbackground"
-        android:backgroundTint="?attr/textcolor"
+        android:backgroundTint="?attr/cardbackground"
+        android:padding="@dimen/_10sdp"
+        android:pointerIcon="arrow"
         />
 
     <FrameLayout
@@ -39,13 +52,23 @@
         android:layout_below="@+id/categorySpinner"
         >
 
-    <Button
-        android:id="@+id/btnUploadImage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Upload"
-        android:layout_marginTop="@dimen/_10sdp"
-        />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnUploadImage"
+            style="@style/customMaterialButtonStyle"
+            android:layout_width="@dimen/_140sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@color/white"
+            android:padding="@dimen/_10sdp"
+            android:text="Upload"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#56c23d"
+            android:theme="@style/customMaterialButtonStyle"
+            app:cornerRadius="@dimen/_20sdp"
+            app:rippleColor="#33AAAAAA"
+            app:strokeColor="#56c23d"
+            app:strokeWidth="2dp" />
 
         <ProgressBar
             android:id="@+id/uploadProgressBar"

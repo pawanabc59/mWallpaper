@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:drawable="@color/black"/>
+    <item android:drawable="@color/icon_color"/>
 
     <item>
-        <bitmap android:src="@drawable/luffy_icon"
+        <bitmap android:src="@drawable/splashscreen_logo"
             android:gravity="center"/>
     </item>
 

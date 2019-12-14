@@ -42,6 +42,7 @@ public class WallpaperItemAdapter extends RecyclerView.Adapter<WallpaperItemAdap
     String userId;
     String maction;
     String category;
+    String wallpaperURL;
 
     private Activity parentActivity;
 
@@ -85,6 +86,8 @@ public class WallpaperItemAdapter extends RecyclerView.Adapter<WallpaperItemAdap
         ImageView deleteImage = holder.deleteImage;
         ProgressBar imageProgressBar = holder.imageProgressBar;
 
+        wallpaperURL = mList.get(position).getWallpaperItemURL();
+
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         mRef = firebaseDatabase.getReference("wallpaper").child("users");
@@ -127,7 +130,7 @@ public class WallpaperItemAdapter extends RecyclerView.Adapter<WallpaperItemAdap
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                        if (dataSnapshot1.child("thumbnail").getValue().toString().equals(mList.get(position).getWallpaperItemURL())) {
+                        if (wallpaperURL.equals(dataSnapshot1.child("thumbnail").getValue().toString())) {
                             favouriteFilled.setVisibility(View.VISIBLE);
                             favouriteUnfilled.setVisibility(View.GONE);
                         }

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?attr/white_black"
     tools:context=".Fragments.AccountFragment">
 
@@ -49,13 +50,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
+                style="@style/customMaterialButtonStyle"
+                android:theme="@style/customMaterialButtonStyle"
                 android:id="@+id/btnLogin"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/_140sdp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:background="@color/white"
+                android:text="login"
                 android:layout_marginVertical="@dimen/_10sdp"
-                android:text="Login" />
+                android:layout_gravity="center"
+                app:cornerRadius="@dimen/_20sdp"
+                android:textColor="@color/colorAccent"
+                app:strokeColor="@color/colorAccent"
+                app:strokeWidth="2dp"
+                app:rippleColor="#33AAAAAA"
+                android:padding="@dimen/_10sdp"
+                />
 
             <ProgressBar
                 android:id="@+id/loginProgressBar"

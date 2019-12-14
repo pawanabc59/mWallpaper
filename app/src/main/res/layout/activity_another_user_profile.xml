@@ -7,63 +7,72 @@
     android:background="?attr/white_black"
     tools:context=".AnotherUserProfileActivity">
 
+
     <ImageView
         android:id="@+id/parentImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop" />
 
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/anotherUserProfileImageCardView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/_61sdp"
-        android:background="?attr/cardbackground"
-        app:cardBackgroundColor="?attr/colorPrimary"
-        app:cardCornerRadius="@dimen/_75sdp">
-
-        <ImageView
-            android:id="@+id/anotherUserProfileImage"
-            android:layout_width="@dimen/_65sdp"
-            android:layout_height="@dimen/_65sdp"
-            android:layout_centerHorizontal="true"
-            android:scaleType="centerCrop" />
-
-    </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:id="@+id/anotherUserEmailId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/_150sdp"
-        android:textColor="#fff"
-        android:textSize="18sp" />
-
-<!--    <ScrollView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent">-->
-
-    <androidx.cardview.widget.CardView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/_205sdp"
-        android:layout_marginHorizontal="@dimen/_15sdp"
-        app:cardCornerRadius="@dimen/_10sdp"
-        >
+        android:scrollbars="none">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/anotherUserRecyclerView"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/anotherUserCardView"
-            android:background="?attr/white_black"
-            android:padding="@dimen/_10sdp" />
+            android:layout_height="match_parent">
 
-    </androidx.cardview.widget.CardView>
 
-<!--    </ScrollView>-->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/anotherUserProfileImageCardView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_61sdp"
+                android:background="?attr/cardbackground"
+                app:cardBackgroundColor="?attr/colorPrimary"
+                app:cardCornerRadius="@dimen/_75sdp">
+
+                <ImageView
+                    android:id="@+id/anotherUserProfileImage"
+                    android:layout_width="@dimen/_65sdp"
+                    android:layout_height="@dimen/_65sdp"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="centerCrop" />
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/anotherUserEmailId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_150sdp"
+                android:textColor="#fff"
+                android:textSize="18sp" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_560sdp"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_205sdp"
+                android:background="?attr/cardbackground"
+                app:cardBackgroundColor="?attr/colorPrimary"
+                app:cardCornerRadius="@dimen/_10sdp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/anotherUserRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/anotherUserCardView"
+                    android:background="?attr/cardbackground"
+                    android:padding="@dimen/_10sdp" />
+
+            </androidx.cardview.widget.CardView>
+
+        </FrameLayout>
+
+    </ScrollView>
 
 </FrameLayout>

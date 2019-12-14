@@ -23,6 +23,7 @@ import com.example.mwallpaper.RegisterActivity;
 import com.example.mwallpaper.SessionManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
@@ -38,7 +39,7 @@ public class AccountFragment extends Fragment {
 
     TextInputLayout textEmail,textPassword;
     TextInputEditText editEmail, editPassword;
-    Button btnLogin;
+    MaterialButton btnLogin;
     TextView textRegister;
     ProgressBar loginProgressBar;
     FirebaseAuth firebaseAuth;

@@ -1,16 +1,11 @@
 package com.example.mwallpaper;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,9 +15,13 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -31,15 +30,12 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.File;
 import java.io.IOException;
-
-import id.zelory.compressor.Compressor;
 
 public class UploadImageActivity extends AppCompatActivity {
 
     ImageView uploadImagePreview;
-    Button btnUploadImage,btnChooseImage;
+    MaterialButton btnUploadImage, btnChooseImage;
     Spinner categorySpinner;
     ProgressBar uploadProgressBar;
 
@@ -95,16 +91,65 @@ public class UploadImageActivity extends AppCompatActivity {
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                switch (i){
+                switch (i) {
                     case 0:
                         categorySelected = "others";
                         break;
                     case 1:
-                        categorySelected = "anime";
+                        categorySelected = "animals";
                         break;
                     case 2:
+                        categorySelected = "anime";
+                        break;
+                    case 3:
+                        categorySelected = "art";
+                        break;
+                    case 4:
+                        categorySelected = "cartoon";
+                        break;
+                    case 5:
+                        categorySelected = "cinematic";
+                        break;
+                    case 6:
+                        categorySelected = "fantasy";
+                        break;
+                    case 7:
+                        categorySelected = "flowers";
+                        break;
+                    case 8:
+                        categorySelected = "food";
+                        break;
+                    case 9:
+                        categorySelected = "games";
+                        break;
+                    case 10:
                         categorySelected = "nature";
                         break;
+                    case 11:
+                        categorySelected = "religious";
+                        break;
+                    case 12:
+                        categorySelected = "scenery";
+                        break;
+                    case 13:
+                        categorySelected = "sea";
+                        break;
+                    case 14:
+                        categorySelected = "sky";
+                        break;
+                    case 15:
+                        categorySelected = "space";
+                        break;
+                    case 16:
+                        categorySelected = "superhero";
+                        break;
+                    case 17:
+                        categorySelected = "vehicle";
+                        break;
+                    case 18:
+                        categorySelected = "words";
+                        break;
+
                 }
             }
 
@@ -181,14 +226,13 @@ public class UploadImageActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 2 && resultCode == Activity.RESULT_OK && data != null){
+        if (requestCode == 2 && resultCode == Activity.RESULT_OK && data != null) {
 
             filepath = data.getData();
-            try{
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filepath );
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filepath);
                 uploadImagePreview.setImageBitmap(bitmap);
-            }
-            catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }

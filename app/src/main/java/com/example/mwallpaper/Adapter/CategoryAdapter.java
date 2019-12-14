@@ -47,7 +47,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         ImageView category_image = holder.category_image;
         CardView categories_cardview = holder.categories_cardview;
 
-        category_text.setText(mList.get(position).getCategory_text());
+        category_text.setText(mList.get(position).getCategory_text().toUpperCase());
+        category_text.setAllCaps(true);
         Picasso.get().load(mList.get(position).getCategory_image()).into(category_image);
 
         categories_cardview.setOnClickListener(new View.OnClickListener() {

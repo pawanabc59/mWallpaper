@@ -1,11 +1,5 @@
 package com.example.mwallpaper;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
-
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.WallpaperManager;
@@ -13,14 +7,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -28,6 +21,13 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -45,8 +45,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class SingleWallpaperActivity extends AppCompatActivity {
 
@@ -55,7 +53,7 @@ public class SingleWallpaperActivity extends AppCompatActivity {
 
     FloatingActionMenu floatingActionMenu;
     FloatingActionButton fbtnSetBackground, fbtnAddFavourite, fbtnRemoveFavourite, fbtnDownload, fbtnShare;
-//    com.google.android.material.floatingactionbutton.FloatingActionButton fbtnInformation;
+    //    com.google.android.material.floatingactionbutton.FloatingActionButton fbtnInformation;
     ImageButton btnInfo;
 
     FirebaseDatabase firebaseDatabase;
@@ -64,8 +62,9 @@ public class SingleWallpaperActivity extends AppCompatActivity {
     FirebaseUser user;
     String userId;
     String pushKey;
-    
+
     String TAG = "my";
+    String wallpaper_path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +87,7 @@ public class SingleWallpaperActivity extends AppCompatActivity {
         user = firebaseAuth.getCurrentUser();
 
         final Intent intent = getIntent();
-        final String wallpaper_path = intent.getExtras().getString("image_path");
+        wallpaper_path = intent.getExtras().getString("image_path");
         final String anotherUserId = intent.getExtras().getString("anotherUserId");
 
         wallpaperImage = findViewById(R.id.single_wallpaper_show);
@@ -154,30 +153,27 @@ public class SingleWallpaperActivity extends AppCompatActivity {
         fbtnSetBackground.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Picasso.get().load(wallpaper_path).into(new Target() {
+
+                String[] listItems = new String[]{"Set as Home Screen", "Set as Lock Screen", "Both"};
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(SingleWallpaperActivity.this);
+                mBuilder.setTitle("Choose an option");
+                mBuilder.setSingleChoiceItems(listItems, -1, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                        WallpaperManager wallpaperManager = WallpaperManager.getInstance(getApplicationContext());
-
-                        try {
-                            wallpaperManager.setBitmap(bitmap);
-                            Toast.makeText(getApplicationContext(), "Wallpaper set", Toast.LENGTH_SHORT).show();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Toast.makeText(getApplicationContext(), "Error occurred", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-
-                    }
-
-                    @Override
-                    public void onPrepareLoad(Drawable placeHolderDrawable) {
-
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        setWallpaperOnDevice(i);
+                        dialogInterface.dismiss();
                     }
                 });
+                mBuilder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                AlertDialog mDialog = mBuilder.create();
+                mDialog.show();
+
             }
         });
 
@@ -241,7 +237,7 @@ public class SingleWallpaperActivity extends AppCompatActivity {
             mRef.child("users").child(userId).child("favouriteImages").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()){
+                    if (dataSnapshot.exists()) {
                         mRef.child("users").child(userId).child("favouriteImages").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -264,8 +260,7 @@ public class SingleWallpaperActivity extends AppCompatActivity {
 
                             }
                         });
-                    }
-                    else {
+                    } else {
                         fbtnAddFavourite.setVisibility(View.VISIBLE);
                         fbtnRemoveFavourite.setVisibility(View.GONE);
                     }
@@ -322,60 +317,111 @@ public class SingleWallpaperActivity extends AppCompatActivity {
         }
     }
 
-        private Uri getLocalBitmapUri (Bitmap bitmap){
-            Uri uri = null;
-            try {
-                File file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "mWallpaper_" + System.currentTimeMillis() + ".png");
-                FileOutputStream fileOutputStream = new FileOutputStream(file);
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
-                fileOutputStream.close();
-                uri = FileProvider.getUriForFile(getApplicationContext(), BuildConfig.APPLICATION_ID + ".provider", file);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return uri;
-        }
+    private void setWallpaperOnDevice(final int position){
+        Picasso.get().load(wallpaper_path).into(new Target() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                WallpaperManager wallpaperManager = WallpaperManager.getInstance(getApplicationContext());
 
-        private Uri saveWallpaperAndGetUri (Bitmap bitmap){
-            if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    Intent intent = new Intent();
-                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+//                        this is show the image as full display wallpaper.
+                DisplayMetrics metrics = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                int height = metrics.heightPixels;
+                int width = metrics.widthPixels;
+                Bitmap bitmap1 = Bitmap.createScaledBitmap(bitmap, width, height, true);
+                try {
+//                            wallpaperManager.setBitmap(bitmap);
+//                            wallpaperManager.suggestDesiredDimensions(wallpaperManager.getDesiredMinimumWidth(), wallpaperManager.getDesiredMinimumHeight());
+//                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                                wallpaperManager.setBitmap(bitmap,,false, WallpaperManager.FLAG_SYSTEM);
+//                            }
+//                            wallpaperManager.setBitmap(bitmap1);
+                    if (position == 0){
+                        wallpaperManager.setBitmap(bitmap1, null, false, WallpaperManager.FLAG_SYSTEM);
+                        Toast.makeText(getApplicationContext(), "Wallpaper set as Home Screen Wallpaper", Toast.LENGTH_SHORT).show();
+                    }
+                    else if (position == 1){
+                        wallpaperManager.setBitmap(bitmap1, null, false, WallpaperManager.FLAG_LOCK);
+                        Toast.makeText(getApplicationContext(), "Wallpaper set as Lock Screen Wallpaper", Toast.LENGTH_SHORT).show();
+                    }
+                    else if (position == 2){
+                        wallpaperManager.setBitmap(bitmap1);
+                        Toast.makeText(getApplicationContext(), "Wallpaper set as Home and Lock Screen Wallpaper", Toast.LENGTH_SHORT).show();
+                    }
 
-                    Uri uri = Uri.fromParts("package", getPackageName(), null);
-                    intent.setData(uri);
-
-                    startActivity(intent);
-                } else {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Error occurred", Toast.LENGTH_SHORT).show();
                 }
-                return null;
-            }
-            File folder = new File(Environment.getExternalStorageDirectory().toString() + "/mWallpaper");
-            folder.mkdir();
-
-            pushKey = mRef.push().getKey();
-
-            File file = new File(folder, pushKey + ".jpg");
-            try {
-                FileOutputStream out = new FileOutputStream(file);
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-                out.flush();
-                out.close();
-                Toast.makeText(getApplicationContext(), "Image Downloaded", Toast.LENGTH_SHORT).show();
-
-                return FileProvider.getUriForFile(getApplicationContext(), BuildConfig.APPLICATION_ID + ".provider", file);
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
 
-            return null;
+            @Override
+            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
 
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        });
+    }
+
+    private Uri getLocalBitmapUri(Bitmap bitmap) {
+        Uri uri = null;
+        try {
+            File file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "mWallpaper_" + System.currentTimeMillis() + ".png");
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+            fileOutputStream.close();
+            uri = FileProvider.getUriForFile(getApplicationContext(), BuildConfig.APPLICATION_ID + ".provider", file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return uri;
+    }
+
+    private Uri saveWallpaperAndGetUri(Bitmap bitmap) {
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+
+                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                intent.setData(uri);
+
+                startActivity(intent);
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
+            }
+            return null;
+        }
+        File folder = new File(Environment.getExternalStorageDirectory().toString() + "/mWallpaper");
+        folder.mkdir();
+
+        pushKey = mRef.push().getKey();
+
+        File file = new File(folder, pushKey + ".jpg");
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
+            Toast.makeText(getApplicationContext(), "Image Downloaded", Toast.LENGTH_SHORT).show();
+
+            return FileProvider.getUriForFile(getApplicationContext(), BuildConfig.APPLICATION_ID + ".provider", file);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
+    }
 }

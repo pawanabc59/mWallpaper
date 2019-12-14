@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mwallpaper.DisclaimerActivity;
 import com.example.mwallpaper.MainActivity;
 import com.example.mwallpaper.MyUploadsActivity;
 import com.example.mwallpaper.R;
@@ -29,6 +30,7 @@ import com.example.mwallpaper.SessionManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -50,8 +52,9 @@ public class ProfileFragment extends Fragment {
     ImageView profileImage;
     SwitchCompat nightSwitch;
     TextView showEmailText,txtMyUploads;
-    Button btnLogout, btnEditPhoto;
+    Button  btnmyUploads, btnDisclaimer;
     String userId;
+    MaterialButton btnLogout,btnEditPhoto;
 
     SessionManager sessionManager;
     ContextThemeWrapper contextThemeWrapper;
@@ -98,7 +101,8 @@ public class ProfileFragment extends Fragment {
         showEmailText = view.findViewById(R.id.showEmail);
         btnEditPhoto = view.findViewById(R.id.btnEditPhoto);
         btnLogout = view.findViewById(R.id.btnlogout);
-        txtMyUploads = view.findViewById(R.id.txtmyUploads);
+        btnmyUploads = view.findViewById(R.id.btnmyUploads);
+        btnDisclaimer = view.findViewById(R.id.btnDisclaimer);
 
         mRef.child(userId).addValueEventListener(new ValueEventListener() {
             @Override
@@ -160,10 +164,19 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        txtMyUploads.setOnClickListener(new View.OnClickListener() {
+        btnmyUploads.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), MyUploadsActivity.class);
+                getActivity().startActivity(intent);
+            }
+        });
+
+        btnDisclaimer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), DisclaimerActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getActivity().startActivity(intent);
             }
         });

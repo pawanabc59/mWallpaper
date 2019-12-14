@@ -9,11 +9,11 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#ffffff</item>
         <item name="colorPrimaryDark">#212121</item>
-        <item name="colorAccent">#2196F3</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="actionMenuTextAppearance">@color/colorAccent</item>
         <item name="backgroundcolor">#fcfcfc</item>
         <item name="cardbackground">#ffffff</item>
-        <item name="textcolor">#808080</item>
+        <item name="textcolor">#000000</item>
         <item name="tintcolor">#808080</item>
         <item name="buttoncolor">#2196F3</item>
         <item name="white_black">#ffffff</item>
@@ -26,7 +26,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#212121</item>
         <item name="colorPrimaryDark">#212121</item>
-        <item name="colorAccent">#2196F3</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="actionMenuTextAppearance">@color/colorAccent</item>
         <item name="backgroundcolor">#031113</item>
         <item name="cardbackground">#424242</item>
@@ -42,6 +42,20 @@
     <style name="WindowAnimationTransition">
         <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
         <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+
+<!--    <style name="customTextInputLayout" parent="TextAppearance.AppCompat.Medium">-->
+<!--        &lt;!&ndash; Hint color and label color in FALSE state &ndash;&gt;-->
+<!--        <item name="android:textColorHint">@color/colorAccent</item>-->
+<!--        <item name="android:textSize">20sp</item>-->
+<!--        &lt;!&ndash; Label color in TRUE state and bar color FALSE and TRUE State &ndash;&gt;-->
+<!--        <item name="colorAccent">@color/black</item>-->
+<!--        <item name="colorControlNormal">@color/black</item>-->
+<!--        <item name="colorControlActivated">@color/black</item>-->
+<!--    </style>-->
+
+    <style name="customMaterialButtonStyle" parent="Widget.AppCompat.Button.Borderless">
+        <item name="colorAccent">#ffffff</item>
     </style>
 
 </resources>
