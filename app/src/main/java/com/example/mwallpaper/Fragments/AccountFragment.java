@@ -18,6 +18,7 @@ import com.example.mwallpaper.R;
 import com.example.mwallpaper.RegisterActivity;
 import com.example.mwallpaper.SessionManager;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -97,12 +98,24 @@ public class AccountFragment extends Fragment {
                 String mpassword = editPassword.getText().toString().trim();
                 if (memail.isEmpty()) {
                     editEmail.setError("Please insert email");
+                    loginProgressBar.setVisibility(View.GONE);
+                    btnLogin.setVisibility(View.VISIBLE);
+
                 } else if (mpassword.isEmpty()) {
                     editPassword.setError("Please insert password");
+                    loginProgressBar.setVisibility(View.GONE);
+                    btnLogin.setVisibility(View.VISIBLE);
+
                 } else if (!memail.matches(emailPattern)) {
                     editEmail.setError("Please provide valid email address");
+                    loginProgressBar.setVisibility(View.GONE);
+                    btnLogin.setVisibility(View.VISIBLE);
+
                 } else if (mpassword.length() < 6) {
                     editPassword.setError("Password is too short");
+                    loginProgressBar.setVisibility(View.GONE);
+                    btnLogin.setVisibility(View.VISIBLE);
+
                 } else {
                     Login(memail, mpassword);
                 }
@@ -135,26 +148,38 @@ public class AccountFragment extends Fragment {
                                         e.printStackTrace();
                                         mRef2.child("profileImage").setValue("null");
                                     }
+                                    loginProgressBar.setVisibility(View.GONE);
+                                    btnLogin.setVisibility(View.VISIBLE);
+                                    Intent intent = new Intent(getContext(), MainActivity.class);
+                                    getActivity().startActivity(intent);
                                 }
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                                    Toast.makeText(getContext(), "Login Failed", Toast.LENGTH_SHORT).show();
+                                    editEmail.setText("");
+                                    editPassword.setText("");
                                 }
                             });
 
 //                          this was earlier code :  mRef2.child("profileImage").setValue("null");
 
-                            loginProgressBar.setVisibility(View.GONE);
-                            btnLogin.setVisibility(View.VISIBLE);
-                            Intent intent = new Intent(getContext(), MainActivity.class);
-                            getActivity().startActivity(intent);
 
                         } else {
                             loginProgressBar.setVisibility(View.GONE);
                             btnLogin.setVisibility(View.VISIBLE);
                             Toast.makeText(getContext(), "Sorry! Login failed", Toast.LENGTH_SHORT);
+                            editEmail.setText("");
+                            editPassword.setText("");
                         }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        loginProgressBar.setVisibility(View.GONE);
+                        btnLogin.setVisibility(View.VISIBLE);
+                        Toast.makeText(getContext(), "Either Username or Password is wrong!", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

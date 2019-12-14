@@ -73,7 +73,7 @@ public class HomeFragment extends Fragment {
         wallpaperItemModels = new ArrayList<>();
         wallpaperItemAdapter = new WallpaperItemAdapter(getContext(), wallpaperItemModels, action, getActivity());
 
-        mRef.addValueEventListener(new ValueEventListener() {
+        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {

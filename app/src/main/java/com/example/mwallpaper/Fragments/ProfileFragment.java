@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +52,7 @@ public class ProfileFragment extends Fragment {
     Button btnmyUploads, btnDisclaimer;
     String userId;
     MaterialButton btnLogout, btnEditPhoto;
+    ProgressBar editPhotoProgressBar;
 
     SessionManager sessionManager;
     ContextThemeWrapper contextThemeWrapper;
@@ -98,6 +100,10 @@ public class ProfileFragment extends Fragment {
         btnLogout = view.findViewById(R.id.btnlogout);
         btnmyUploads = view.findViewById(R.id.btnmyUploads);
         btnDisclaimer = view.findViewById(R.id.btnDisclaimer);
+        editPhotoProgressBar = view.findViewById(R.id.editPhotoProgressBar);
+
+        btnEditPhoto.setVisibility(View.VISIBLE);
+        editPhotoProgressBar.setVisibility(View.GONE);
 
         mRef.child(userId).addValueEventListener(new ValueEventListener() {
             @Override
@@ -188,6 +194,9 @@ public class ProfileFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        btnEditPhoto.setVisibility(View.GONE);
+        editPhotoProgressBar.setVisibility(View.VISIBLE);
+
         if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
             Uri filepath = data.getData();
             try {
@@ -198,6 +207,8 @@ public class ProfileFragment extends Fragment {
                 storageReference1.putFile(filepath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        editPhotoProgressBar.setVisibility(View.GONE);
+                        btnEditPhoto.setVisibility(View.VISIBLE);
                         Toast.makeText(getContext(), "Image Uploaded Successfully", Toast.LENGTH_SHORT).show();
 //                        Task<Uri> downloadUri = storageReference1.getDownloadUrl();
 //                        Log.d(TAG, "onSuccess: "+downloadUri);
@@ -217,6 +228,10 @@ public class ProfileFragment extends Fragment {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+        else{
+            editPhotoProgressBar.setVisibility(View.GONE);
+            btnEditPhoto.setVisibility(View.VISIBLE);
         }
     }
 

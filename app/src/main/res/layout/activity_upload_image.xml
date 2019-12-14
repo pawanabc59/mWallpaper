@@ -40,7 +40,7 @@
         android:layout_below="@+id/btnChooseImage"
         android:layout_margin="@dimen/_10sdp"
         android:background="?attr/cardbackground"
-        android:backgroundTint="?attr/cardbackground"
+        android:backgroundTint="#737e8c"
         android:padding="@dimen/_10sdp"
         android:pointerIcon="arrow" />
 

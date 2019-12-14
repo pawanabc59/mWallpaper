@@ -74,19 +74,36 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if (email.isEmpty()) {
                     editRegisterEmail.setError("Please insert email");
+                    btnRegister.setVisibility(View.VISIBLE);
+                    registerProgressBar.setVisibility(View.GONE);
+
                 } else if (password.isEmpty()) {
                     editRegisterPassword.setError("Please insert password");
+                    btnRegister.setVisibility(View.VISIBLE);
+                    registerProgressBar.setVisibility(View.GONE);
+
                 } else if (c_password.isEmpty()) {
                     editRegistercPassword.setError("Please insert confirm password");
+                    btnRegister.setVisibility(View.VISIBLE);
+                    registerProgressBar.setVisibility(View.GONE);
+
                 } else if (!email.matches(emailPattern)) {
                     editRegisterEmail.setError("Please enter valid email address");
+                    btnRegister.setVisibility(View.VISIBLE);
+                    registerProgressBar.setVisibility(View.GONE);
+
                 } else if (password.length() < 6) {
                     editRegisterPassword.setError("Password length should be minimum of 6 digits");
+                    btnRegister.setVisibility(View.VISIBLE);
+                    registerProgressBar.setVisibility(View.GONE);
+
                 } else {
                     if (password.equals(c_password)) {
                         Register(email, password);
                     } else {
                         Toast.makeText(getApplicationContext(), "Password does not matched", Toast.LENGTH_LONG).show();
+                        btnRegister.setVisibility(View.VISIBLE);
+                        registerProgressBar.setVisibility(View.GONE);
                     }
                 }
             }
@@ -102,6 +119,10 @@ public class RegisterActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "User Created", Toast.LENGTH_SHORT).show();
                             registerProgressBar.setVisibility(View.GONE);
                             btnRegister.setVisibility(View.VISIBLE);
+                            editRegisterEmail.setText("");
+                            editRegisterPassword.setText("");
+                            editRegistercPassword.setText("");
+                            firebaseAuth.signOut();
 
 //                            String key = mRef.push().getKey();
 //                            mRef2 = mRef.child(key);

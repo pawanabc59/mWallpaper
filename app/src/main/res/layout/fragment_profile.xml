@@ -54,6 +54,16 @@
                 app:strokeColor="@color/colorAccent"
                 app:strokeWidth="2dp" />
 
+            <ProgressBar
+                android:id="@+id/editPhotoProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:layout_below="@+id/profile_image_cardview"
+                android:visibility="gone" />
+
             <LinearLayout
                 android:id="@+id/layout_text"
                 android:layout_width="match_parent"

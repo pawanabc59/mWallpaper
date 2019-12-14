@@ -65,9 +65,10 @@ public class WallpaperItemAdapter extends RecyclerView.Adapter<WallpaperItemAdap
         View view;
 
 //        this is to check that whether the
-        if (parentActivity instanceof AnotherUserProfileActivity) {
+        if (parentActivity instanceof AnotherUserProfileActivity){
             view = layoutInflater.inflate(R.layout.wallpaper_item_small_size, parent, false);
-        } else {
+        }
+        else {
             view = layoutInflater.inflate(R.layout.wallpaper_item, parent, false);
         }
 
@@ -120,72 +121,73 @@ public class WallpaperItemAdapter extends RecyclerView.Adapter<WallpaperItemAdap
                                 }).show();
                     }
                 });
-            } else {
+            }
+            else {
 
                 userId = user.getUid();
 
                 mRef.child(userId).child("favouriteImages").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                            if (wallpaperURL.equals(dataSnapshot1.child("thumbnail").getValue().toString())) {
-                                favouriteFilled.setVisibility(View.VISIBLE);
-                                favouriteUnfilled.setVisibility(View.GONE);
-                            }
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                        if (dataSnapshot1.child("thumbnail").getValue().toString().equals(mList.get(position).getWallpaperItemURL())) {
+                            favouriteFilled.setVisibility(View.VISIBLE);
+                            favouriteUnfilled.setVisibility(View.GONE);
                         }
                     }
+                }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    }
-                });
+                }
+            });
 
-                favouriteUnfilled.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+            favouriteUnfilled.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-                        final String pushId = mRef.push().getKey();
+                    final String pushId = mRef.push().getKey();
 
-                        Task task = mRef.child(userId).child("favouriteImages").child(pushId).child("thumbnail").setValue(mList.get(position).getWallpaperItemURL());
-                        task.addOnSuccessListener(new OnSuccessListener() {
-                            @Override
-                            public void onSuccess(Object o) {
-                                mRef.child(userId).child("favouriteImages").child(pushId).child("userId").setValue(mList.get(position).getAnotherUserId());
-                                favouriteFilled.setVisibility(View.VISIBLE);
-                                favouriteUnfilled.setVisibility(View.GONE);
-                            }
-                        });
+                    Task task = mRef.child(userId).child("favouriteImages").child(pushId).child("thumbnail").setValue(mList.get(position).getWallpaperItemURL());
+                    task.addOnSuccessListener(new OnSuccessListener() {
+                        @Override
+                        public void onSuccess(Object o) {
+                            mRef.child(userId).child("favouriteImages").child(pushId).child("userId").setValue(mList.get(position).getAnotherUserId());
+                            favouriteFilled.setVisibility(View.VISIBLE);
+                            favouriteUnfilled.setVisibility(View.GONE);
+                        }
+                    });
 
-                    }
-                });
+                }
+            });
 
-                favouriteFilled.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+            favouriteFilled.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-                        mRef.child(userId).child("favouriteImages").addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                    if (dataSnapshot1.child("thumbnail").getValue().toString().equals(mList.get(position).getWallpaperItemURL())) {
-                                        mRef.child(userId).child("favouriteImages").child(dataSnapshot1.getKey()).child("thumbnail").removeValue();
-                                        mRef.child(userId).child("favouriteImages").child(dataSnapshot1.getKey()).child("userId").removeValue();
-                                        favouriteFilled.setVisibility(View.GONE);
-                                        favouriteUnfilled.setVisibility(View.VISIBLE);
-                                    }
+                    mRef.child(userId).child("favouriteImages").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                if (dataSnapshot1.child("thumbnail").getValue().toString().equals(mList.get(position).getWallpaperItemURL())) {
+                                    mRef.child(userId).child("favouriteImages").child(dataSnapshot1.getKey()).child("thumbnail").removeValue();
+                                    mRef.child(userId).child("favouriteImages").child(dataSnapshot1.getKey()).child("userId").removeValue();
+                                    favouriteFilled.setVisibility(View.GONE);
+                                    favouriteUnfilled.setVisibility(View.VISIBLE);
                                 }
                             }
+                        }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                            }
-                        });
+                        }
+                    });
 
-                    }
-                });
-            }
+                }
+            });
+        }
         } else {
 
             userId = user.getUid();
@@ -219,35 +221,35 @@ public class WallpaperItemAdapter extends RecyclerView.Adapter<WallpaperItemAdap
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                             for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                                                 try {
-                                                    if (dataSnapshot1.child("uploadedImage").getValue().toString().equals(mList.get(position).getWallpaperItemURL())) {
+                                                if (dataSnapshot1.child("uploadedImage").getValue().toString().equals(mList.get(position).getWallpaperItemURL())) {
 
-                                                        mRef.child(userId).child("uploadedImages").child(dataSnapshot1.getKey()).child("uploadedImage").removeValue();
-                                                        category = dataSnapshot1.child("category").getValue().toString();
-                                                        mRef.child(userId).child("uploadedImages").child(dataSnapshot1.getKey()).child("category").removeValue();
-                                                        mRef.child(userId).child("uploadedImages").child(dataSnapshot1.getKey()).child("userId").removeValue();
+                                                    mRef.child(userId).child("uploadedImages").child(dataSnapshot1.getKey()).child("uploadedImage").removeValue();
+                                                    category = dataSnapshot1.child("category").getValue().toString();
+                                                    mRef.child(userId).child("uploadedImages").child(dataSnapshot1.getKey()).child("category").removeValue();
+                                                    mRef.child(userId).child("uploadedImages").child(dataSnapshot1.getKey()).child("userId").removeValue();
 
-                                                        //                    delete from images category section section
-                                                        mRef2.child(category).addListenerForSingleValueEvent(new ValueEventListener() {
-                                                            @Override
-                                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                                                    if (dataSnapshot1.child("thumbnail").getValue().toString().equals(mList.get(position).getWallpaperItemURL())) {
-                                                                        mRef2.child(category).child(dataSnapshot1.getKey()).child("thumbnail").removeValue();
-                                                                        mRef2.child(category).child(dataSnapshot1.getKey()).child("userId").removeValue();
-                                                                        break;
-                                                                    }
+                                                    //                    delete from images category section section
+                                                    mRef2.child(category).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                                                if (dataSnapshot1.child("thumbnail").getValue().toString().equals(mList.get(position).getWallpaperItemURL())) {
+                                                                    mRef2.child(category).child(dataSnapshot1.getKey()).child("thumbnail").removeValue();
+                                                                    mRef2.child(category).child(dataSnapshot1.getKey()).child("userId").removeValue();
+                                                                    break;
                                                                 }
                                                             }
+                                                        }
 
-                                                            @Override
-                                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                                            }
-                                                        });
+                                                        }
+                                                    });
 
-                                                        break;
+                                                    break;
 
-                                                    }
+                                                }
                                                 } catch (Exception e) {
                                                     e.printStackTrace();
                                                 }
@@ -308,7 +310,7 @@ public class WallpaperItemAdapter extends RecyclerView.Adapter<WallpaperItemAdap
                                     });
 
                                     Intent intent = new Intent(mContext, MyUploadsActivity.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION );
                                     mContext.startActivity(intent);
 
                                 }

@@ -1,6 +1,9 @@
 package com.example.mwallpaper;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +30,9 @@ public class MyUploadsActivity extends AppCompatActivity {
     ArrayList<WallpaperItemModel> wallpaperItemModels;
     String action = "myUploads";
 
+    ImageView myUploadmbImage;
+    TextView myUploadshowText;
+
     FirebaseDatabase firebaseDatabase;
     DatabaseReference mRef;
     FirebaseAuth firebaseAuth;
@@ -50,6 +56,9 @@ public class MyUploadsActivity extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         mRef = firebaseDatabase.getReference("wallpaper").child("users");
 
+        myUploadmbImage = findViewById(R.id.myUploadmbImage);
+        myUploadshowText = findViewById(R.id.myUploadshowText);
+
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
         userId = user.getUid();
@@ -62,12 +71,23 @@ public class MyUploadsActivity extends AppCompatActivity {
         mRef.child(userId).child("uploadedImages").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    try {
-                        wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("uploadedImage").getValue().toString(), dataSnapshot1.child("userId").getValue().toString()));
-                        wallpaperItemAdapter.notifyDataSetChanged();
-                    } catch (Exception e) {
-                        e.printStackTrace();
+
+                if (!dataSnapshot.exists()){
+                    myUploadmbImage.setVisibility(View.VISIBLE);
+                    myUploadshowText.setVisibility(View.VISIBLE);
+                    myUploadsRecyclerView.setVisibility(View.GONE);
+                }
+                else {
+                    myUploadsRecyclerView.setVisibility(View.VISIBLE);
+                    myUploadshowText.setVisibility(View.GONE);
+                    myUploadmbImage.setVisibility(View.GONE);
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                        try {
+                            wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("uploadedImage").getValue().toString(), dataSnapshot1.child("userId").getValue().toString()));
+                            wallpaperItemAdapter.notifyDataSetChanged();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }

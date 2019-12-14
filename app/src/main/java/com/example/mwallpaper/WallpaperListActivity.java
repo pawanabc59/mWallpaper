@@ -62,10 +62,14 @@ public class WallpaperListActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (final DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
 //                    mRef2 = mRef.child(dataSnapshot1.getKey());
-                    wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("thumbnail").getValue().toString(), dataSnapshot1.child("userId").getValue().toString()));
+                    try {
+                        wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("thumbnail").getValue().toString(), dataSnapshot1.child("userId").getValue().toString()));
 //                    Log.d(TAG, "onDataChange: "+dataSnapshot1.child("thumbnail").getValue().toString());
-                    wallpaperItemAdapter.notifyDataSetChanged();
+                        wallpaperItemAdapter.notifyDataSetChanged();
 //                    wallpaperItemModels.add(new WallpaperItemModel("https://firebasestorage.googleapis.com/v0/b/mwallpaper-6feeb.appspot.com/o/wallpaper%2Fcategories%2Fnature%2Fnature.jpg?alt=media&token=d17176fa-8a8e-48bc-af4a-8482a295e249"));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 

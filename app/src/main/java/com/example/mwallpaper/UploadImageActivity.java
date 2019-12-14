@@ -122,30 +122,33 @@ public class UploadImageActivity extends AppCompatActivity {
                         categorySelected = "games";
                         break;
                     case 10:
-                        categorySelected = "nature";
+                        categorySelected = "love";
                         break;
                     case 11:
-                        categorySelected = "religious";
+                        categorySelected = "nature";
                         break;
                     case 12:
-                        categorySelected = "scenery";
+                        categorySelected = "religious";
                         break;
                     case 13:
-                        categorySelected = "sea";
+                        categorySelected = "scenery";
                         break;
                     case 14:
-                        categorySelected = "sky";
+                        categorySelected = "sea";
                         break;
                     case 15:
-                        categorySelected = "space";
+                        categorySelected = "sky";
                         break;
                     case 16:
-                        categorySelected = "superhero";
+                        categorySelected = "space";
                         break;
                     case 17:
-                        categorySelected = "vehicle";
+                        categorySelected = "superhero";
                         break;
                     case 18:
+                        categorySelected = "vehicle";
+                        break;
+                    case 19:
                         categorySelected = "words";
                         break;
 

@@ -1,8 +1,5 @@
 package com.example.mwallpaper.Model;
 
-import android.widget.ImageView;
-import android.widget.TextView;
-
 public class Categories_model {
     String category_image;
     String category_text;
