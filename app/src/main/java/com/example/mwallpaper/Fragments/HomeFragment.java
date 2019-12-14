@@ -1,24 +1,20 @@
 package com.example.mwallpaper.Fragments;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.ContextThemeWrapper;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.example.mwallpaper.Adapter.WallpaperItemAdapter;
-import com.example.mwallpaper.MainActivity;
 import com.example.mwallpaper.Model.WallpaperItemModel;
 import com.example.mwallpaper.R;
 import com.example.mwallpaper.SessionManager;
@@ -54,10 +50,9 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         sessionManager = new SessionManager(getContext());
-        if (sessionManager.loadNightModeState()==true){
+        if (sessionManager.loadNightModeState() == true) {
             contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.darktheme);
-        }
-        else{
+        } else {
             contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme);
         }
 
@@ -76,12 +71,12 @@ public class HomeFragment extends Fragment {
         user = firebaseAuth.getCurrentUser();
 
         wallpaperItemModels = new ArrayList<>();
-        wallpaperItemAdapter = new WallpaperItemAdapter(getContext(), wallpaperItemModels,action, getActivity());
+        wallpaperItemAdapter = new WallpaperItemAdapter(getContext(), wallpaperItemModels, action, getActivity());
 
         mRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     try {
                         wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("thumbnail").getValue().toString(), dataSnapshot1.child("userId").getValue().toString()));
                         wallpaperItemAdapter.notifyDataSetChanged();
@@ -100,7 +95,7 @@ public class HomeFragment extends Fragment {
         floatingUploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (user == null){
+                if (user == null) {
                     new AlertDialog.Builder(getActivity())
                             .setTitle("Login First!")
                             .setMessage("You need to login first to Upload the wallpapers.")
@@ -110,8 +105,7 @@ public class HomeFragment extends Fragment {
                                     dialogInterface.dismiss();
                                 }
                             }).show();
-                }
-                else {
+                } else {
 
                     Intent intent = new Intent(getContext(), UploadImageActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

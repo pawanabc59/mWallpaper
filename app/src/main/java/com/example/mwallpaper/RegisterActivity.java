@@ -1,13 +1,12 @@
 package com.example.mwallpaper;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -16,7 +15,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -29,7 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
     ProgressBar registerProgressBar;
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference mRef,mRef2;
+    DatabaseReference mRef, mRef2;
 
     SessionManager sessionManager;
 
@@ -74,39 +72,33 @@ public class RegisterActivity extends AppCompatActivity {
                 String password = editRegisterPassword.getText().toString().trim();
                 String c_password = editRegistercPassword.getText().toString().trim();
 
-                if (email.isEmpty()){
+                if (email.isEmpty()) {
                     editRegisterEmail.setError("Please insert email");
-                }
-                else if (password.isEmpty()){
+                } else if (password.isEmpty()) {
                     editRegisterPassword.setError("Please insert password");
-                }
-                else if (c_password.isEmpty()){
+                } else if (c_password.isEmpty()) {
                     editRegistercPassword.setError("Please insert confirm password");
-                }
-                else if (!email.matches(emailPattern)){
+                } else if (!email.matches(emailPattern)) {
                     editRegisterEmail.setError("Please enter valid email address");
-                }
-                else if (password.length()<6){
+                } else if (password.length() < 6) {
                     editRegisterPassword.setError("Password length should be minimum of 6 digits");
-                }
-                else{
+                } else {
                     if (password.equals(c_password)) {
                         Register(email, password);
-                    }
-                    else{
-                        Toast.makeText(getApplicationContext(),"Password does not matched", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Password does not matched", Toast.LENGTH_LONG).show();
                     }
                 }
             }
         });
     }
 
-    public void Register(final String email, String password){
-        firebaseAuth.createUserWithEmailAndPassword(email,password)
+    public void Register(final String email, String password) {
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             Toast.makeText(getApplicationContext(), "User Created", Toast.LENGTH_SHORT).show();
                             registerProgressBar.setVisibility(View.GONE);
                             btnRegister.setVisibility(View.VISIBLE);
@@ -114,10 +106,9 @@ public class RegisterActivity extends AppCompatActivity {
 //                            String key = mRef.push().getKey();
 //                            mRef2 = mRef.child(key);
 //                            mRef2.child("email").setValue(email);
-                        }
-                        else {
-                            if (task.getException() instanceof FirebaseAuthUserCollisionException){
-                                Toast.makeText(getApplicationContext(), "User Alerdy exist!!!",Toast.LENGTH_SHORT).show();
+                        } else {
+                            if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                                Toast.makeText(getApplicationContext(), "User Alerdy exist!!!", Toast.LENGTH_SHORT).show();
                                 registerProgressBar.setVisibility(View.GONE);
                                 btnRegister.setVisibility(View.VISIBLE);
                             }

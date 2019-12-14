@@ -7,7 +7,6 @@
     android:background="?attr/white_black"
     tools:context=".AnotherUserProfileActivity">
 
-
     <ImageView
         android:id="@+id/parentImage"
         android:layout_width="match_parent"

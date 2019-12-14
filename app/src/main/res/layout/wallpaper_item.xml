@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="@dimen/_135sdp"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/_5sdp"
+    android:layout_marginTop="@dimen/_7sdp"
     android:layout_marginRight="@dimen/_6sdp"
-    android:layout_marginTop="@dimen/_7sdp">
+    android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/wallpaper_item_cardview"
@@ -23,44 +22,43 @@
                 android:id="@+id/wallpaperItemImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"
                 android:background="#808080"
-                />
+                android:scaleType="centerCrop" />
 
             <ImageView
                 android:id="@+id/deleteImage"
                 android:layout_width="@dimen/_24sdp"
                 android:layout_height="@dimen/_24sdp"
-                android:src="@drawable/ic_delete"
-                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginLeft="@dimen/_100sdp"
-                android:visibility="gone"/>
+                android:layout_marginTop="@dimen/_10sdp"
+                android:src="@drawable/ic_delete"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/fav_filled"
                 android:layout_width="@dimen/_24sdp"
                 android:layout_height="@dimen/_24sdp"
-                android:src="@drawable/ic_favorite_red"
-                android:layout_marginTop="@dimen/_170sdp"
                 android:layout_marginLeft="@dimen/_100sdp"
-                android:visibility="gone"/>
+                android:layout_marginTop="@dimen/_170sdp"
+                android:src="@drawable/ic_favorite_red"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/fav_unfilled"
                 android:layout_width="@dimen/_24sdp"
                 android:layout_height="@dimen/_24sdp"
-                android:src="@drawable/ic_favorite_transparent"
-                android:layout_marginTop="@dimen/_170sdp"
                 android:layout_marginLeft="@dimen/_100sdp"
-                android:visibility="visible"/>
-            
+                android:layout_marginTop="@dimen/_170sdp"
+                android:src="@drawable/ic_favorite_transparent"
+                android:visibility="visible" />
+
             <ProgressBar
                 android:id="@+id/imageProgressBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:scaleX="1.1"
-                android:scaleY="1.1"
-                android:layout_gravity="center"/>
+                android:scaleY="1.1" />
 
         </FrameLayout>
 

@@ -6,12 +6,11 @@
     android:background="?attr/white_black"
     tools:context=".Fragments.CategoriesFragment">
 
-<androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/categories_recyclerview"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/_10sdp"
-    android:background="?attr/white_black"
-    />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/categories_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/white_black"
+        android:padding="@dimen/_10sdp" />
 
 </FrameLayout>

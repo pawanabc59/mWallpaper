@@ -101,9 +101,9 @@
             android:layout_height="wrap_content"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_favorite_transparent"
+            android:visibility="visible"
             app:fab_colorNormal="#2196F3"
             app:fab_colorPressed="#2196F3"
-            android:visibility="visible"
             fab:fab_label="Add to Favourite"
             fab:fab_size="mini" />
 
@@ -113,9 +113,9 @@
             android:layout_height="wrap_content"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_favorite_white"
+            android:visibility="visible"
             app:fab_colorNormal="#2196F3"
             app:fab_colorPressed="#2196F3"
-            android:visibility="visible"
             fab:fab_label="Remove Favourite"
             fab:fab_size="mini" />
 

@@ -2,17 +2,16 @@ package com.example.mwallpaper.Fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.ContextThemeWrapper;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.mwallpaper.Adapter.CategoryAdapter;
 import com.example.mwallpaper.Model.Categories_model;
@@ -43,10 +42,9 @@ public class CategoriesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         sessionManager = new SessionManager(getContext());
-        if (sessionManager.loadNightModeState()==true){
+        if (sessionManager.loadNightModeState() == true) {
             contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.darktheme);
-        }
-        else{
+        } else {
             contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme);
         }
 
@@ -64,13 +62,13 @@ public class CategoriesFragment extends Fragment {
 
         categoryAdapter = new CategoryAdapter(getContext(), category_list);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),1, RecyclerView.VERTICAL,false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 1, RecyclerView.VERTICAL, false);
 
         mRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 //                Categories_model categories_model = dataSnapshot.getValue(Categories_model.class);
-                Map<String,String> data = (Map<String, String>) dataSnapshot.getValue();
+                Map<String, String> data = (Map<String, String>) dataSnapshot.getValue();
 
                 category_list.add(new Categories_model(data.get("thumbnail"), dataSnapshot.getKey()));
 

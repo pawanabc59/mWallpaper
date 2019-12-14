@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="colorPrimary">#ffffff</color>
     <color name="colorPrimaryDark">#ffffff</color>
     <color name="colorAccent">#4c84ff</color>
@@ -22,4 +23,5 @@
     <color name="red">#E53935</color>
 
     <color name="icon_color">#658B9A</color>
+
 </resources>

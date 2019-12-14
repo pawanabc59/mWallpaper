@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/white_black">
+    android:background="?attr/white_black"
+    android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/categories_cardview"
@@ -23,25 +23,24 @@
                 android:id="@+id/categories_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop" />
 
             <TextView
                 android:id="@+id/categories_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:text="akshdgalksjfhbnaio"
-                android:textSize="24sp"
                 android:layout_gravity="bottom"
-                android:textAlignment="center"
-                android:textStyle="bold|italic"
+                android:background="#59000000"
                 android:gravity="bottom"
                 android:inputType="textCapSentences"
                 android:padding="@dimen/_10sdp"
-                android:background="#59000000"
+                android:text="akshdgalksjfhbnaio"
+                android:textAlignment="center"
                 android:textAllCaps="true"
-                android:typeface="serif"
-                />
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:textStyle="bold|italic"
+                android:typeface="serif" />
 
         </FrameLayout>
 

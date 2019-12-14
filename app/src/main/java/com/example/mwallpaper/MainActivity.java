@@ -62,7 +62,8 @@ public class MainActivity extends AppCompatActivity {
             firebaseAuth = FirebaseAuth.getInstance();
             user = firebaseAuth.getCurrentUser();
 
-            permissionManager = new PermissionManager() {};
+            permissionManager = new PermissionManager() {
+            };
             permissionManager.checkAndRequestPermissions(this);
 
             BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);

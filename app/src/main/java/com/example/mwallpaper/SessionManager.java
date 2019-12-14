@@ -10,21 +10,21 @@ public class SessionManager {
     public Context context;
     int PRIVATE_MODE = 0;
 
-    public SessionManager(Context context){
+    public SessionManager(Context context) {
         this.context = context;
         sharedPreferences = context.getSharedPreferences("wallpaper", PRIVATE_MODE);
         editor = sharedPreferences.edit();
     }
 
     //    this method will save the nightmode State : True or False
-    public void setNightModeState(Boolean state){
+    public void setNightModeState(Boolean state) {
         editor = sharedPreferences.edit();
         editor.putBoolean("NightMode", state);
         editor.commit();
     }
 
     //    this method will load the night mode state
-    public Boolean loadNightModeState(){
+    public Boolean loadNightModeState() {
         Boolean state = sharedPreferences.getBoolean("NightMode", false);
         return state;
     }

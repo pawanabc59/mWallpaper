@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".DisclaimerActivity"
-    android:padding="@dimen/_10sdp">
+    android:padding="@dimen/_10sdp"
+    tools:context=".DisclaimerActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -66,8 +66,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_10sdp"
-                android:textColor="?attr/textcolor"
                 android:text="For Users and Visitors"
+                android:textColor="?attr/textcolor"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -75,8 +75,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_10sdp"
-                android:textColor="?attr/textcolor"
                 android:text="Attention every users and visitor of this app. You can download anything from this app are purely for personal use. You do not have any permission to use any wallpapers commercially (In any app, website, printing for sale, etc...). If you want to use wallpapers or images for commercial purposes you must take the permission from the original copyright holder of that wallpapers or images. You are responsible for all the wallpapers that you have uploaded"
+                android:textColor="?attr/textcolor"
                 android:textSize="20sp"
                 android:textStyle="normal" />
 
@@ -84,10 +84,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_10sdp"
+                android:text="If you have any queries please don't forget to Contact Us."
                 android:textColor="?attr/textcolor"
                 android:textSize="20sp"
-                android:textStyle="normal"
-                android:text="If you have any queries please don't forget to Contact Us."/>
+                android:textStyle="normal" />
 
             <TextView
                 android:layout_width="match_parent"

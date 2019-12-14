@@ -5,13 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SwitchCompat;
-import androidx.fragment.app.Fragment;
-
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +15,10 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.fragment.app.Fragment;
 
 import com.example.mwallpaper.DisclaimerActivity;
 import com.example.mwallpaper.MainActivity;
@@ -44,17 +42,15 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ProfileFragment extends Fragment {
 
     ImageView profileImage;
     SwitchCompat nightSwitch;
-    TextView showEmailText,txtMyUploads;
-    Button  btnmyUploads, btnDisclaimer;
+    TextView showEmailText, txtMyUploads;
+    Button btnmyUploads, btnDisclaimer;
     String userId;
-    MaterialButton btnLogout,btnEditPhoto;
+    MaterialButton btnLogout, btnEditPhoto;
 
     SessionManager sessionManager;
     ContextThemeWrapper contextThemeWrapper;
@@ -63,7 +59,7 @@ public class ProfileFragment extends Fragment {
     FirebaseUser user;
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference mRef,mRef2;
+    DatabaseReference mRef, mRef2;
     FirebaseStorage firebaseStorage;
     StorageReference storageReference;
     String TAG = "my";
@@ -72,12 +68,11 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        
+
         sessionManager = new SessionManager(getContext());
-        if (sessionManager.loadNightModeState()==true){
+        if (sessionManager.loadNightModeState() == true) {
             contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.darktheme);
-        }
-        else{
+        } else {
             contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme);
         }
 
@@ -138,22 +133,20 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        if (sessionManager.loadNightModeState()==true){
+        if (sessionManager.loadNightModeState() == true) {
             nightSwitch.setChecked(true);
-        }
-        else {
+        } else {
             nightSwitch.setChecked(false);
         }
 
         nightSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b){
+                if (b) {
                     sessionManager.setNightModeState(true);
                     nightSwitch.setChecked(true);
 
-                }
-                else {
+                } else {
                     sessionManager.setNightModeState(false);
                     nightSwitch.setChecked(false);
 
@@ -184,7 +177,7 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
-    public void ReCreateApp(){
+    public void ReCreateApp() {
         Intent intent = new Intent(getContext(), MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         getActivity().startActivity(intent);
@@ -195,10 +188,10 @@ public class ProfileFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null){
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
             Uri filepath = data.getData();
-            try{
-                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filepath );
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filepath);
                 profileImage.setImageBitmap(bitmap);
                 final StorageReference storageReference1 = storageReference.child("profileImages").child(userId).child(filepath.getLastPathSegment());
 
@@ -221,8 +214,7 @@ public class ProfileFragment extends Fragment {
                     }
                 });
 
-            }
-            catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }

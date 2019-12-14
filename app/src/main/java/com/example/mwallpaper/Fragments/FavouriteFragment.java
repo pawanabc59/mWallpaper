@@ -99,8 +99,7 @@ public class FavouriteFragment extends Fragment {
                             mbImage.setVisibility(View.VISIBLE);
                             showText.setText("Add wallpapers to favourite to see them here");
                             showText.setVisibility(View.VISIBLE);
-                        }
-                        else {
+                        } else {
                             Log.d(TAG, "onCreateView: it comes in else part of null part");
                             mbImage.setVisibility(View.GONE);
                             showText.setVisibility(View.GONE);

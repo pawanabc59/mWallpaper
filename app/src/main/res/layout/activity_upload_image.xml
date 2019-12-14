@@ -12,21 +12,20 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/_360sdp"
         android:layout_margin="@dimen/_10sdp"
-        android:scaleType="fitXY"
-        />
+        android:scaleType="fitXY" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnChooseImage"
         style="@style/customMaterialButtonStyle"
         android:layout_width="@dimen/_140sdp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
         android:layout_below="@+id/uploadImagePreview"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/_10sdp"
         android:background="@color/white"
         android:padding="@dimen/_10sdp"
         android:text="Choose Image"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
         android:textColor="@color/colorAccent"
         android:theme="@style/customMaterialButtonStyle"
         app:cornerRadius="@dimen/_20sdp"
@@ -38,31 +37,29 @@
         android:id="@+id/categorySpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_10sdp"
         android:layout_below="@+id/btnChooseImage"
+        android:layout_margin="@dimen/_10sdp"
         android:background="?attr/cardbackground"
         android:backgroundTint="?attr/cardbackground"
         android:padding="@dimen/_10sdp"
-        android:pointerIcon="arrow"
-        />
+        android:pointerIcon="arrow" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/categorySpinner"
-        >
+        android:layout_below="@+id/categorySpinner">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnUploadImage"
             style="@style/customMaterialButtonStyle"
             android:layout_width="@dimen/_140sdp"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/_10sdp"
             android:background="@color/white"
             android:padding="@dimen/_10sdp"
             android:text="Upload"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"
             android:textColor="#56c23d"
             android:theme="@style/customMaterialButtonStyle"
             app:cornerRadius="@dimen/_20sdp"
@@ -75,8 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
 
     </FrameLayout>
 

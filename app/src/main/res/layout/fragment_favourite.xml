@@ -10,31 +10,29 @@
         android:id="@+id/mbImage"
         android:layout_width="@dimen/_220sdp"
         android:layout_height="@dimen/_220sdp"
-        android:src="@drawable/mb"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/_51sdp"
-        android:visibility="visible"
-        />
+        android:src="@drawable/mb"
+        android:visibility="visible" />
 
     <TextView
         android:id="@+id/showText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        android:textColor="?attr/textcolor"
-        android:text="Add Favourite to see them here"
         android:layout_gravity="center_horizontal"
         android:layout_marginHorizontal="@dimen/_40sdp"
         android:layout_marginTop="@dimen/_260sdp"
-        android:visibility="visible"
-        />
+        android:text="Add Favourite to see them here"
+        android:textColor="?attr/textcolor"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:visibility="visible" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/favoriteRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/_5sdp"
-        android:visibility="visible"/>
+        android:visibility="visible" />
 
 </FrameLayout>

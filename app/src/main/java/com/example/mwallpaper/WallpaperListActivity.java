@@ -1,18 +1,15 @@
 package com.example.mwallpaper;
 
+import android.content.Intent;
+import android.os.Bundle;
+
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-
 import com.example.mwallpaper.Adapter.WallpaperItemAdapter;
 import com.example.mwallpaper.Model.WallpaperItemModel;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,9 +17,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Map;
-
-import static android.webkit.ConsoleMessage.MessageLevel.LOG;
 
 public class WallpaperListActivity extends AppCompatActivity {
 
@@ -30,7 +24,7 @@ public class WallpaperListActivity extends AppCompatActivity {
     WallpaperItemAdapter wallpaperItemAdapter;
     ArrayList<WallpaperItemModel> wallpaperItemModels;
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference mRef,mRef2;
+    DatabaseReference mRef, mRef2;
     String TAG = "My tag";
     String action = "favourite";
 
@@ -54,7 +48,7 @@ public class WallpaperListActivity extends AppCompatActivity {
 
         wallpaperItemModels = new ArrayList<>();
 
-        wallpaperItemAdapter = new WallpaperItemAdapter(getApplicationContext(),wallpaperItemModels,action, WallpaperListActivity.this);
+        wallpaperItemAdapter = new WallpaperItemAdapter(getApplicationContext(), wallpaperItemModels, action, WallpaperListActivity.this);
 
         Intent intent = getIntent();
         final String key = intent.getExtras().getString("key");
@@ -66,7 +60,7 @@ public class WallpaperListActivity extends AppCompatActivity {
         mRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (final DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
+                for (final DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
 //                    mRef2 = mRef.child(dataSnapshot1.getKey());
                     wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("thumbnail").getValue().toString(), dataSnapshot1.child("userId").getValue().toString()));
 //                    Log.d(TAG, "onDataChange: "+dataSnapshot1.child("thumbnail").getValue().toString());
@@ -81,7 +75,7 @@ public class WallpaperListActivity extends AppCompatActivity {
             }
         });
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2, RecyclerView.VERTICAL,false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2, RecyclerView.VERTICAL, false);
 
         wallpaperRecyclerView.setLayoutManager(gridLayoutManager);
         wallpaperRecyclerView.setAdapter(wallpaperItemAdapter);

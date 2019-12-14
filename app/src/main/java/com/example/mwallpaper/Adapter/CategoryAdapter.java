@@ -34,7 +34,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
 
-        View view = layoutInflater.inflate(R.layout.categories_list,parent,false);
+        View view = layoutInflater.inflate(R.layout.categories_list, parent, false);
 
         ViewHolder viewHolder = new ViewHolder(view);
 
@@ -67,7 +67,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         return mList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView category_image;
         TextView category_text;
         CardView categories_cardview;

@@ -1,11 +1,11 @@
 package com.example.mwallpaper;
 
+import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Bundle;
 
 import com.example.mwallpaper.Adapter.WallpaperItemAdapter;
 import com.example.mwallpaper.Model.WallpaperItemModel;
@@ -25,7 +25,7 @@ public class MyUploadsActivity extends AppCompatActivity {
     RecyclerView myUploadsRecyclerView;
     WallpaperItemAdapter wallpaperItemAdapter;
     ArrayList<WallpaperItemModel> wallpaperItemModels;
-    String action="myUploads";
+    String action = "myUploads";
 
     FirebaseDatabase firebaseDatabase;
     DatabaseReference mRef;
@@ -62,10 +62,10 @@ public class MyUploadsActivity extends AppCompatActivity {
         mRef.child(userId).child("uploadedImages").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     try {
                         wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("uploadedImage").getValue().toString(), dataSnapshot1.child("userId").getValue().toString()));
-                    wallpaperItemAdapter.notifyDataSetChanged();
+                        wallpaperItemAdapter.notifyDataSetChanged();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -78,7 +78,7 @@ public class MyUploadsActivity extends AppCompatActivity {
             }
         });
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2 ,RecyclerView.VERTICAL, false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2, RecyclerView.VERTICAL, false);
         myUploadsRecyclerView.setLayoutManager(gridLayoutManager);
         myUploadsRecyclerView.setAdapter(wallpaperItemAdapter);
 

@@ -10,24 +10,23 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:background="?attr/white_black"
+        android:orientation="vertical"
         android:paddingTop="@dimen/_45sdp">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textRegisterEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_10sdp"
-            >
+            android:layout_margin="@dimen/_10sdp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editRegisterEmail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="textEmailAddress"
                 android:hint="Email"
-                android:textColorHint="?attr/textcolor"/>
+                android:inputType="textEmailAddress"
+                android:textColorHint="?attr/textcolor" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -35,16 +34,15 @@
             android:id="@+id/textRegisterPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_10sdp"
-            >
+            android:layout_margin="@dimen/_10sdp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editRegisterPassword"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="textPassword"
                 android:hint="Password"
-                android:textColorHint="?attr/textcolor"/>
+                android:inputType="textPassword"
+                android:textColorHint="?attr/textcolor" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -52,16 +50,15 @@
             android:id="@+id/textRegistercPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_10sdp"
-            >
+            android:layout_margin="@dimen/_10sdp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editRegistercPassword"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="textPassword"
                 android:hint="Password"
-                android:textColorHint="?attr/textcolor"/>
+                android:inputType="textPassword"
+                android:textColorHint="?attr/textcolor" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -70,30 +67,29 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.button.MaterialButton
-                style="@style/customMaterialButtonStyle"
-                android:theme="@style/customMaterialButtonStyle"
                 android:id="@+id/btnRegister"
+                style="@style/customMaterialButtonStyle"
                 android:layout_width="@dimen/_140sdp"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:text="Register"
-                android:layout_marginVertical="@dimen/_10sdp"
                 android:layout_gravity="center"
-                app:cornerRadius="@dimen/_20sdp"
-                android:textColor="@color/colorAccent"
-                app:strokeColor="@color/colorAccent"
-                app:strokeWidth="2dp"
-                app:rippleColor="#33AAAAAA"
+                android:layout_marginVertical="@dimen/_10sdp"
+                android:background="@color/white"
                 android:padding="@dimen/_10sdp"
-                />
+                android:text="Register"
+                android:textColor="@color/colorAccent"
+                android:theme="@style/customMaterialButtonStyle"
+                app:cornerRadius="@dimen/_20sdp"
+                app:rippleColor="#33AAAAAA"
+                app:strokeColor="@color/colorAccent"
+                app:strokeWidth="2dp" />
 
-        <ProgressBar
-            android:id="@+id/registerProgressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/_10sdp"
-            android:layout_gravity="center"
-            android:visibility="gone"/>
+            <ProgressBar
+                android:id="@+id/registerProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginVertical="@dimen/_10sdp"
+                android:visibility="gone" />
 
         </FrameLayout>
 

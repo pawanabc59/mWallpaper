@@ -317,7 +317,7 @@ public class SingleWallpaperActivity extends AppCompatActivity {
         }
     }
 
-    private void setWallpaperOnDevice(final int position){
+    private void setWallpaperOnDevice(final int position) {
         Picasso.get().load(wallpaper_path).into(new Target() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -337,15 +337,13 @@ public class SingleWallpaperActivity extends AppCompatActivity {
 //                                wallpaperManager.setBitmap(bitmap,,false, WallpaperManager.FLAG_SYSTEM);
 //                            }
 //                            wallpaperManager.setBitmap(bitmap1);
-                    if (position == 0){
+                    if (position == 0) {
                         wallpaperManager.setBitmap(bitmap1, null, false, WallpaperManager.FLAG_SYSTEM);
                         Toast.makeText(getApplicationContext(), "Wallpaper set as Home Screen Wallpaper", Toast.LENGTH_SHORT).show();
-                    }
-                    else if (position == 1){
+                    } else if (position == 1) {
                         wallpaperManager.setBitmap(bitmap1, null, false, WallpaperManager.FLAG_LOCK);
                         Toast.makeText(getApplicationContext(), "Wallpaper set as Lock Screen Wallpaper", Toast.LENGTH_SHORT).show();
-                    }
-                    else if (position == 2){
+                    } else if (position == 2) {
                         wallpaperManager.setBitmap(bitmap1);
                         Toast.makeText(getApplicationContext(), "Wallpaper set as Home and Lock Screen Wallpaper", Toast.LENGTH_SHORT).show();
                     }

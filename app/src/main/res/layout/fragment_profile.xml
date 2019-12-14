@@ -98,7 +98,7 @@
                     android:text="Night Mode "
                     android:textColor="?attr/textcolor"
                     android:textSize="18sp"
-                    android:textStyle="normal"/>
+                    android:textStyle="normal" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/night_switch"
@@ -166,11 +166,11 @@
                 android:layout_width="@dimen/_140sdp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/btnDisclaimer"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:background="@color/white"
                 android:padding="@dimen/_10sdp"
                 android:text="LOGOUT"
-                android:layout_centerHorizontal="true"
                 android:textColor="@color/red"
                 android:theme="@style/customMaterialButtonStyle"
                 app:cornerRadius="@dimen/_20sdp"

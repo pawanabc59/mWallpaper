@@ -8,14 +8,6 @@
     android:background="?attr/white_black"
     tools:context=".MainActivity">
 
-<!--    <android.support.v7.widget.Toolbar-->
-<!--        android:id="@+id/toolbar"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="?attr/actionBarSize"-->
-<!--        android:background="?attr/colorPrimary"-->
-<!--        android:elevation="@dimen/_4sdp"-->
-<!--        app:titleTextColor="?attr/textcolor" />-->
-
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"

@@ -1,14 +1,14 @@
 package com.example.mwallpaper;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mwallpaper.Adapter.WallpaperItemAdapter;
 import com.example.mwallpaper.Model.WallpaperItemModel;
@@ -92,7 +92,7 @@ public class AnotherUserProfileActivity extends AppCompatActivity {
         mRef.child("uploadedImages").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("uploadedImage").getValue().toString(), dataSnapshot1.child("userId").getValue().toString()));
                     wallpaperItemAdapter.notifyDataSetChanged();
                 }
@@ -104,7 +104,7 @@ public class AnotherUserProfileActivity extends AppCompatActivity {
             }
         });
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2, RecyclerView.VERTICAL,false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2, RecyclerView.VERTICAL, false);
 
         anotherUserRecyclerView.setLayoutManager(gridLayoutManager);
         anotherUserRecyclerView.setAdapter(wallpaperItemAdapter);

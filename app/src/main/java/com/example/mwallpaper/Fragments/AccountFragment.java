@@ -1,21 +1,17 @@
 package com.example.mwallpaper.Fragments;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.example.mwallpaper.MainActivity;
 import com.example.mwallpaper.R;
@@ -37,14 +33,14 @@ import com.google.firebase.database.ValueEventListener;
 
 public class AccountFragment extends Fragment {
 
-    TextInputLayout textEmail,textPassword;
+    TextInputLayout textEmail, textPassword;
     TextInputEditText editEmail, editPassword;
     MaterialButton btnLogin;
     TextView textRegister;
     ProgressBar loginProgressBar;
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference mRef,mRef2;
+    DatabaseReference mRef, mRef2;
     FirebaseUser firebaseUser;
 
     SessionManager sessionManager;
@@ -56,10 +52,9 @@ public class AccountFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         sessionManager = new SessionManager(getContext());
-        if (sessionManager.loadNightModeState()==true){
+        if (sessionManager.loadNightModeState() == true) {
             contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.darktheme);
-        }
-        else{
+        } else {
             contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme);
         }
 
@@ -100,19 +95,15 @@ public class AccountFragment extends Fragment {
 
                 String memail = editEmail.getText().toString().trim();
                 String mpassword = editPassword.getText().toString().trim();
-                if (memail.isEmpty()){
+                if (memail.isEmpty()) {
                     editEmail.setError("Please insert email");
-                }
-                else if (mpassword.isEmpty()){
+                } else if (mpassword.isEmpty()) {
                     editPassword.setError("Please insert password");
-                }
-                else if (!memail.matches(emailPattern)){
+                } else if (!memail.matches(emailPattern)) {
                     editEmail.setError("Please provide valid email address");
-                }
-                else if (mpassword.length()<6){
+                } else if (mpassword.length() < 6) {
                     editPassword.setError("Password is too short");
-                }
-                else{
+                } else {
                     Login(memail, mpassword);
                 }
             }
@@ -121,12 +112,12 @@ public class AccountFragment extends Fragment {
         return view;
     }
 
-    public void Login(final String email, String password){
-        firebaseAuth.signInWithEmailAndPassword(email,password)
+    public void Login(final String email, String password) {
+        firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             Toast.makeText(getContext(), "Welcome User", Toast.LENGTH_SHORT).show();
                             firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                             String uid = firebaseUser.getUid();
@@ -137,7 +128,7 @@ public class AccountFragment extends Fragment {
                             mRef2.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    try{
+                                    try {
                                         String profileImagePath = dataSnapshot.child("profileImage").getValue().toString();
                                         mRef2.child("profileImage").setValue(profileImagePath);
                                     } catch (Exception e) {
@@ -159,8 +150,7 @@ public class AccountFragment extends Fragment {
                             Intent intent = new Intent(getContext(), MainActivity.class);
                             getActivity().startActivity(intent);
 
-                        }
-                        else {
+                        } else {
                             loginProgressBar.setVisibility(View.GONE);
                             btnLogin.setVisibility(View.VISIBLE);
                             Toast.makeText(getContext(), "Sorry! Login failed", Toast.LENGTH_SHORT);
