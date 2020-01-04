@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MyUploadsActivity extends AppCompatActivity {
 
@@ -84,6 +85,7 @@ public class MyUploadsActivity extends AppCompatActivity {
                     for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                         try {
                             wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("uploadedImage").getValue().toString(), dataSnapshot1.child("userId").getValue().toString()));
+                            Collections.reverse(wallpaperItemModels);
                             wallpaperItemAdapter.notifyDataSetChanged();
                         } catch (Exception e) {
                             e.printStackTrace();

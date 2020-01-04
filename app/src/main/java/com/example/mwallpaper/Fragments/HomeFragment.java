@@ -29,6 +29,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 public class HomeFragment extends Fragment {
 
@@ -79,6 +81,7 @@ public class HomeFragment extends Fragment {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     try {
                         wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("thumbnail").getValue().toString(), dataSnapshot1.child("userId").getValue().toString()));
+                        Collections.reverse(wallpaperItemModels);
                         wallpaperItemAdapter.notifyDataSetChanged();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -116,6 +119,8 @@ public class HomeFragment extends Fragment {
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2, RecyclerView.VERTICAL, false);
 
+//        gridLayoutManager.setReverseLayout(true);
+//        gridLayoutManager.setStackFromEnd(true);
         homeRecylerView.setLayoutManager(gridLayoutManager);
         homeRecylerView.setAdapter(wallpaperItemAdapter);
 

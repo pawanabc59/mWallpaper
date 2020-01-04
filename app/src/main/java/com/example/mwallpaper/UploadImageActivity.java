@@ -29,6 +29,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class UploadImageActivity extends AppCompatActivity {
@@ -233,6 +234,8 @@ public class UploadImageActivity extends AppCompatActivity {
             filepath = data.getData();
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filepath);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 25, baos);
                 uploadImagePreview.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
