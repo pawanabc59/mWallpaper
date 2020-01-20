@@ -173,6 +173,7 @@
     <orderEntry type="library" name="Gradle: com.intuit.sdp:sdp-android:1.0.6@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.github.clans:fab:1.6.4@aar" level="project" />
     <orderEntry type="library" name="Gradle: id.zelory:compressor:2.1.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.chrisbanes:PhotoView:2.3.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.firebase:firebase-database-collection:17.0.0@aar" level="project" />
   </component>
 </module>

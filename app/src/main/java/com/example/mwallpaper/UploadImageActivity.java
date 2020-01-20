@@ -45,6 +45,7 @@ public class UploadImageActivity extends AppCompatActivity {
 
     Bitmap bitmap;
     Uri filepath, filePath2;
+    byte[] image_byte_data;
     SessionManager sessionManager;
 
     FirebaseDatabase firebaseDatabase;
@@ -188,7 +189,9 @@ public class UploadImageActivity extends AppCompatActivity {
 
                 final StorageReference storageReference1 = storageReference.child("categories").child(categorySelected).child(filepath.getLastPathSegment());
 
-                storageReference1.putFile(filepath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                UploadTask uploadTask = storageReference.child("categories").child(categorySelected).child(filepath.getLastPathSegment()).putBytes(image_byte_data);
+
+                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Toast.makeText(getApplicationContext(), "Image Uploaded Successfully", Toast.LENGTH_SHORT).show();
@@ -235,7 +238,9 @@ public class UploadImageActivity extends AppCompatActivity {
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filepath);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 25, baos);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 40, baos);
+                image_byte_data = baos.toByteArray();
+
                 uploadImagePreview.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();

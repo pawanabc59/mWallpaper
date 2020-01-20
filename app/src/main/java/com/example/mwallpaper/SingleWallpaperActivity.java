@@ -29,6 +29,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import com.github.chrisbanes.photoview.PhotoView;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.auth.FirebaseAuth;
@@ -48,7 +49,8 @@ import java.io.IOException;
 
 public class SingleWallpaperActivity extends AppCompatActivity {
 
-    ImageView wallpaperImage;
+//    ImageView wallpaperImage;
+    PhotoView wallpaperImage;
     SessionManager sessionManager;
 
     FloatingActionMenu floatingActionMenu;
