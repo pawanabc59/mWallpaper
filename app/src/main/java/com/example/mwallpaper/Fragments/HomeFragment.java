@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +51,7 @@ public class HomeFragment extends Fragment {
     ContextThemeWrapper contextThemeWrapper;
     ValueEventListener homeImageValueEventListener;
     Query query;
+    String my;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -101,6 +103,8 @@ public class HomeFragment extends Fragment {
 
         query.addValueEventListener(homeImageValueEventListener);
 
+        my = "changed";
+
         floatingUploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -131,6 +135,14 @@ public class HomeFragment extends Fragment {
         homeRecylerView.setAdapter(wallpaperItemAdapter);
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        query.addValueEventListener(homeImageValueEventListener);
+        Log.d("my", "onResume: "+my);
     }
 
     @Override

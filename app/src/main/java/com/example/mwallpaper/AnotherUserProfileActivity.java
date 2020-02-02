@@ -125,4 +125,15 @@ public class AnotherUserProfileActivity extends AppCompatActivity {
 
         mRef.child("uploadedImages").child("images").removeEventListener(uplodedImageValueEventListener);
     }
+
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//
+//        if(getFragmentManager().getBackStackEntryCount() > 0)
+//            getFragmentManager().popBackStack();
+//        else {
+//            super.onBackPressed();
+//        }
+//    }
 }

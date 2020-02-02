@@ -308,10 +308,15 @@ public class SingleWallpaperActivity extends AppCompatActivity {
                     mRef.child("users").child(userId).child("favouriteImages").child("numberOfImages").setValue(favouriteNumberOfImages+1);
 
                     Toast.makeText(getApplicationContext(), "Wallpaper is added to favourite", Toast.LENGTH_SHORT).show();
+
+                    fbtnAddFavourite.setVisibility(View.GONE);
+                    fbtnRemoveFavourite.setVisibility(View.VISIBLE);
 //                    Intent intent1 = new Intent(getApplicationContext(), MainActivity.class);
 //                    intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK );
 //                    startActivity(intent1);
 //                    finish();
+
+
                 }
             });
 
@@ -322,16 +327,22 @@ public class SingleWallpaperActivity extends AppCompatActivity {
                     removeFavouriteValueEventListener = new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                if (dataSnapshot1.child("thumbnail").getValue().toString().equals(wallpaper_path)) {
-                                    mRef.child("users").child(userId).child("favouriteImages").child("images").child(dataSnapshot1.getKey()).child("thumbnail").removeValue();
-                                    mRef.child("users").child(userId).child("favouriteImages").child("images").child(dataSnapshot1.getKey()).child("userId").removeValue();
-                                    mRef.child("users").child(userId).child("favouriteImages").child("images").child(dataSnapshot1.getKey()).child("postNumber").removeValue();
-                                    mRef.child("users").child(userId).child("favouriteImages").child("numberOfImages").setValue(favouriteNumberOfImages-1);
+                            try {
+                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                    if (dataSnapshot1.child("thumbnail").getValue().toString().equals(wallpaper_path)) {
+                                        mRef.child("users").child(userId).child("favouriteImages").child("images").child(dataSnapshot1.getKey()).child("thumbnail").removeValue();
+                                        mRef.child("users").child(userId).child("favouriteImages").child("images").child(dataSnapshot1.getKey()).child("userId").removeValue();
+                                        mRef.child("users").child(userId).child("favouriteImages").child("images").child(dataSnapshot1.getKey()).child("postNumber").removeValue();
+                                        mRef.child("users").child(userId).child("favouriteImages").child("numberOfImages").setValue(favouriteNumberOfImages - 1);
 
-                                    Toast.makeText(getApplicationContext(), "Wallpaper is removed from favourite", Toast.LENGTH_SHORT).show();
-                                    break;
+                                        Toast.makeText(getApplicationContext(), "Wallpaper is removed from favourite", Toast.LENGTH_SHORT).show();
+                                        fbtnRemoveFavourite.setVisibility(View.GONE);
+                                        fbtnAddFavourite.setVisibility(View.VISIBLE);
+                                        break;
+                                    }
                                 }
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
 //                            Intent intent1 = new Intent(getApplicationContext(), MainActivity.class);
 //                            intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -474,6 +485,15 @@ public class SingleWallpaperActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(getFragmentManager().getBackStackEntryCount() > 0)
+            getFragmentManager().popBackStack();
+        else {
+            super.onBackPressed();
         }
     }
 }

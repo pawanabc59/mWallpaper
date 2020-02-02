@@ -40,7 +40,7 @@ public class WallpaperItemAdapter extends RecyclerView.Adapter<WallpaperItemAdap
     String TAG = "My tag";
     String userId;
     String maction;
-    String category;
+    String category="";
     String wallpaperURL;
 
     private Activity parentActivity;
@@ -182,6 +182,10 @@ public class WallpaperItemAdapter extends RecyclerView.Adapter<WallpaperItemAdap
                                     favouriteFilled.setVisibility(View.VISIBLE);
                                     favouriteUnfilled.setVisibility(View.GONE);
                                 }
+//                                else {
+//                                    favouriteFilled.setVisibility(View.GONE);
+//                                    favouriteUnfilled.setVisibility(View.VISIBLE);
+//                                }
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -194,7 +198,7 @@ public class WallpaperItemAdapter extends RecyclerView.Adapter<WallpaperItemAdap
                     }
                 };
 
-                mRef.child(userId).child("favouriteImages").child("images").addValueEventListener(showFavouriteValueEventListener);
+                mRef.child(userId).child("favouriteImages").child("images").addListenerForSingleValueEvent(showFavouriteValueEventListener);
 
                 favouriteUnfilled.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -248,7 +252,7 @@ public class WallpaperItemAdapter extends RecyclerView.Adapter<WallpaperItemAdap
                             }
                         };
 
-                        mRef.child(userId).child("favouriteImages").child("images").addValueEventListener(addFavouriteValueEventListener);
+                        mRef.child(userId).child("favouriteImages").child("images").addListenerForSingleValueEvent(addFavouriteValueEventListener);
 
                     }
                 });
@@ -330,7 +334,7 @@ public class WallpaperItemAdapter extends RecyclerView.Adapter<WallpaperItemAdap
 
                                                             }
                                                         };
-                                                        mRef2.child(category).child("images").addValueEventListener(deleteCategoryImageValueEventListener);
+                                                        mRef2.child(category).child("images").addListenerForSingleValueEvent(deleteCategoryImageValueEventListener);
 
                                                         break;
 
@@ -347,7 +351,7 @@ public class WallpaperItemAdapter extends RecyclerView.Adapter<WallpaperItemAdap
                                         }
                                     };
 
-                                    mRef.child(userId).child("uploadedImages").child("images").addValueEventListener(deleteUploadedImageValueEventListener);
+                                    mRef.child(userId).child("uploadedImages").child("images").addListenerForSingleValueEvent(deleteUploadedImageValueEventListener);
 
 //                    if user has selected this wallpaper as favourite then we have to also delete form there
                                     deleteFavouriteImageValueEventListener = new ValueEventListener() {
@@ -374,7 +378,7 @@ public class WallpaperItemAdapter extends RecyclerView.Adapter<WallpaperItemAdap
                                         }
                                     };
 
-                                    mRef.child(userId).child("favouriteImages").child("images").addValueEventListener(deleteFavouriteImageValueEventListener);
+                                    mRef.child(userId).child("favouriteImages").child("images").addListenerForSingleValueEvent(deleteFavouriteImageValueEventListener);
 
 //                    delete from recently uploaded
                                     deleteRecentlyUploadedImageValueEventListener = new ValueEventListener() {
@@ -403,7 +407,7 @@ public class WallpaperItemAdapter extends RecyclerView.Adapter<WallpaperItemAdap
                                         }
                                     };
 
-                                    mRef3.child("images").addValueEventListener(deleteRecentlyUploadedImageValueEventListener);
+                                    mRef3.child("images").addListenerForSingleValueEvent(deleteRecentlyUploadedImageValueEventListener);
 
 //                                    Intent intent = new Intent(mContext, MyUploadsActivity.class);
 //                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -435,23 +439,32 @@ public class WallpaperItemAdapter extends RecyclerView.Adapter<WallpaperItemAdap
     public void onViewDetachedFromWindow(@NonNull ViewHolder holder) {
         super.onViewDetachedFromWindow(holder);
 
-        mRef.child(userId).child("favouriteImages").removeEventListener(favouriteValueEventListener);
+        try {
 
-        mRef.child(userId).child("uploadedImages").removeEventListener(uploadedValueEventListener);
+            mRef.child(userId).child("favouriteImages").removeEventListener(favouriteValueEventListener);
 
-        mRef3.child("numberOfImages").removeEventListener(recentValueEventListener);
+            mRef.child(userId).child("uploadedImages").removeEventListener(uploadedValueEventListener);
 
-        mRef.child(userId).child("favouriteImages").child("images").removeEventListener(showFavouriteValueEventListener);
+            mRef3.child("numberOfImages").removeEventListener(recentValueEventListener);
 
-        mRef.child(userId).child("favouriteImages").child("images").removeEventListener(addFavouriteValueEventListener);
+            mRef.child(userId).child("favouriteImages").child("images").removeEventListener(showFavouriteValueEventListener);
 
-        mRef2.child(category).child("numberOfImages").removeEventListener(categoryValueEventListener);
+            mRef.child(userId).child("favouriteImages").child("images").removeEventListener(addFavouriteValueEventListener);
 
-        mRef2.child(category).child("images").removeEventListener(deleteCategoryImageValueEventListener);
+            mRef.child(userId).child("favouriteImages").child("images").removeEventListener(deleteFavouriteImageValueEventListener);
 
-        mRef.child(userId).child("favouriteImages").child("images").removeEventListener(deleteFavouriteImageValueEventListener);
+            mRef3.child("images").removeEventListener(deleteRecentlyUploadedImageValueEventListener);
 
-        mRef3.child("images").removeEventListener(deleteRecentlyUploadedImageValueEventListener);
+            if (!category.equals("")) {
+
+                mRef2.child(category).child("numberOfImages").removeEventListener(categoryValueEventListener);
+
+                mRef2.child(category).child("images").removeEventListener(deleteCategoryImageValueEventListener);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
