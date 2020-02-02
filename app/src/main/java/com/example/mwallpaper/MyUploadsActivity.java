@@ -39,6 +39,7 @@ public class MyUploadsActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
     String userId;
+    ValueEventListener uplodedValueEventListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +70,7 @@ public class MyUploadsActivity extends AppCompatActivity {
         wallpaperItemModels = new ArrayList<>();
         wallpaperItemAdapter = new WallpaperItemAdapter(getApplicationContext(), wallpaperItemModels, action, MyUploadsActivity.this);
 
-        mRef.child(userId).child("uploadedImages").addListenerForSingleValueEvent(new ValueEventListener() {
+        uplodedValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -82,10 +83,11 @@ public class MyUploadsActivity extends AppCompatActivity {
                     myUploadsRecyclerView.setVisibility(View.VISIBLE);
                     myUploadshowText.setVisibility(View.GONE);
                     myUploadmbImage.setVisibility(View.GONE);
+                    wallpaperItemModels.clear();
                     for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                         try {
                             wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("uploadedImage").getValue().toString(), dataSnapshot1.child("userId").getValue().toString()));
-                            Collections.reverse(wallpaperItemModels);
+//                            Collections.reverse(wallpaperItemModels);
                             wallpaperItemAdapter.notifyDataSetChanged();
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -98,7 +100,9 @@ public class MyUploadsActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        };
+
+        mRef.child(userId).child("uploadedImages").child("images").orderByChild("postNumber").addValueEventListener(uplodedValueEventListener);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2, RecyclerView.VERTICAL, false);
         myUploadsRecyclerView.setLayoutManager(gridLayoutManager);
@@ -110,5 +114,12 @@ public class MyUploadsActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         getSupportFragmentManager().popBackStack();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        mRef.child(userId).child("uploadedImages").child("images").removeEventListener(uplodedValueEventListener);
     }
 }

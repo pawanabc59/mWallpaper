@@ -42,6 +42,8 @@ public class AnotherUserProfileActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
 
+    ValueEventListener anotherUserProfileValueEventListener, uplodedImageValueEventListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +78,7 @@ public class AnotherUserProfileActivity extends AppCompatActivity {
         wallpaperItemModels = new ArrayList<>();
         wallpaperItemAdapter = new WallpaperItemAdapter(getApplicationContext(), wallpaperItemModels, action, this);
 
-        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        anotherUserProfileValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 anotherUserEmailId.setText(dataSnapshot.child("email").getValue().toString());
@@ -87,11 +89,14 @@ public class AnotherUserProfileActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        };
 
-        mRef.child("uploadedImages").addListenerForSingleValueEvent(new ValueEventListener() {
+        mRef.addValueEventListener(anotherUserProfileValueEventListener);
+
+        uplodedImageValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                wallpaperItemModels.clear();
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("uploadedImage").getValue().toString(), dataSnapshot1.child("userId").getValue().toString()));
                     wallpaperItemAdapter.notifyDataSetChanged();
@@ -102,11 +107,22 @@ public class AnotherUserProfileActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        };
+
+        mRef.child("uploadedImages").child("images").orderByChild("postNumber").addValueEventListener(uplodedImageValueEventListener);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2, RecyclerView.VERTICAL, false);
 
         anotherUserRecyclerView.setLayoutManager(gridLayoutManager);
         anotherUserRecyclerView.setAdapter(wallpaperItemAdapter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        mRef.removeEventListener(anotherUserProfileValueEventListener);
+
+        mRef.child("uploadedImages").child("images").removeEventListener(uplodedImageValueEventListener);
     }
 }

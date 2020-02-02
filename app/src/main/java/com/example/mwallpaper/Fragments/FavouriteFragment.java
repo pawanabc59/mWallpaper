@@ -48,6 +48,7 @@ public class FavouriteFragment extends Fragment {
     String TAG = "my";
     String userId;
     String action = "favourite";
+    ValueEventListener favouriteValueEventListener, favouriteImageValueEventListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -90,24 +91,26 @@ public class FavouriteFragment extends Fragment {
             userId = user.getUid();
             Log.d(TAG, "onCreateView: it comes abouve null favourite");
             try {
-                mRef.child(userId).child("favouriteImages").addListenerForSingleValueEvent(new ValueEventListener() {
+
+                favouriteValueEventListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (!dataSnapshot.exists()) {
-                            Log.d(TAG, "onCreateView: It comes into null favourite");
+//                            Log.d(TAG, "onCreateView: It comes into null favourite");
                             favouriteRecyclerView.setVisibility(View.GONE);
                             mbImage.setVisibility(View.VISIBLE);
                             showText.setText("Add wallpapers to favourite to see them here");
                             showText.setVisibility(View.VISIBLE);
                         } else {
-                            Log.d(TAG, "onCreateView: it comes in else part of null part");
+//                            Log.d(TAG, "onCreateView: it comes in else part of null part");
                             mbImage.setVisibility(View.GONE);
                             showText.setVisibility(View.GONE);
                             favouriteRecyclerView.setVisibility(View.VISIBLE);
 
-                            mRef.child(userId).child("favouriteImages").addListenerForSingleValueEvent(new ValueEventListener() {
+                            favouriteImageValueEventListener = new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    wallpaperItemModels.clear();
                                     for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                                         try {
                                             wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("thumbnail").getValue().toString(), dataSnapshot1.child("userId").getValue().toString()));
@@ -122,7 +125,9 @@ public class FavouriteFragment extends Fragment {
                                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
                                 }
-                            });
+                            };
+
+                            mRef.child(userId).child("favouriteImages").child("images").orderByChild("postNumber").addValueEventListener(favouriteImageValueEventListener);
 
                         }
                     }
@@ -131,7 +136,9 @@ public class FavouriteFragment extends Fragment {
                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
                     }
-                });
+                };
+
+                mRef.child(userId).child("favouriteImages").child("images").addValueEventListener(favouriteValueEventListener);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -145,4 +152,19 @@ public class FavouriteFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (user != null) {
+
+            try {
+                mRef.child(userId).child("favouriteImages").removeEventListener(favouriteValueEventListener);
+
+                mRef.child(userId).child("favouriteImages").child("images").orderByChild("postNumber").addValueEventListener(favouriteImageValueEventListener);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

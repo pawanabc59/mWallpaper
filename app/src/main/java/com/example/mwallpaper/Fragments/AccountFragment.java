@@ -136,6 +136,7 @@ public class AccountFragment extends Fragment {
                             String uid = firebaseUser.getUid();
                             mRef2 = mRef.child(uid);
                             mRef2.child("email").setValue(email);
+//                            mRef2.child("favouriteImages").child("numberOfImages").setValue(0);
 
 //                            this is to add the profile of the user if user has uploaded the profile image earlier then that url will be loaded otherwise the null value will be set.
                             mRef2.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -144,9 +145,15 @@ public class AccountFragment extends Fragment {
                                     try {
                                         String profileImagePath = dataSnapshot.child("profileImage").getValue().toString();
                                         mRef2.child("profileImage").setValue(profileImagePath);
+                                        mRef2.child("favouriteImages").child("numberOfImages").setValue(dataSnapshot.child("favouriteImages").child("numberOfImages").getValue(Integer.class));
+                                        mRef2.child("uploadedImages").child("numberOfImages").setValue(dataSnapshot.child("uploadedImages").child("numberOfImages").getValue(Integer.class));
+
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                         mRef2.child("profileImage").setValue("null");
+                                        mRef2.child("favouriteImages").child("numberOfImages").setValue(0);
+                                        mRef2.child("uploadedImages").child("numberOfImages").setValue(0);
+
                                     }
                                     loginProgressBar.setVisibility(View.GONE);
                                     btnLogin.setVisibility(View.VISIBLE);

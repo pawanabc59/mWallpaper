@@ -26,6 +26,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -47,6 +48,8 @@ public class HomeFragment extends Fragment {
 
     SessionManager sessionManager;
     ContextThemeWrapper contextThemeWrapper;
+    ValueEventListener homeImageValueEventListener;
+    Query query;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,7 +70,7 @@ public class HomeFragment extends Fragment {
         floatingUploadButton = view.findViewById(R.id.floationUploadButton);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
-        mRef = firebaseDatabase.getReference("wallpaper").child("recentlyUploadedImages");
+        query = firebaseDatabase.getReference("wallpaper").child("recentlyUploadedImages").child("images").orderByChild("postNumber");
 
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
@@ -75,13 +78,14 @@ public class HomeFragment extends Fragment {
         wallpaperItemModels = new ArrayList<>();
         wallpaperItemAdapter = new WallpaperItemAdapter(getContext(), wallpaperItemModels, action, getActivity());
 
-        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        homeImageValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                wallpaperItemModels.clear();
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     try {
                         wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("thumbnail").getValue().toString(), dataSnapshot1.child("userId").getValue().toString()));
-                        Collections.reverse(wallpaperItemModels);
+//                        Collections.reverse(wallpaperItemModels);
                         wallpaperItemAdapter.notifyDataSetChanged();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -93,7 +97,9 @@ public class HomeFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        };
+
+        query.addValueEventListener(homeImageValueEventListener);
 
         floatingUploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,4 +133,10 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        query.removeEventListener(homeImageValueEventListener);
+    }
 }

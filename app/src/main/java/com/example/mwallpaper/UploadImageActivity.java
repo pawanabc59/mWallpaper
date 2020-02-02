@@ -23,8 +23,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -39,7 +42,7 @@ public class UploadImageActivity extends AppCompatActivity {
     Spinner categorySpinner;
     ProgressBar uploadProgressBar;
 
-    String categorySelected;
+    String categorySelected = "others";
     String userId;
     String TAG = "my";
 
@@ -54,6 +57,8 @@ public class UploadImageActivity extends AppCompatActivity {
     FirebaseStorage firebaseStorage;
     StorageReference storageReference;
     FirebaseUser user;
+    int categoryNumberOfImages, uplodedNumberOfImages, recentNumberOfImages;
+    ValueEventListener categoryValueEventListener, uploadValueEventListener, recentValueEventListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,6 +168,48 @@ public class UploadImageActivity extends AppCompatActivity {
             }
         });
 
+        categoryValueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                categoryNumberOfImages = dataSnapshot.child("numberOfImages").getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+
+        recentValueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                recentNumberOfImages = dataSnapshot.child("numberOfImages").getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+
+        uploadValueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                uplodedNumberOfImages = dataSnapshot.child("numberOfImages").getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+
+        mRef.child("images").child(categorySelected).addValueEventListener(categoryValueEventListener);
+
+        mRef.child("recentlyUploadedImages").addValueEventListener(recentValueEventListener);
+
+        mRef.child("users").child(userId).child("uploadedImages").addValueEventListener(uploadValueEventListener);
+
         btnChooseImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -176,16 +223,6 @@ public class UploadImageActivity extends AppCompatActivity {
             public void onClick(View view) {
                 btnUploadImage.setVisibility(View.GONE);
                 uploadProgressBar.setVisibility(View.VISIBLE);
-
-////                File imageFile = new File(filepath.getPath());
-//                File compressedImageFile = null;
-//                try {
-//                    compressedImageFile = new Compressor(getApplicationContext()).compressToFile(new File(filepath.getLastPathSegment()));
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//
-//                filePath2 = Uri.fromFile(compressedImageFile);
 
                 final StorageReference storageReference1 = storageReference.child("categories").child(categorySelected).child(filepath.getLastPathSegment());
 
@@ -201,17 +238,23 @@ public class UploadImageActivity extends AppCompatActivity {
                                 String pushId = mRef.push().getKey();
 
 //                                upload to firebase database in user
-                                mRef.child("users").child(userId).child("uploadedImages").child(pushId).child("uploadedImage").setValue(task.getResult().toString());
-                                mRef.child("users").child(userId).child("uploadedImages").child(pushId).child("category").setValue(categorySelected);
-                                mRef.child("users").child(userId).child("uploadedImages").child(pushId).child("userId").setValue(userId);
+                                mRef.child("users").child(userId).child("uploadedImages").child("images").child(pushId).child("uploadedImage").setValue(task.getResult().toString());
+                                mRef.child("users").child(userId).child("uploadedImages").child("images").child(pushId).child("category").setValue(categorySelected);
+                                mRef.child("users").child(userId).child("uploadedImages").child("images").child(pushId).child("userId").setValue(userId);
+                                mRef.child("users").child(userId).child("uploadedImages").child("images").child(pushId).child("postNumber").setValue((-(uplodedNumberOfImages+1)));
+                                mRef.child("users").child(userId).child("uploadedImages").child("numberOfImages").setValue((uplodedNumberOfImages+1));
 
 //                                upload to database
-                                mRef.child("images").child(categorySelected).child(pushId).child("thumbnail").setValue(task.getResult().toString());
-                                mRef.child("images").child(categorySelected).child(pushId).child("userId").setValue(userId);
+                                mRef.child("images").child(categorySelected).child("images").child(pushId).child("thumbnail").setValue(task.getResult().toString());
+                                mRef.child("images").child(categorySelected).child("images").child(pushId).child("userId").setValue(userId);
+                                mRef.child("images").child(categorySelected).child("images").child(pushId).child("postNumber").setValue((-(categoryNumberOfImages+1)));
+                                mRef.child("images").child(categorySelected).child("numberOfImages").setValue((categoryNumberOfImages+1));
 
 //                                upload to firebase database recently uploaded
-                                mRef.child("recentlyUploadedImages").child(pushId).child("thumbnail").setValue(task.getResult().toString());
-                                mRef.child("recentlyUploadedImages").child(pushId).child("userId").setValue(userId);
+                                mRef.child("recentlyUploadedImages").child("images").child(pushId).child("thumbnail").setValue(task.getResult().toString());
+                                mRef.child("recentlyUploadedImages").child("images").child(pushId).child("userId").setValue(userId);
+                                mRef.child("recentlyUploadedImages").child("images").child(pushId).child("postNumber").setValue((-(recentNumberOfImages+1)));
+                                mRef.child("recentlyUploadedImages").child("numberOfImages").setValue((recentNumberOfImages+1));
 
                                 uploadProgressBar.setVisibility(View.GONE);
                                 btnUploadImage.setVisibility(View.VISIBLE);
@@ -248,4 +291,15 @@ public class UploadImageActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        mRef.child("images").child(categorySelected).removeEventListener(categoryValueEventListener);
+
+        mRef.child("recentlyUploadedImages").removeEventListener(recentValueEventListener);
+
+        mRef.child("users").child(userId).child("uploadedImages").removeEventListener(uploadValueEventListener);
+
+    }
 }

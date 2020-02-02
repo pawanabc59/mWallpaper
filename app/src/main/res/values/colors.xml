@@ -4,6 +4,7 @@
     <color name="colorPrimary">#ffffff</color>
     <color name="colorPrimaryDark">#ffffff</color>
     <color name="colorAccent">#4c84ff</color>
+    <color name="lightWhite">#e6e6e6</color>
 
     <!--color for button style-->
     <color name="gradient_start_color">#4c84ff</color>
@@ -16,6 +17,7 @@
 
     <color name="lightPurple">#A83FC4</color>
     <color name="gray">#656565</color>
+    <color name="greenGray">#8BE265</color>
 
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>

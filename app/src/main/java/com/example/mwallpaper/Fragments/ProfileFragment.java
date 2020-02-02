@@ -65,6 +65,7 @@ public class ProfileFragment extends Fragment {
     FirebaseStorage firebaseStorage;
     StorageReference storageReference;
     String TAG = "my";
+    ValueEventListener profileValueEventListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -105,7 +106,7 @@ public class ProfileFragment extends Fragment {
         btnEditPhoto.setVisibility(View.VISIBLE);
         editPhotoProgressBar.setVisibility(View.GONE);
 
-        mRef.child(userId).addValueEventListener(new ValueEventListener() {
+        profileValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 try {
@@ -121,7 +122,9 @@ public class ProfileFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        };
+
+        mRef.child(userId).addValueEventListener(profileValueEventListener);
 
         btnEditPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,6 +184,13 @@ public class ProfileFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        mRef.child(userId).removeEventListener(profileValueEventListener);
     }
 
     public void ReCreateApp() {
