@@ -281,7 +281,7 @@ public class UploadImageActivity extends AppCompatActivity {
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filepath);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 40, baos);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 30, baos);
                 image_byte_data = baos.toByteArray();
 
                 uploadImagePreview.setImageBitmap(bitmap);
