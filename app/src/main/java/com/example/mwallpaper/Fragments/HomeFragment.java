@@ -86,7 +86,7 @@ public class HomeFragment extends Fragment {
                 wallpaperItemModels.clear();
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     try {
-                        wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("thumbnail").getValue().toString(), dataSnapshot1.child("userId").getValue().toString()));
+                        wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("thumbnail").getValue(String.class), dataSnapshot1.child("userId").getValue(String.class)));
 //                        Collections.reverse(wallpaperItemModels);
                         wallpaperItemAdapter.notifyDataSetChanged();
                     } catch (Exception e) {

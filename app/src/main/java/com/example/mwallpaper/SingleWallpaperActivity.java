@@ -263,12 +263,12 @@ public class SingleWallpaperActivity extends AppCompatActivity {
                                 try {
                                     for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                                         if (dataSnapshot1.child("thumbnail").getValue().toString().equals(wallpaper_path)) {
-                                            Log.d(TAG, "onDataChange: favourite is same");
+//                                            Log.d(TAG, "onDataChange: favourite is same");
                                             fbtnRemoveFavourite.setVisibility(View.VISIBLE);
                                             fbtnAddFavourite.setVisibility(View.GONE);
                                             break;
                                         } else {
-                                            Log.d(TAG, "onDataChange: favourite is not same");
+//                                            Log.d(TAG, "onDataChange: favourite is not same");
                                             fbtnAddFavourite.setVisibility(View.VISIBLE);
                                             fbtnRemoveFavourite.setVisibility(View.GONE);
                                         }
@@ -481,7 +481,10 @@ public class SingleWallpaperActivity extends AppCompatActivity {
 
                 mRef.child("users").child(userId).child("favouriteImages").child("images").removeEventListener(favouriteImagesValueEventListener);
 
-                mRef.child("users").child(userId).child("favouriteImages").child("images").removeEventListener(removeFavouriteValueEventListener);
+                if (mRef.child("users").child(userId).child("favouriteImages").child("images")!=null) {
+
+                    mRef.child("users").child(userId).child("favouriteImages").child("images").removeEventListener(removeFavouriteValueEventListener);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

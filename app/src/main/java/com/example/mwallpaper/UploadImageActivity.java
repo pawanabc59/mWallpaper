@@ -204,8 +204,6 @@ public class UploadImageActivity extends AppCompatActivity {
             }
         };
 
-        mRef.child("images").child(categorySelected).addValueEventListener(categoryValueEventListener);
-
         mRef.child("recentlyUploadedImages").addValueEventListener(recentValueEventListener);
 
         mRef.child("users").child(userId).child("uploadedImages").addValueEventListener(uploadValueEventListener);
@@ -223,6 +221,8 @@ public class UploadImageActivity extends AppCompatActivity {
             public void onClick(View view) {
                 btnUploadImage.setVisibility(View.GONE);
                 uploadProgressBar.setVisibility(View.VISIBLE);
+
+                mRef.child("images").child(categorySelected).addValueEventListener(categoryValueEventListener);
 
                 final StorageReference storageReference1 = storageReference.child("categories").child(categorySelected).child(filepath.getLastPathSegment());
 

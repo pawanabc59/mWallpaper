@@ -98,7 +98,7 @@ public class AnotherUserProfileActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 wallpaperItemModels.clear();
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("uploadedImage").getValue().toString(), dataSnapshot1.child("userId").getValue().toString()));
+                    wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("uploadedImage").getValue(String.class), dataSnapshot1.child("userId").getValue(String.class)));
                     wallpaperItemAdapter.notifyDataSetChanged();
                 }
             }
@@ -118,6 +118,14 @@ public class AnotherUserProfileActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        mRef.addValueEventListener(anotherUserProfileValueEventListener);
+        mRef.child("uploadedImages").child("images").addValueEventListener(uplodedImageValueEventListener);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
 
@@ -126,7 +134,7 @@ public class AnotherUserProfileActivity extends AppCompatActivity {
         mRef.child("uploadedImages").child("images").removeEventListener(uplodedImageValueEventListener);
     }
 
-//    @Override
+    //    @Override
 //    public void onBackPressed() {
 //        super.onBackPressed();
 //
