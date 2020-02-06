@@ -50,6 +50,7 @@ import java.io.IOException;
 public class SingleWallpaperActivity extends AppCompatActivity {
 
 //    ImageView wallpaperImage;
+    ImageView backgroundImage;
     PhotoView wallpaperImage;
     SessionManager sessionManager;
 
@@ -102,6 +103,7 @@ public class SingleWallpaperActivity extends AppCompatActivity {
         fbtnRemoveFavourite = findViewById(R.id.fbtnRemoveFavourite);
         fbtnDownload = findViewById(R.id.fbtnDownload);
         fbtnShare = findViewById(R.id.fbtnShare);
+        backgroundImage = findViewById(R.id.backgroundWallpaper);
 
         btnInfo = findViewById(R.id.btnInfo);
 
@@ -112,6 +114,8 @@ public class SingleWallpaperActivity extends AppCompatActivity {
             Window w = getWindow();
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
+
+        Picasso.get().load(wallpaper_path).resize(5,5).into(backgroundImage);
 
         Picasso.get().load(wallpaper_path).into(wallpaperImage);
 
