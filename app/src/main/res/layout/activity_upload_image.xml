@@ -7,73 +7,85 @@
     android:background="?attr/white_black"
     tools:context=".UploadImageActivity">
 
-    <ImageView
-        android:id="@+id/uploadImagePreview"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_360sdp"
-        android:layout_margin="@dimen/_10sdp"
-        android:scaleType="fitXY" />
+        android:layout_height="match_parent">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnChooseImage"
-        style="@style/customMaterialButtonStyle"
-        android:layout_width="@dimen/_140sdp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/uploadImagePreview"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:background="@color/white"
-        android:padding="@dimen/_10sdp"
-        android:text="Choose Image"
-        android:textColor="@color/colorAccent"
-        android:theme="@style/customMaterialButtonStyle"
-        app:cornerRadius="@dimen/_20sdp"
-        app:rippleColor="#33AAAAAA"
-        app:strokeColor="@color/colorAccent"
-        app:strokeWidth="2dp" />
-
-    <Spinner
-        android:id="@+id/categorySpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btnChooseImage"
-        android:layout_margin="@dimen/_10sdp"
-        android:background="?attr/cardbackground"
-        android:backgroundTint="#737e8c"
-        android:padding="@dimen/_10sdp"
-        android:pointerIcon="arrow" />
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/categorySpinner">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnUploadImage"
-            style="@style/customMaterialButtonStyle"
-            android:layout_width="@dimen/_140sdp"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:background="@color/white"
-            android:padding="@dimen/_10sdp"
-            android:text="Upload"
-            android:textColor="#56c23d"
-            android:theme="@style/customMaterialButtonStyle"
-            app:cornerRadius="@dimen/_20sdp"
-            app:rippleColor="#33AAAAAA"
-            app:strokeColor="#56c23d"
-            app:strokeWidth="2dp" />
-
-        <ProgressBar
-            android:id="@+id/uploadProgressBar"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:visibility="gone" />
+            android:layout_height="match_parent">
 
-    </FrameLayout>
+            <ImageView
+                android:id="@+id/uploadImagePreview"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_360sdp"
+                android:layout_margin="@dimen/_10sdp"
+                android:scaleType="fitXY" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnChooseImage"
+                style="@style/customMaterialButtonStyle"
+                android:layout_width="@dimen/_140sdp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/uploadImagePreview"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@color/white"
+                android:padding="@dimen/_10sdp"
+                android:text="Choose Image"
+                android:textColor="@color/colorAccent"
+                android:theme="@style/customMaterialButtonStyle"
+                app:cornerRadius="@dimen/_20sdp"
+                app:rippleColor="#33AAAAAA"
+                app:strokeColor="@color/colorAccent"
+                app:strokeWidth="2dp" />
+
+            <Spinner
+                android:id="@+id/categorySpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btnChooseImage"
+                android:layout_margin="@dimen/_10sdp"
+                android:background="?attr/cardbackground"
+                android:backgroundTint="#737e8c"
+                android:padding="@dimen/_10sdp"
+                android:pointerIcon="arrow" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/categorySpinner">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnUploadImage"
+                    style="@style/customMaterialButtonStyle"
+                    android:layout_width="@dimen/_140sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@color/white"
+                    android:padding="@dimen/_10sdp"
+                    android:text="Upload"
+                    android:textColor="#56c23d"
+                    android:theme="@style/customMaterialButtonStyle"
+                    app:cornerRadius="@dimen/_20sdp"
+                    app:rippleColor="#33AAAAAA"
+                    app:strokeColor="#56c23d"
+                    app:strokeWidth="2dp" />
+
+                <ProgressBar
+                    android:id="@+id/uploadProgressBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:visibility="gone" />
+
+            </FrameLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
 
 </RelativeLayout>
