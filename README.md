@@ -19,5 +19,13 @@ A wallpaper app where anyone can upload their favourite wallpaper and others can
     • Different categories for every wallpaper.
     • User can also delete their uploded wallpapers.
     
+# Built with
+   - [Android Studio](https://developer.android.com/studio).
+   - [Firebase](https://console.firebase.google.com/).
+
+# Acknowledgments
+  - Hat tip to any third party library that is used.
+  - Inspiration.  
+    
 # Author
   [Pawan Kumar Maurya](https://github.com/pawanabc59)
