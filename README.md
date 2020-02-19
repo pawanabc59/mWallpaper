@@ -1,4 +1,6 @@
 # mWallpaper
+<img width="100" height="100" alt="cReddit" src="https://github.com/pawanabc59/mWallpaper/blob/master/app/src/main/res/drawable/wallpaper_logo.png">
+
 A wallpaper app where anyone can upload their favourite wallpaper and others can view them and download them and also share the wallpapers with their friends.
 
 <a href="https://github.com/pawanabc59/mWallpaper/blob/master/app/release/app-release.apk?raw=true"> Download APK here </a>
