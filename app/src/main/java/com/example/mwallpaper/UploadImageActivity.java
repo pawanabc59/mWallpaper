@@ -57,7 +57,7 @@ public class UploadImageActivity extends AppCompatActivity {
     FirebaseStorage firebaseStorage;
     StorageReference storageReference;
     FirebaseUser user;
-    int categoryNumberOfImages, uplodedNumberOfImages, recentNumberOfImages;
+    int categoryNumberOfImages, uplodedNumberOfImages, recentNumberOfImages, imageUploaded=0;
     ValueEventListener categoryValueEventListener, uploadValueEventListener, recentValueEventListener;
 
     @Override
@@ -221,52 +221,60 @@ public class UploadImageActivity extends AppCompatActivity {
             public void onClick(View view) {
                 btnUploadImage.setVisibility(View.GONE);
                 uploadProgressBar.setVisibility(View.VISIBLE);
+                if (imageUploaded == 1) {
 
-                mRef.child("images").child(categorySelected).addValueEventListener(categoryValueEventListener);
+                    mRef.child("images").child(categorySelected).addValueEventListener(categoryValueEventListener);
 
-                final StorageReference storageReference1 = storageReference.child("categories").child(categorySelected).child(filepath.getLastPathSegment());
+                    final StorageReference storageReference1 = storageReference.child("categories").child(categorySelected).child(filepath.getLastPathSegment());
 
-                UploadTask uploadTask = storageReference.child("categories").child(categorySelected).child(filepath.getLastPathSegment()).putBytes(image_byte_data);
+                    UploadTask uploadTask = storageReference.child("categories").child(categorySelected).child(filepath.getLastPathSegment()).putBytes(image_byte_data);
 
-                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Toast.makeText(getApplicationContext(), "Image Uploaded Successfully", Toast.LENGTH_SHORT).show();
-                        storageReference1.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Uri> task) {
-                                String pushId = mRef.push().getKey();
+                    uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Toast.makeText(getApplicationContext(), "Image Uploaded Successfully", Toast.LENGTH_SHORT).show();
+                            storageReference1.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Uri> task) {
+                                    String pushId = mRef.push().getKey();
 
 //                                upload to firebase database in user
-                                mRef.child("users").child(userId).child("uploadedImages").child("images").child(pushId).child("uploadedImage").setValue(task.getResult().toString());
-                                mRef.child("users").child(userId).child("uploadedImages").child("images").child(pushId).child("category").setValue(categorySelected);
-                                mRef.child("users").child(userId).child("uploadedImages").child("images").child(pushId).child("userId").setValue(userId);
-                                mRef.child("users").child(userId).child("uploadedImages").child("images").child(pushId).child("postNumber").setValue((-(uplodedNumberOfImages+1)));
-                                mRef.child("users").child(userId).child("uploadedImages").child("numberOfImages").setValue((uplodedNumberOfImages+1));
+                                    mRef.child("users").child(userId).child("uploadedImages").child("images").child(pushId).child("uploadedImage").setValue(task.getResult().toString());
+                                    mRef.child("users").child(userId).child("uploadedImages").child("images").child(pushId).child("category").setValue(categorySelected);
+                                    mRef.child("users").child(userId).child("uploadedImages").child("images").child(pushId).child("userId").setValue(userId);
+                                    mRef.child("users").child(userId).child("uploadedImages").child("images").child(pushId).child("postNumber").setValue((-(uplodedNumberOfImages + 1)));
+                                    mRef.child("users").child(userId).child("uploadedImages").child("numberOfImages").setValue((uplodedNumberOfImages + 1));
 
 //                                upload to database
-                                mRef.child("images").child(categorySelected).child("images").child(pushId).child("thumbnail").setValue(task.getResult().toString());
-                                mRef.child("images").child(categorySelected).child("images").child(pushId).child("userId").setValue(userId);
-                                mRef.child("images").child(categorySelected).child("images").child(pushId).child("postNumber").setValue((-(categoryNumberOfImages+1)));
-                                mRef.child("images").child(categorySelected).child("numberOfImages").setValue((categoryNumberOfImages+1));
+                                    mRef.child("images").child(categorySelected).child("images").child(pushId).child("thumbnail").setValue(task.getResult().toString());
+                                    mRef.child("images").child(categorySelected).child("images").child(pushId).child("userId").setValue(userId);
+                                    mRef.child("images").child(categorySelected).child("images").child(pushId).child("postNumber").setValue((-(categoryNumberOfImages + 1)));
+                                    mRef.child("images").child(categorySelected).child("numberOfImages").setValue((categoryNumberOfImages + 1));
 
 //                                upload to firebase database recently uploaded
-                                mRef.child("recentlyUploadedImages").child("images").child(pushId).child("thumbnail").setValue(task.getResult().toString());
-                                mRef.child("recentlyUploadedImages").child("images").child(pushId).child("userId").setValue(userId);
-                                mRef.child("recentlyUploadedImages").child("images").child(pushId).child("postNumber").setValue((-(recentNumberOfImages+1)));
-                                mRef.child("recentlyUploadedImages").child("numberOfImages").setValue((recentNumberOfImages+1));
+                                    mRef.child("recentlyUploadedImages").child("images").child(pushId).child("thumbnail").setValue(task.getResult().toString());
+                                    mRef.child("recentlyUploadedImages").child("images").child(pushId).child("userId").setValue(userId);
+                                    mRef.child("recentlyUploadedImages").child("images").child(pushId).child("postNumber").setValue((-(recentNumberOfImages + 1)));
+                                    mRef.child("recentlyUploadedImages").child("numberOfImages").setValue((recentNumberOfImages + 1));
 
-                                uploadProgressBar.setVisibility(View.GONE);
-                                btnUploadImage.setVisibility(View.VISIBLE);
+                                    uploadProgressBar.setVisibility(View.GONE);
+                                    btnUploadImage.setVisibility(View.VISIBLE);
+                                    imageUploaded = 0;
 
-                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                                finish();
-                            }
-                        });
-                    }
-                });
+                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            });
+                        }
+                    });
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Please select an image to upload", Toast.LENGTH_SHORT).show();
+                    uploadProgressBar.setVisibility(View.GONE);
+                    btnUploadImage.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
@@ -283,7 +291,7 @@ public class UploadImageActivity extends AppCompatActivity {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 40, baos);
                 image_byte_data = baos.toByteArray();
-
+                imageUploaded = 1;
                 uploadImagePreview.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
