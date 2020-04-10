@@ -1,9 +1,11 @@
 package com.example.mwallpaper;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,6 +34,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -47,7 +52,7 @@ public class UploadImageActivity extends AppCompatActivity {
     String TAG = "my";
 
     Bitmap bitmap;
-    Uri filepath, filePath2;
+    Uri filepath, filePath2, uri;
     byte[] image_byte_data;
     SessionManager sessionManager;
 
@@ -211,8 +216,9 @@ public class UploadImageActivity extends AppCompatActivity {
         btnChooseImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, 2);
+                CropImage.startPickImageActivity(UploadImageActivity.this);
+//                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                startActivityForResult(intent, 2);
             }
         });
 
@@ -279,24 +285,62 @@ public class UploadImageActivity extends AppCompatActivity {
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 2 && resultCode == Activity.RESULT_OK && data != null) {
-
-            filepath = data.getData();
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filepath);
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 40, baos);
-                image_byte_data = baos.toByteArray();
-                imageUploaded = 1;
-                uploadImagePreview.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
+        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK){
+            Uri imageuri = CropImage.getPickImageResultUri(this, data);
+            if (CropImage.isReadExternalStoragePermissionsRequired(this, imageuri)){
+                uri = imageuri;
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},0);
+            }
+            else {
+                startCrop(imageuri);
             }
         }
+
+        if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK){
+                filepath = result.getUri();
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filepath);
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 40, baos);
+                    image_byte_data = baos.toByteArray();
+                    imageUploaded = 1;
+                    uploadImagePreview.setImageBitmap(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+//                uploadImagePreview.setImageURI(result.getUri());
+            }
+        }
+
+//        IF YOU DON'T WANT TO CROP THE IMAGE
+//        if (requestCode == 2 && resultCode == Activity.RESULT_OK && data != null) {
+//
+//            filepath = data.getData();
+//            try {
+//                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filepath);
+//                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//                bitmap.compress(Bitmap.CompressFormat.JPEG, 40, baos);
+//                image_byte_data = baos.toByteArray();
+//                imageUploaded = 1;
+//                uploadImagePreview.setImageBitmap(bitmap);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+    }
+
+    private void startCrop(Uri imageuri){
+        CropImage.activity(imageuri).setGuidelines(CropImageView.Guidelines.ON)
+                .setMultiTouchEnabled(true)
+                .start(this);
     }
 
     @Override
@@ -311,3 +355,4 @@ public class UploadImageActivity extends AppCompatActivity {
 
     }
 }
+

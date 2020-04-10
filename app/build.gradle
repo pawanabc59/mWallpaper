@@ -77,6 +77,9 @@ dependencies {
 
     // Add the dependency for the Performance Monitoring library
 //    implementation 'com.google.firebase:firebase-perf:19.0.3'
+
+//    For Image cropping library.
+    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
 }
 
 apply plugin: 'com.google.gms.google-services'
