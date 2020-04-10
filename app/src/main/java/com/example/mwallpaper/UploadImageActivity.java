@@ -316,7 +316,6 @@ public class UploadImageActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-//                uploadImagePreview.setImageURI(result.getUri());
             }
         }
 
