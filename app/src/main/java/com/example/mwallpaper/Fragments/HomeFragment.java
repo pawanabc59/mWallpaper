@@ -108,7 +108,25 @@ public class HomeFragment extends Fragment {
         floatingUploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (user == null) {
+                try {
+                    if (user == null && !user.isEmailVerified()) {
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle("Login First!")
+                                .setMessage("You need to login first to Upload the wallpapers.")
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                    }
+                                }).show();
+                    } else {
+
+                        Intent intent = new Intent(getContext(), UploadImageActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        getActivity().startActivity(intent);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                     new AlertDialog.Builder(getActivity())
                             .setTitle("Login First!")
                             .setMessage("You need to login first to Upload the wallpapers.")
@@ -118,11 +136,6 @@ public class HomeFragment extends Fragment {
                                     dialogInterface.dismiss();
                                 }
                             }).show();
-                } else {
-
-                    Intent intent = new Intent(getContext(), UploadImageActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    getActivity().startActivity(intent);
                 }
             }
         });

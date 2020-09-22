@@ -155,12 +155,15 @@ public class UploadImageActivity extends AppCompatActivity {
                         categorySelected = "space";
                         break;
                     case 17:
-                        categorySelected = "superhero";
+                        categorySelected = "sports";
                         break;
                     case 18:
-                        categorySelected = "vehicle";
+                        categorySelected = "superhero";
                         break;
                     case 19:
+                        categorySelected = "vehicle";
+                        break;
+                    case 20:
                         categorySelected = "words";
                         break;
 

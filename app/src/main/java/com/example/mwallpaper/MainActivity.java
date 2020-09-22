@@ -104,11 +104,17 @@ public class MainActivity extends AppCompatActivity {
                             selectedFragment = new CategoriesFragment();
                             break;
                         case R.id.nav_account:
-                            if (user == null) {
+                            try{
+                            if (user == null && !user.isEmailVerified()) {
                                 selectedFragment = new AccountFragment();
                             } else {
                                 selectedFragment = new ProfileFragment();
                             }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                selectedFragment = new AccountFragment();
+                            }
+
                             break;
                     }
 

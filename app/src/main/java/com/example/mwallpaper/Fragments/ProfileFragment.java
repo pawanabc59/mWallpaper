@@ -49,7 +49,7 @@ public class ProfileFragment extends Fragment {
     ImageView profileImage;
     SwitchCompat nightSwitch;
     TextView showEmailText, txtMyUploads;
-    Button btnmyUploads, btnDisclaimer;
+    Button btnmyUploads, btnDisclaimer, btnVerifyEmail;
     String userId;
     MaterialButton btnLogout, btnEditPhoto;
     ProgressBar editPhotoProgressBar;
@@ -102,6 +102,7 @@ public class ProfileFragment extends Fragment {
         btnmyUploads = view.findViewById(R.id.btnmyUploads);
         btnDisclaimer = view.findViewById(R.id.btnDisclaimer);
         editPhotoProgressBar = view.findViewById(R.id.editPhotoProgressBar);
+        btnVerifyEmail = view.findViewById(R.id.btnVerifyEmail);
 
         btnEditPhoto.setVisibility(View.VISIBLE);
         editPhotoProgressBar.setVisibility(View.GONE);
@@ -163,6 +164,23 @@ public class ProfileFragment extends Fragment {
 
                 ReCreateApp();
 
+            }
+        });
+
+        btnVerifyEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText(getContext(), "Mail sent", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            Toast.makeText(getContext(), "Some error occurred", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         });
 

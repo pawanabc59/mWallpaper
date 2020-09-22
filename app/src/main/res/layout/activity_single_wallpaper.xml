@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="@dimen/_130sdp"
+        android:layout_marginLeft="@dimen/_150sdp"
         android:layout_marginTop="@dimen/_300sdp"
         app:layout_anchorGravity="bottom|end"
         fab:menu_animationDelayPerItem="50"

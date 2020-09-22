@@ -46,6 +46,16 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:id="@+id/forgotPasswordTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Forgot Password"
+            android:textColor="?attr/textcolor"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:paddingLeft="@dimen/_150sdp"/>
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

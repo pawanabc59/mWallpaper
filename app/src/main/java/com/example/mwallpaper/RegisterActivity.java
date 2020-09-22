@@ -115,14 +115,26 @@ public class RegisterActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+
                         if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "User Created", Toast.LENGTH_SHORT).show();
-                            registerProgressBar.setVisibility(View.GONE);
-                            btnRegister.setVisibility(View.VISIBLE);
-                            editRegisterEmail.setText("");
-                            editRegisterPassword.setText("");
-                            editRegistercPassword.setText("");
-                            firebaseAuth.signOut();
+                            firebaseAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(getApplicationContext(), "Registration successful! Please verify email.", Toast.LENGTH_SHORT).show();
+                                        registerProgressBar.setVisibility(View.GONE);
+                                        btnRegister.setVisibility(View.VISIBLE);
+                                        editRegisterEmail.setText("");
+                                        editRegisterPassword.setText("");
+                                        editRegistercPassword.setText("");
+                                        firebaseAuth.signOut();
+                                    }else {
+                                        Toast.makeText(getApplicationContext(), "Error sending in email", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+
+
 
 //                            String key = mRef.push().getKey();
 //                            mRef2 = mRef.child(key);
@@ -134,6 +146,8 @@ public class RegisterActivity extends AppCompatActivity {
                                 btnRegister.setVisibility(View.VISIBLE);
                             }
                         }
+
+
                     }
                 });
     }

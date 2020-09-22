@@ -136,10 +136,24 @@
                 android:textStyle="normal" />
 
             <Button
-                android:id="@+id/btnDisclaimer"
+                android:id="@+id/btnVerifyEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/btnmyUploads"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@android:color/transparent"
+                android:paddingHorizontal="@dimen/_25sdp"
+                android:text="Verify Email"
+                android:textAlignment="viewStart"
+                android:textColor="?attr/textcolor"
+                android:textSize="16sp"
+                android:textStyle="normal" />
+
+            <Button
+                android:id="@+id/btnDisclaimer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btnVerifyEmail"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:background="@android:color/transparent"
                 android:paddingHorizontal="@dimen/_25sdp"

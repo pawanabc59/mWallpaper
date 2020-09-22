@@ -2,6 +2,8 @@ package com.example.mwallpaper;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +19,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class WallpaperListActivity extends AppCompatActivity {
 
@@ -28,6 +29,7 @@ public class WallpaperListActivity extends AppCompatActivity {
     DatabaseReference mRef, mRef2;
     String TAG = "My tag";
     String action = "favourite";
+    TextView noWallpaperText;
 
     SessionManager sessionManager;
     ValueEventListener imageValueEventListener;
@@ -47,6 +49,7 @@ public class WallpaperListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_wallpaper_list);
 
         wallpaperRecyclerView = findViewById(R.id.wallpaperRecyclerView);
+        noWallpaperText = findViewById(R.id.noWallpaperText);
 
         wallpaperItemModels = new ArrayList<>();
 
@@ -63,17 +66,24 @@ public class WallpaperListActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 wallpaperItemModels.clear();
-                for (final DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                if (dataSnapshot.exists()) {
+                    wallpaperRecyclerView.setVisibility(View.VISIBLE);
+                    noWallpaperText.setVisibility(View.GONE);
+                    for (final DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
 //                    mRef2 = mRef.child(dataSnapshot1.getKey());
-                    try {
-                        wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("thumbnail").getValue().toString(), dataSnapshot1.child("userId").getValue().toString()));
+                        try {
+                            wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("thumbnail").getValue().toString(), dataSnapshot1.child("userId").getValue().toString()));
 //                    Log.d(TAG, "onDataChange: "+dataSnapshot1.child("thumbnail").getValue().toString());
 //                        Collections.reverse(wallpaperItemModels);
-                        wallpaperItemAdapter.notifyDataSetChanged();
+                            wallpaperItemAdapter.notifyDataSetChanged();
 //                    wallpaperItemModels.add(new WallpaperItemModel("https://firebasestorage.googleapis.com/v0/b/mwallpaper-6feeb.appspot.com/o/wallpaper%2Fcategories%2Fnature%2Fnature.jpg?alt=media&token=d17176fa-8a8e-48bc-af4a-8482a295e249"));
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
+                } else {
+                    wallpaperRecyclerView.setVisibility(View.GONE);
+                    noWallpaperText.setVisibility(View.VISIBLE);
                 }
             }
 
