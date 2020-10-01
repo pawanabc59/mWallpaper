@@ -3,6 +3,7 @@ package com.example.mwallpaper;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,9 +31,11 @@ public class WallpaperListActivity extends AppCompatActivity {
     String TAG = "My tag";
     String action = "favourite";
     TextView noWallpaperText;
+    ImageView noWallpaperImage;
 
     SessionManager sessionManager;
     ValueEventListener imageValueEventListener;
+//    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +51,19 @@ public class WallpaperListActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_wallpaper_list);
 
+//        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+//            @Override
+//            public void onInitializationComplete(InitializationStatus initializationStatus) {
+//            }
+//        });
+//
+//        mAdView = findViewById(R.id.adView);
+//        AdRequest adRequest = new AdRequest.Builder().build();
+//        mAdView.loadAd(adRequest);
+
         wallpaperRecyclerView = findViewById(R.id.wallpaperRecyclerView);
         noWallpaperText = findViewById(R.id.noWallpaperText);
+        noWallpaperImage = findViewById(R.id.noWallpaperImage);
 
         wallpaperItemModels = new ArrayList<>();
 
@@ -69,6 +83,7 @@ public class WallpaperListActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     wallpaperRecyclerView.setVisibility(View.VISIBLE);
                     noWallpaperText.setVisibility(View.GONE);
+                    noWallpaperImage.setVisibility(View.GONE);
                     for (final DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
 //                    mRef2 = mRef.child(dataSnapshot1.getKey());
                         try {
@@ -84,6 +99,7 @@ public class WallpaperListActivity extends AppCompatActivity {
                 } else {
                     wallpaperRecyclerView.setVisibility(View.GONE);
                     noWallpaperText.setVisibility(View.VISIBLE);
+                    noWallpaperImage.setVisibility(View.VISIBLE);
                 }
             }
 

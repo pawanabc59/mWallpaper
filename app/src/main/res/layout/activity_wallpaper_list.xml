@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,18 +15,42 @@
         android:background="?attr/white_black"
         android:padding="@dimen/_5sdp" />
 
+    <ImageView
+        android:id="@+id/noWallpaperImage"
+        android:layout_width="@dimen/_220sdp"
+        android:layout_height="@dimen/_200sdp"
+        android:layout_gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_51sdp"
+        android:src="@drawable/empty"
+        android:visibility="gone" />
+
     <TextView
         android:id="@+id/noWallpaperText"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_250sdp"
+        android:layout_height="@dimen/_100sdp"
         android:text="No wallpaper has been added yet"
-        android:textSize="40sp"
-        android:paddingHorizontal="@dimen/_30sdp"
+        android:textSize="30sp"
+        android:paddingStart="@dimen/_70sdp"
+        android:paddingHorizontal="@dimen/_40sdp"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:gravity="center"
+        android:gravity="top"
         android:textStyle="bold"
         android:visibility="gone"
+        android:layout_below="@+id/noWallpaperImage"
         android:textColor="?attr/textcolor"
         />
 
-</FrameLayout>
+<!--    <com.google.android.gms.ads.AdView-->
+<!--        xmlns:ads="http://schemas.android.com/apk/res-auto"-->
+<!--        android:id="@+id/adView"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        ads:adSize="BANNER"-->
+<!--        ads:adUnitId="ca-app-pub-9384200931442886/6880304820">-->
+<!--    </com.google.android.gms.ads.AdView>-->
+
+</RelativeLayout>

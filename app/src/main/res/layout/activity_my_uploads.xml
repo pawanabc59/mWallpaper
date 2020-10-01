@@ -18,7 +18,7 @@
         android:layout_height="@dimen/_220sdp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/_51sdp"
-        android:src="@drawable/mb"
+        android:src="@drawable/empty"
         android:visibility="visible" />
 
     <TextView
@@ -32,6 +32,7 @@
         android:textColor="?attr/textcolor"
         android:textSize="25sp"
         android:textStyle="bold"
-        android:visibility="visible" />
+        android:visibility="visible"
+        android:gravity="center"/>
 
 </FrameLayout>
