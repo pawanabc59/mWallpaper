@@ -31,8 +31,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 
 public class HomeFragment extends Fragment {
 
@@ -72,6 +70,7 @@ public class HomeFragment extends Fragment {
         floatingUploadButton = view.findViewById(R.id.floationUploadButton);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
+//        firebaseDatabase.setPersistenceEnabled(true);
         query = firebaseDatabase.getReference("wallpaper").child("recentlyUploadedImages").child("images").orderByChild("postNumber");
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -155,7 +154,7 @@ public class HomeFragment extends Fragment {
         super.onResume();
 
         query.addValueEventListener(homeImageValueEventListener);
-        Log.d("my", "onResume: "+my);
+        Log.d("my", "onResume: " + my);
     }
 
     @Override

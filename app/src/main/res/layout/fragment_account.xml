@@ -50,11 +50,11 @@
             android:id="@+id/forgotPasswordTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/_150sdp"
             android:text="Forgot Password"
             android:textColor="?attr/textcolor"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:paddingLeft="@dimen/_150sdp"/>
+            android:textStyle="bold" />
 
         <FrameLayout
             android:layout_width="match_parent"

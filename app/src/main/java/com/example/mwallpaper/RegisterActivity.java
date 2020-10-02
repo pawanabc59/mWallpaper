@@ -128,12 +128,11 @@ public class RegisterActivity extends AppCompatActivity {
                                         editRegisterPassword.setText("");
                                         editRegistercPassword.setText("");
                                         firebaseAuth.signOut();
-                                    }else {
+                                    } else {
                                         Toast.makeText(getApplicationContext(), "Error sending in email", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
-
 
 
 //                            String key = mRef.push().getKey();

@@ -58,10 +58,10 @@
                 android:id="@+id/editPhotoProgressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/_25sdp"
                 android:layout_below="@+id/profile_image_cardview"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_25sdp"
                 android:visibility="gone" />
 
             <LinearLayout

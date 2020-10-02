@@ -28,11 +28,11 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginHorizontal="@dimen/_40sdp"
         android:layout_marginTop="@dimen/_260sdp"
+        android:gravity="center"
         android:text="You have not uploaded any wallpaper. Upload wallpapers to see them here."
         android:textColor="?attr/textcolor"
         android:textSize="25sp"
         android:textStyle="bold"
-        android:visibility="visible"
-        android:gravity="center"/>
+        android:visibility="visible" />
 
 </FrameLayout>

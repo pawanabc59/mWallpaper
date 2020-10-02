@@ -81,4 +81,9 @@
         <item name="colorAccent">#ffffff</item>
     </style>
 
+<!--    for spinner text color-->
+<!--    <style name="spinnerTheme">-->
+<!--        <item name="android:textColor">@color/white</item>-->
+<!--    </style>-->
+
 </resources>

@@ -173,10 +173,9 @@ public class ProfileFragment extends Fragment {
                 user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             Toast.makeText(getContext(), "Mail sent", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
+                        } else {
                             Toast.makeText(getContext(), "Some error occurred", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -256,8 +255,7 @@ public class ProfileFragment extends Fragment {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-        else{
+        } else {
             editPhotoProgressBar.setVisibility(View.GONE);
             btnEditPhoto.setVisibility(View.VISIBLE);
         }

@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -23,12 +22,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import com.github.chrisbanes.photoview.BuildConfig;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -49,7 +50,7 @@ import java.io.IOException;
 
 public class SingleWallpaperActivity extends AppCompatActivity {
 
-//    ImageView wallpaperImage;
+    //    ImageView wallpaperImage;
     ImageView backgroundImage;
     PhotoView wallpaperImage;
     SessionManager sessionManager;
@@ -115,7 +116,7 @@ public class SingleWallpaperActivity extends AppCompatActivity {
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
 
-        Picasso.get().load(wallpaper_path).resize(5,5).into(backgroundImage);
+        Picasso.get().load(wallpaper_path).resize(5, 5).into(backgroundImage);
 
         Picasso.get().load(wallpaper_path).into(wallpaperImage);
 
@@ -161,6 +162,11 @@ public class SingleWallpaperActivity extends AppCompatActivity {
         fbtnSetBackground.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+//                Uri uri = Uri.parse(wallpaper_path);
+//                Intent intent1 = new Intent(Intent.ACTION_SET_WALLPAPER,uri);
+//                startActivityForResult(intent1, 11);
+//                startActivity(intent1);
 
                 String[] listItems = new String[]{"Set as Home Screen", "Set as Lock Screen", "Both"};
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(SingleWallpaperActivity.this);
@@ -308,8 +314,8 @@ public class SingleWallpaperActivity extends AppCompatActivity {
                     String key = mRef.child("users").push().getKey();
                     mRef.child("users").child(userId).child("favouriteImages").child("images").child(key).child("thumbnail").setValue(wallpaper_path);
                     mRef.child("users").child(userId).child("favouriteImages").child("images").child(key).child("userId").setValue(anotherUserId);
-                    mRef.child("users").child(userId).child("favouriteImages").child("images").child(key).child("postNumber").setValue((-(favouriteNumberOfImages+1)));
-                    mRef.child("users").child(userId).child("favouriteImages").child("numberOfImages").setValue(favouriteNumberOfImages+1);
+                    mRef.child("users").child(userId).child("favouriteImages").child("images").child(key).child("postNumber").setValue((-(favouriteNumberOfImages + 1)));
+                    mRef.child("users").child(userId).child("favouriteImages").child("numberOfImages").setValue(favouriteNumberOfImages + 1);
 
                     Toast.makeText(getApplicationContext(), "Wallpaper is added to favourite", Toast.LENGTH_SHORT).show();
 
@@ -367,6 +373,11 @@ public class SingleWallpaperActivity extends AppCompatActivity {
         }
     }
 
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//    }
+
     private void setWallpaperOnDevice(final int position) {
         Picasso.get().load(wallpaper_path).into(new Target() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -394,7 +405,9 @@ public class SingleWallpaperActivity extends AppCompatActivity {
                         wallpaperManager.setBitmap(bitmap1, null, false, WallpaperManager.FLAG_LOCK);
                         Toast.makeText(getApplicationContext(), "Wallpaper set as Lock Screen Wallpaper", Toast.LENGTH_SHORT).show();
                     } else if (position == 2) {
-                        wallpaperManager.setBitmap(bitmap1);
+//                        wallpaperManager.setBitmap(bitmap1);
+                        wallpaperManager.setBitmap(bitmap1, null, false, WallpaperManager.FLAG_SYSTEM);
+                        wallpaperManager.setBitmap(bitmap1, null, false, WallpaperManager.FLAG_LOCK);
                         Toast.makeText(getApplicationContext(), "Wallpaper set as Home and Lock Screen Wallpaper", Toast.LENGTH_SHORT).show();
                     }
 
@@ -485,7 +498,7 @@ public class SingleWallpaperActivity extends AppCompatActivity {
 
                 mRef.child("users").child(userId).child("favouriteImages").child("images").removeEventListener(favouriteImagesValueEventListener);
 
-                if (mRef.child("users").child(userId).child("favouriteImages").child("images")!=null) {
+                if (mRef.child("users").child(userId).child("favouriteImages").child("images") != null) {
 
                     mRef.child("users").child(userId).child("favouriteImages").child("images").removeEventListener(removeFavouriteValueEventListener);
                 }
@@ -497,7 +510,7 @@ public class SingleWallpaperActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(getFragmentManager().getBackStackEntryCount() > 0)
+        if (getFragmentManager().getBackStackEntryCount() > 0)
             getFragmentManager().popBackStack();
         else {
             super.onBackPressed();

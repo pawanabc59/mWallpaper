@@ -49,28 +49,40 @@ public class MainActivity extends AppCompatActivity {
         if (!isConnected()) {
             new AlertDialog.Builder(this)
                     .setTitle("Internet Connectivity Problem!!!")
-                    .setMessage("Please check your internet connection.")
-                    .setPositiveButton("Close App", new DialogInterface.OnClickListener() {
+                    .setMessage("Please check your internet connection. Some Wallpapers may not be shown.")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            finish();
+                            dialogInterface.dismiss();
                         }
                     }).show();
-        } else {
-            setContentView(R.layout.activity_main);
-
-            firebaseAuth = FirebaseAuth.getInstance();
-            user = firebaseAuth.getCurrentUser();
-
-            permissionManager = new PermissionManager() {
-            };
-            permissionManager.checkAndRequestPermissions(this);
-
-            BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-            bottomNav.setOnNavigationItemSelectedListener(navListener);
-
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
         }
+
+//        if (!isConnected()) {
+//            new AlertDialog.Builder(this)
+//                    .setTitle("Internet Connectivity Problem!!!")
+//                    .setMessage("Please check your internet connection.")
+//                    .setPositiveButton("Close App", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            finish();
+//                        }
+//                    }).show();
+//        } else {
+        setContentView(R.layout.activity_main);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
+
+        permissionManager = new PermissionManager() {
+        };
+        permissionManager.checkAndRequestPermissions(this);
+
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setOnNavigationItemSelectedListener(navListener);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+//        }
     }
 
     @Override
@@ -104,12 +116,12 @@ public class MainActivity extends AppCompatActivity {
                             selectedFragment = new CategoriesFragment();
                             break;
                         case R.id.nav_account:
-                            try{
-                            if (user == null && !user.isEmailVerified()) {
-                                selectedFragment = new AccountFragment();
-                            } else {
-                                selectedFragment = new ProfileFragment();
-                            }
+                            try {
+                                if (user == null && !user.isEmailVerified()) {
+                                    selectedFragment = new AccountFragment();
+                                } else {
+                                    selectedFragment = new ProfileFragment();
+                                }
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 selectedFragment = new AccountFragment();

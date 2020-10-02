@@ -50,7 +50,8 @@
                 android:background="?attr/cardbackground"
                 android:backgroundTint="#737e8c"
                 android:padding="@dimen/_10sdp"
-                android:pointerIcon="arrow" />
+                android:pointerIcon="arrow"
+                android:spinnerMode="dropdown"></Spinner>
 
             <FrameLayout
                 android:layout_width="match_parent"

@@ -5,12 +5,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -28,7 +30,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -212,11 +213,10 @@ public class WallpaperItemAdapter extends RecyclerView.Adapter<WallpaperItemAdap
                 showFavouriteValueEventListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()){
+                        if (dataSnapshot.exists()) {
                             favouriteFilled.setVisibility(View.VISIBLE);
                             favouriteUnfilled.setVisibility(View.GONE);
-                        }
-                        else {
+                        } else {
                             favouriteFilled.setVisibility(View.GONE);
                             favouriteUnfilled.setVisibility(View.VISIBLE);
                         }
@@ -230,64 +230,80 @@ public class WallpaperItemAdapter extends RecyclerView.Adapter<WallpaperItemAdap
 
                 mRef.child(userId).child("favouriteImages").child("images").orderByChild("thumbnail").equalTo(mList.get(position).getWallpaperItemURL()).addListenerForSingleValueEvent(showFavouriteValueEventListener);
 
-                favouriteUnfilled.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+                if (isConnected()) {
+                    favouriteUnfilled.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
 
-                        final String pushId = mRef.push().getKey();
+                            final String pushId = mRef.push().getKey();
 
-                        Task task = mRef.child(userId).child("favouriteImages").child("images").child(pushId).child("thumbnail").setValue(mList.get(position).getWallpaperItemURL());
-                        task.addOnSuccessListener(new OnSuccessListener() {
-                            @Override
-                            public void onSuccess(Object o) {
-                                mRef.child(userId).child("favouriteImages").child("images").child(pushId).child("userId").setValue(mList.get(position).getAnotherUserId());
-                                mRef.child(userId).child("favouriteImages").child("images").child(pushId).child("postNumber").setValue((-(favouriteNumberOfImages + 1)));
-                                mRef.child(userId).child("favouriteImages").child("numberOfImages").setValue((favouriteNumberOfImages + 1));
-                                favouriteFilled.setVisibility(View.VISIBLE);
-                                favouriteUnfilled.setVisibility(View.GONE);
-                            }
-                        });
+                            Task task = mRef.child(userId).child("favouriteImages").child("images").child(pushId).child("thumbnail").setValue(mList.get(position).getWallpaperItemURL());
+                            task.addOnSuccessListener(new OnSuccessListener() {
+                                @Override
+                                public void onSuccess(Object o) {
+                                    mRef.child(userId).child("favouriteImages").child("images").child(pushId).child("userId").setValue(mList.get(position).getAnotherUserId());
+                                    mRef.child(userId).child("favouriteImages").child("images").child(pushId).child("postNumber").setValue((-(favouriteNumberOfImages + 1)));
+                                    mRef.child(userId).child("favouriteImages").child("numberOfImages").setValue((favouriteNumberOfImages + 1));
+                                    favouriteFilled.setVisibility(View.VISIBLE);
+                                    favouriteUnfilled.setVisibility(View.GONE);
+                                }
+                            });
 
-                    }
-                });
+                        }
+                    });
 
-                favouriteFilled.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+                    favouriteFilled.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
 
-                        addFavouriteValueEventListener = new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.exists()) {
-                                    try {
-                                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                            if (dataSnapshot1.child("thumbnail").getValue().toString().equals(mList.get(position).getWallpaperItemURL())) {
-                                                mRef.child(userId).child("favouriteImages").child("images").child(dataSnapshot1.getKey()).child("thumbnail").removeValue();
-                                                mRef.child(userId).child("favouriteImages").child("images").child(dataSnapshot1.getKey()).child("userId").removeValue();
-                                                mRef.child(userId).child("favouriteImages").child("images").child(dataSnapshot1.getKey()).child("postNumber").removeValue();
-                                                mRef.child(userId).child("favouriteImages").child("numberOfImages").setValue((favouriteNumberOfImages - 1));
+                            addFavouriteValueEventListener = new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.exists()) {
+                                        try {
+                                            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                                if (dataSnapshot1.child("thumbnail").getValue().toString().equals(mList.get(position).getWallpaperItemURL())) {
+                                                    mRef.child(userId).child("favouriteImages").child("images").child(dataSnapshot1.getKey()).child("thumbnail").removeValue();
+                                                    mRef.child(userId).child("favouriteImages").child("images").child(dataSnapshot1.getKey()).child("userId").removeValue();
+                                                    mRef.child(userId).child("favouriteImages").child("images").child(dataSnapshot1.getKey()).child("postNumber").removeValue();
+                                                    mRef.child(userId).child("favouriteImages").child("numberOfImages").setValue((favouriteNumberOfImages - 1));
 
-                                                favouriteFilled.setVisibility(View.GONE);
-                                                favouriteUnfilled.setVisibility(View.VISIBLE);
-                                                break;
+                                                    favouriteFilled.setVisibility(View.GONE);
+                                                    favouriteUnfilled.setVisibility(View.VISIBLE);
+                                                    break;
+                                                }
                                             }
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
                                         }
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
                                     }
                                 }
-                            }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                            }
-                        };
+                                }
+                            };
 
-                        mRef.child(userId).child("favouriteImages").child("images").addListenerForSingleValueEvent(addFavouriteValueEventListener);
+                            mRef.child(userId).child("favouriteImages").child("images").addListenerForSingleValueEvent(addFavouriteValueEventListener);
 
-                    }
-                });
+                        }
+                    });
+                } else {
+                    favouriteFilled.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Toast.makeText(mContext, "You need internet to remove it from your favorite", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    favouriteUnfilled.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Toast.makeText(mContext, "You need internet to add it to your favorite", Toast.LENGTH_SHORT).show();
+//                            Snackbar.make(view, "You need internet to add it to your favorite", Snackbar.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         } else {
 
@@ -300,181 +316,190 @@ public class WallpaperItemAdapter extends RecyclerView.Adapter<WallpaperItemAdap
 
 //            Log.d(TAG, "onBindViewHolder: \n position of this : "+position+" wallpaper URL : "+mList.get(position).getWallpaperItemURL());
 
-            deleteImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View view) {
+            if (!isConnected()) {
+                deleteImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(mContext, "You need internet to delete wallpaper", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                deleteImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View view) {
 
 //                    Log.d(TAG, "onClick: \nThis wallpaper url comes when clicked : "+mList.get(position).getWallpaperItemURL());
 
-                    new AlertDialog.Builder(parentActivity)
-                            .setTitle("Delete wallpaper")
-                            .setMessage("Do you really want to delete this wallpaper")
-                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.dismiss();
-                                }
-                            })
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
+                        new AlertDialog.Builder(parentActivity)
+                                .setTitle("Delete wallpaper")
+                                .setMessage("Do you really want to delete this wallpaper")
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                    }
+                                })
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
 
 //                                    Log.d(TAG, "onClick: It comes in yes part of alert dialog box");
 
 //                    if user has selected this wallpaper as favourite then we have to also delete form there
-                                    deleteFavouriteImageValueEventListener = new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                            if (dataSnapshot.exists()) {
-                                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                                    try {
-                                                        if (dataSnapshot1.child("thumbnail").getValue().toString().equals(mList.get(position).getWallpaperItemURL())) {
+                                        deleteFavouriteImageValueEventListener = new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                if (dataSnapshot.exists()) {
+                                                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                                        try {
+                                                            if (dataSnapshot1.child("thumbnail").getValue().toString().equals(mList.get(position).getWallpaperItemURL())) {
 
-                                                            mRef.child(userId).child("favouriteImages").child("images").child(dataSnapshot1.getKey()).child("thumbnail").removeValue();
-                                                            mRef.child(userId).child("favouriteImages").child("images").child(dataSnapshot1.getKey()).child("userId").removeValue();
-                                                            mRef.child(userId).child("favouriteImages").child("images").child(dataSnapshot1.getKey()).child("postNumber").removeValue();
-                                                            mRef.child(userId).child("favouriteImages").child("numberOfImages").setValue(favouriteNumberOfImages - 1);
+                                                                mRef.child(userId).child("favouriteImages").child("images").child(dataSnapshot1.getKey()).child("thumbnail").removeValue();
+                                                                mRef.child(userId).child("favouriteImages").child("images").child(dataSnapshot1.getKey()).child("userId").removeValue();
+                                                                mRef.child(userId).child("favouriteImages").child("images").child(dataSnapshot1.getKey()).child("postNumber").removeValue();
+                                                                mRef.child(userId).child("favouriteImages").child("numberOfImages").setValue(favouriteNumberOfImages - 1);
+                                                            }
+                                                        } catch (Exception e) {
+                                                            e.printStackTrace();
                                                         }
-                                                    } catch (Exception e) {
-                                                        e.printStackTrace();
                                                     }
                                                 }
                                             }
-                                        }
 
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                        }
-                                    };
+                                            }
+                                        };
 
-                                    mRef.child(userId).child("favouriteImages").child("images").addListenerForSingleValueEvent(deleteFavouriteImageValueEventListener);
+                                        mRef.child(userId).child("favouriteImages").child("images").addListenerForSingleValueEvent(deleteFavouriteImageValueEventListener);
 
 //                    delete from recently uploaded
-                                    deleteRecentlyUploadedImageValueEventListener = new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                            if (dataSnapshot.exists()) {
-                                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                                    try {
+                                        deleteRecentlyUploadedImageValueEventListener = new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                if (dataSnapshot.exists()) {
+                                                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                                        try {
 
-                                                        if (dataSnapshot1.child("thumbnail").getValue().toString().equals(mList.get(position).getWallpaperItemURL())) {
-                                                            mRef3.child("images").child(dataSnapshot1.getKey()).child("thumbnail").removeValue();
-                                                            mRef3.child("images").child(dataSnapshot1.getKey()).child("userId").removeValue();
-                                                            mRef3.child("images").child(dataSnapshot1.getKey()).child("postNumber").removeValue();
-                                                            mRef3.child("numberOfImages").setValue(recentNumberOfImages - 1);
+                                                            if (dataSnapshot1.child("thumbnail").getValue().toString().equals(mList.get(position).getWallpaperItemURL())) {
+                                                                mRef3.child("images").child(dataSnapshot1.getKey()).child("thumbnail").removeValue();
+                                                                mRef3.child("images").child(dataSnapshot1.getKey()).child("userId").removeValue();
+                                                                mRef3.child("images").child(dataSnapshot1.getKey()).child("postNumber").removeValue();
+                                                                mRef3.child("numberOfImages").setValue(recentNumberOfImages - 1);
 
-                                                            break;
+                                                                break;
+                                                            }
+                                                        } catch (Exception e) {
+                                                            e.printStackTrace();
                                                         }
-                                                    } catch (Exception e) {
-                                                        e.printStackTrace();
                                                     }
                                                 }
                                             }
-                                        }
 
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                        }
-                                    };
+                                            }
+                                        };
 
-                                    mRef3.child("images").addListenerForSingleValueEvent(deleteRecentlyUploadedImageValueEventListener);
+                                        mRef3.child("images").addListenerForSingleValueEvent(deleteRecentlyUploadedImageValueEventListener);
 
-                                    //                    delete from upload of user
+                                        //                    delete from upload of user
 
-                                    deleteUploadedImageValueEventListener = new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-                                            if (dataSnapshot.exists()) {
-                                                for (final DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                                    try {
-                                                        if (dataSnapshot1.child("uploadedImage").getValue(String.class).equals(mList.get(position).getWallpaperItemURL())) {
+                                        deleteUploadedImageValueEventListener = new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                                                if (dataSnapshot.exists()) {
+                                                    for (final DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                                        try {
+                                                            if (dataSnapshot1.child("uploadedImage").getValue(String.class).equals(mList.get(position).getWallpaperItemURL())) {
 
-                                                            category = dataSnapshot1.child("category").getValue(String.class);
+                                                                category = dataSnapshot1.child("category").getValue(String.class);
 
-                                                            categoryValueEventListener = new ValueEventListener() {
-                                                                @Override
-                                                                public void onDataChange(@NonNull final DataSnapshot categorysnapshot) {
+                                                                categoryValueEventListener = new ValueEventListener() {
+                                                                    @Override
+                                                                    public void onDataChange(@NonNull final DataSnapshot categorysnapshot) {
 
 //                                                                    categoryNumberOfImages = categorysnapshot.getValue(Integer.class);
 
-                                                                    //                    delete from images category section
+                                                                        //                    delete from images category section
 
-                                                                    deleteCategoryImageValueEventListener = new ValueEventListener() {
-                                                                        @Override
-                                                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot3) {
-                                                                            if (dataSnapshot3.exists()) {
+                                                                        deleteCategoryImageValueEventListener = new ValueEventListener() {
+                                                                            @Override
+                                                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot3) {
+                                                                                if (dataSnapshot3.exists()) {
 //                                                                                Log.d(TAG, "onDataChange: This comes to the delete category part");
-                                                                                for (DataSnapshot dataSnapshot4 : dataSnapshot3.getChildren()) {
+                                                                                    for (DataSnapshot dataSnapshot4 : dataSnapshot3.getChildren()) {
 //                                                                                    Log.d(TAG, "onDataChange: This comes in the for loop of the delete category part\n datasnapshot4 image url : "+dataSnapshot4.child("thumbnail").getValue(String.class)+"\n getWallpaperItemURL : "+mList.get(position).getWallpaperItemURL());
-                                                                                    if (dataSnapshot4.child("thumbnail").getValue(String.class).equals(mList.get(position).getWallpaperItemURL())) {
+                                                                                        if (dataSnapshot4.child("thumbnail").getValue(String.class).equals(mList.get(position).getWallpaperItemURL())) {
 //                                                                                        Log.d(TAG, "onDataChange: This comes in if part of delete category part");
-                                                                                        mRef2.child(dataSnapshot1.child("category").getValue(String.class)).child("images").child(dataSnapshot4.getKey()).child("thumbnail").removeValue();
-                                                                                        mRef2.child(dataSnapshot1.child("category").getValue(String.class)).child("images").child(dataSnapshot4.getKey()).child("userId").removeValue();
-                                                                                        mRef2.child(dataSnapshot1.child("category").getValue(String.class)).child("images").child(dataSnapshot4.getKey()).child("postNumber").removeValue();
-                                                                                        mRef2.child(dataSnapshot1.child("category").getValue(String.class)).child("numberOfImages").setValue((categorysnapshot.getValue(Integer.class)) - 1).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                                            @Override
-                                                                                            public void onSuccess(Void aVoid) {
-                                                                                                mRef.child(userId).child("uploadedImages").child("images").child(dataSnapshot1.getKey()).child("uploadedImage").removeValue();
-                                                                                                mRef.child(userId).child("uploadedImages").child("images").child(dataSnapshot1.getKey()).child("category").removeValue();
-                                                                                                mRef.child(userId).child("uploadedImages").child("images").child(dataSnapshot1.getKey()).child("userId").removeValue();
-                                                                                                mRef.child(userId).child("uploadedImages").child("images").child(dataSnapshot1.getKey()).child("postNumber").removeValue();
-                                                                                                mRef.child(userId).child("uploadedImages").child("numberOfImages").setValue(uploadedNumberOfImages - 1);
-                                                                                            }
-                                                                                        });
-                                                                                        break;
+                                                                                            mRef2.child(dataSnapshot1.child("category").getValue(String.class)).child("images").child(dataSnapshot4.getKey()).child("thumbnail").removeValue();
+                                                                                            mRef2.child(dataSnapshot1.child("category").getValue(String.class)).child("images").child(dataSnapshot4.getKey()).child("userId").removeValue();
+                                                                                            mRef2.child(dataSnapshot1.child("category").getValue(String.class)).child("images").child(dataSnapshot4.getKey()).child("postNumber").removeValue();
+                                                                                            mRef2.child(dataSnapshot1.child("category").getValue(String.class)).child("numberOfImages").setValue((categorysnapshot.getValue(Integer.class)) - 1).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                                @Override
+                                                                                                public void onSuccess(Void aVoid) {
+                                                                                                    mRef.child(userId).child("uploadedImages").child("images").child(dataSnapshot1.getKey()).child("uploadedImage").removeValue();
+                                                                                                    mRef.child(userId).child("uploadedImages").child("images").child(dataSnapshot1.getKey()).child("category").removeValue();
+                                                                                                    mRef.child(userId).child("uploadedImages").child("images").child(dataSnapshot1.getKey()).child("userId").removeValue();
+                                                                                                    mRef.child(userId).child("uploadedImages").child("images").child(dataSnapshot1.getKey()).child("postNumber").removeValue();
+                                                                                                    mRef.child(userId).child("uploadedImages").child("numberOfImages").setValue(uploadedNumberOfImages - 1);
+                                                                                                }
+                                                                                            });
+                                                                                            break;
+                                                                                        }
                                                                                     }
                                                                                 }
                                                                             }
-                                                                        }
 
-                                                                        @Override
-                                                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                                            @Override
+                                                                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                                                        }
-                                                                    };
+                                                                            }
+                                                                        };
 
-                                                                    mRef2.child(dataSnapshot1.child("category").getValue(String.class)).child("images").addListenerForSingleValueEvent(deleteCategoryImageValueEventListener);
+                                                                        mRef2.child(dataSnapshot1.child("category").getValue(String.class)).child("images").addListenerForSingleValueEvent(deleteCategoryImageValueEventListener);
 
-                                                                }
+                                                                    }
 
-                                                                @Override
-                                                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                                    @Override
+                                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                                                }
-                                                            };
+                                                                    }
+                                                                };
 
-                                                            mRef2.child(dataSnapshot1.child("category").getValue(String.class)).child("numberOfImages").addListenerForSingleValueEvent(categoryValueEventListener);
+                                                                mRef2.child(dataSnapshot1.child("category").getValue(String.class)).child("numberOfImages").addListenerForSingleValueEvent(categoryValueEventListener);
 
-                                                            break;
+                                                                break;
 
+                                                            }
+                                                        } catch (Exception e) {
+                                                            e.printStackTrace();
                                                         }
-                                                    } catch (Exception e) {
-                                                        e.printStackTrace();
                                                     }
                                                 }
                                             }
-                                        }
 
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                        }
-                                    };
+                                            }
+                                        };
 
-                                    mRef.child(userId).child("uploadedImages").child("images").addListenerForSingleValueEvent(deleteUploadedImageValueEventListener);
+                                        mRef.child(userId).child("uploadedImages").child("images").addListenerForSingleValueEvent(deleteUploadedImageValueEventListener);
 
 //                                    Intent intent = new Intent(mContext, MyUploadsActivity.class);
 //                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
 //                                    mContext.startActivity(intent);
 
-                                }
-                            })
-                            .show();
+                                    }
+                                })
+                                .show();
 
-                }
-            });
+                    }
+                });
+            }
 
         }
 
@@ -489,6 +514,13 @@ public class WallpaperItemAdapter extends RecyclerView.Adapter<WallpaperItemAdap
             }
         });
 
+    }
+
+    private boolean isConnected() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
     }
 
     @Override

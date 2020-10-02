@@ -19,8 +19,8 @@
         android:id="@+id/noWallpaperImage"
         android:layout_width="@dimen/_220sdp"
         android:layout_height="@dimen/_200sdp"
-        android:layout_gravity="center_horizontal"
         android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/_51sdp"
         android:src="@drawable/empty"
         android:visibility="gone" />
@@ -29,28 +29,27 @@
         android:id="@+id/noWallpaperText"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_100sdp"
-        android:text="No wallpaper has been added yet"
-        android:textSize="30sp"
-        android:paddingStart="@dimen/_70sdp"
-        android:paddingHorizontal="@dimen/_40sdp"
+        android:layout_below="@+id/noWallpaperImage"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:gravity="top"
-        android:textStyle="bold"
-        android:visibility="gone"
-        android:layout_below="@+id/noWallpaperImage"
+        android:paddingHorizontal="@dimen/_40sdp"
+        android:paddingStart="@dimen/_70sdp"
+        android:text="No wallpaper has been added yet"
         android:textColor="?attr/textcolor"
-        />
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
 
-<!--    <com.google.android.gms.ads.AdView-->
-<!--        xmlns:ads="http://schemas.android.com/apk/res-auto"-->
-<!--        android:id="@+id/adView"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_centerHorizontal="true"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        ads:adSize="BANNER"-->
-<!--        ads:adUnitId="ca-app-pub-9384200931442886/6880304820">-->
-<!--    </com.google.android.gms.ads.AdView>-->
+    <!--    <com.google.android.gms.ads.AdView-->
+    <!--        xmlns:ads="http://schemas.android.com/apk/res-auto"-->
+    <!--        android:id="@+id/adView"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_centerHorizontal="true"-->
+    <!--        android:layout_alignParentBottom="true"-->
+    <!--        ads:adSize="BANNER"-->
+    <!--        ads:adUnitId="ca-app-pub-9384200931442886/6880304820">-->
+    <!--    </com.google.android.gms.ads.AdView>-->
 
 </RelativeLayout>

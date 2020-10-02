@@ -62,7 +62,7 @@ public class UploadImageActivity extends AppCompatActivity {
     FirebaseStorage firebaseStorage;
     StorageReference storageReference;
     FirebaseUser user;
-    int categoryNumberOfImages, uplodedNumberOfImages, recentNumberOfImages, imageUploaded=0;
+    int categoryNumberOfImages, uplodedNumberOfImages, recentNumberOfImages, imageUploaded = 0;
     ValueEventListener categoryValueEventListener, uploadValueEventListener, recentValueEventListener;
 
     @Override
@@ -278,8 +278,7 @@ public class UploadImageActivity extends AppCompatActivity {
                             });
                         }
                     });
-                }
-                else{
+                } else {
                     Toast.makeText(getApplicationContext(), "Please select an image to upload", Toast.LENGTH_SHORT).show();
                     uploadProgressBar.setVisibility(View.GONE);
                     btnUploadImage.setVisibility(View.VISIBLE);
@@ -293,20 +292,19 @@ public class UploadImageActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK){
+        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             Uri imageuri = CropImage.getPickImageResultUri(this, data);
-            if (CropImage.isReadExternalStoragePermissionsRequired(this, imageuri)){
+            if (CropImage.isReadExternalStoragePermissionsRequired(this, imageuri)) {
                 uri = imageuri;
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},0);
-            }
-            else {
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+            } else {
                 startCrop(imageuri);
             }
         }
 
-        if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK){
+            if (resultCode == RESULT_OK) {
                 filepath = result.getUri();
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filepath);
@@ -339,7 +337,7 @@ public class UploadImageActivity extends AppCompatActivity {
 //        }
     }
 
-    private void startCrop(Uri imageuri){
+    private void startCrop(Uri imageuri) {
         CropImage.activity(imageuri).setGuidelines(CropImageView.Guidelines.ON)
                 .setMultiTouchEnabled(true)
                 .start(this);

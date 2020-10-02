@@ -21,7 +21,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class MyUploadsActivity extends AppCompatActivity {
 
@@ -74,12 +73,11 @@ public class MyUploadsActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                if (!dataSnapshot.exists()){
+                if (!dataSnapshot.exists()) {
                     myUploadmbImage.setVisibility(View.VISIBLE);
                     myUploadshowText.setVisibility(View.VISIBLE);
                     myUploadsRecyclerView.setVisibility(View.GONE);
-                }
-                else {
+                } else {
                     myUploadsRecyclerView.setVisibility(View.VISIBLE);
                     myUploadshowText.setVisibility(View.GONE);
                     myUploadmbImage.setVisibility(View.GONE);
