@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.mwallpaper">
+    package="com.example.mWallpaper">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.SET_WALLPAPER_HINTS" />
 
     <application
-        android:name=".FirebaseHandler"
+        android:name="com.example.mWallpaper.FirebaseHandler"
         android:allowBackup="true"
         android:icon="@drawable/wallpaper_logo"
         android:label="@string/app_name"
@@ -19,22 +19,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-<!--        <meta-data-->
-<!--            android:name="com.google.android.gms.ads.APPLICATION_ID"-->
-<!--            android:value="ca-app-pub-9384200931442886~8221306654"/>-->
-
-        <activity android:name=".DisclaimerActivity"></activity>
-        <activity android:name=".AnotherUserProfileActivity" />
+        <activity android:name="com.example.mWallpaper.DisclaimerActivity"/>
+        <activity android:name="com.example.mWallpaper.AnotherUserProfileActivity" />
         <activity
-            android:name=".MyUploadsActivity"
+            android:name="com.example.mWallpaper.MyUploadsActivity"
             android:noHistory="true" />
-        <activity android:name=".UploadImageActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".SingleWallpaperActivity" />
-        <activity android:name=".WallpaperListActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name="com.example.mWallpaper.UploadImageActivity" />
+        <activity android:name="com.example.mWallpaper.RegisterActivity" />
+        <activity android:name="com.example.mWallpaper.SingleWallpaperActivity" />
+        <activity android:name="com.example.mWallpaper.WallpaperListActivity" />
+        <activity android:name="com.example.mWallpaper.MainActivity" />
         <activity
-            android:name=".SplashScreen"
+            android:name="com.example.mWallpaper.SplashScreen"
             android:theme="@style/SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -48,13 +44,14 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.provider"
+            android:authorities="com.example.mWallpaper.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_path" />
         </provider>
+
     </application>
 
 </manifest>

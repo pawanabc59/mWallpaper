@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.example.mwallpaper",
+  "applicationId": "com.example.mWallpaper",
   "variantName": "release",
   "elements": [
     {
