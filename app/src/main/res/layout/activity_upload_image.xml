@@ -41,22 +41,51 @@
                 app:strokeColor="@color/colorAccent"
                 app:strokeWidth="2dp" />
 
+            <TextView
+                android:id="@+id/selectTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btnChooseImage"
+                android:text="Select Category"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="?attr/textcolor"
+                android:layout_marginStart="@dimen/_15sdp"
+                />
+
+            <FrameLayout
+                android:id="@+id/spinnerFrameLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/selectTxt">
             <Spinner
                 android:id="@+id/categorySpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/btnChooseImage"
                 android:layout_margin="@dimen/_10sdp"
                 android:background="?attr/cardbackground"
-                android:backgroundTint="#737e8c"
+                android:backgroundTint="#ffffff"
                 android:padding="@dimen/_10sdp"
                 android:pointerIcon="arrow"
-                android:spinnerMode="dropdown"></Spinner>
+                android:spinnerMode="dropdown">
+            </Spinner>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_arrow_drop"
+                    android:layout_gravity="right"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:foregroundGravity="center"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    />
+
+            </FrameLayout>
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/categorySpinner">
+                android:layout_below="@+id/spinnerFrameLayout">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnUploadImage"
