@@ -28,7 +28,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
-import com.github.chrisbanes.photoview.BuildConfig;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -46,6 +45,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import static androidx.core.content.FileProvider.getUriForFile;
 
 public class SingleWallpaperActivity extends AppCompatActivity {
 
@@ -77,7 +78,7 @@ public class SingleWallpaperActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         sessionManager = new SessionManager(getApplicationContext());
-        if (sessionManager.loadNightModeState() == true) {
+        if (sessionManager.loadNightModeState()) {
 
             setTheme(R.style.darktheme);
         } else {
@@ -110,7 +111,7 @@ public class SingleWallpaperActivity extends AppCompatActivity {
 
         floatingActionMenu.setClosedOnTouchOutside(true);
 
-//        This code is for transparent status bar in android
+//        This code is for transparent status bar (where time,network etc is shown) in android
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getWindow();
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -133,7 +134,6 @@ public class SingleWallpaperActivity extends AppCompatActivity {
         fbtnDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Toast.makeText(getApplicationContext(),"download is clicked", Toast.LENGTH_SHORT).show();
                 Picasso.get().load(wallpaper_path).into(new Target() {
                     @Override
                     public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -142,6 +142,7 @@ public class SingleWallpaperActivity extends AppCompatActivity {
 
                         if (uri != null) {
                             intent1.setDataAndType(uri, "image/*");
+                            intent1.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                             startActivity(Intent.createChooser(intent1, "mWallpaper"));
                         }
                     }
@@ -159,23 +160,45 @@ public class SingleWallpaperActivity extends AppCompatActivity {
             }
         });
 
+//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//        StrictMode.setThreadPolicy(policy);
+
         fbtnSetBackground.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
 
+//                InputStream ins;
                 Picasso.get().load(wallpaper_path).into(new Target() {
                     @Override
                     public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
 //                        Intent intent1 = new Intent(Intent.ACTION_VIEW);
                         setWallpaperUri = saveWallpaperAndGetUri(bitmap);
+//                        Log.d("pawan","The wallpaper path is "+setWallpaperUri+"\n\n\n\n\n\n");
+                        Uri uri = Uri.parse(String.valueOf(setWallpaperUri));
 
+//                        setWallpaperUri = Uri.parse(wallpaper_path);
                         if (setWallpaperUri != null) {
-                            WallpaperManager wallpaperManager = WallpaperManager.getInstance(SingleWallpaperActivity.this);
+
+/*
+                         to directly set the wallpaper on the lock screen this will also change the lock screen wallpaper to default.
+*/
+
+                            /*WallpaperManager wallpaperManager = WallpaperManager.getInstance(SingleWallpaperActivity.this);
                             Intent intent1 = new Intent(wallpaperManager.getCropAndSetWallpaperIntent(setWallpaperUri));
+                            Intent intent1 = new Intent("android.service.wallpaper.ACTION_CROP_AND_SET_WALLPAPER");
                             intent1.setDataAndType(setWallpaperUri, "image/*");
-                            startActivity(intent1);
-//                            intent1.setDataAndType(setWallpaperUri, "image/*");
-//                            startActivity(Intent.createChooser(intent1, "mWallpaper"));
+                            startActivity(intent1);*/
+
+                            /*This will set the wallpaper based on system default mode like it will open the gallery to set the wallpaper either to lock screen
+                             * or at a home screen*/
+                            Intent intent = new Intent(Intent.ACTION_ATTACH_DATA);
+                            intent.addCategory(Intent.CATEGORY_DEFAULT);
+                            intent.setDataAndType(uri, "image/*");
+                            intent.putExtra("mimeType", "image/*");
+                            /*this will take the uri permission to read the image file from storage. without this the gallery will say there is no image to open*/
+                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            startActivity(Intent.createChooser(intent, "Set as:"));
                         }
                     }
 
@@ -190,8 +213,18 @@ public class SingleWallpaperActivity extends AppCompatActivity {
                     }
                 });
 
-//                Uri uri = Uri.parse(wallpaper_path);
+//                WallpaperManager wallpaperManager = WallpaperManager.getInstance(SingleWallpaperActivity.this);
+//                try {
+//                    InputStream ins = new URL(wallpaper_path).openStream();
+//                    wallpaperManager.setStream(ins, null,false, WallpaperManager.FLAG_LOCK);
+//                    Toast.makeText(getApplicationContext(), "Wallpaper has been set", Toast.LENGTH_SHORT);
+//
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
 
+
+//                Uri uri = Uri.parse(wallpaper_path);
 
 //                String[] listItems = new String[]{"Set as Home Screen", "Set as Lock Screen", "Both"};
 //                AlertDialog.Builder mBuilder = new AlertDialog.Builder(SingleWallpaperActivity.this);
@@ -461,7 +494,7 @@ public class SingleWallpaperActivity extends AppCompatActivity {
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
             fileOutputStream.close();
-            uri = FileProvider.getUriForFile(this,  "com.example.mWallpaper.provider", file);
+            uri = getUriForFile(this, "com.example.mWallpaper.provider", file);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -487,12 +520,32 @@ public class SingleWallpaperActivity extends AppCompatActivity {
             return null;
         }
         File folder = new File(Environment.getExternalStorageDirectory().toString() + "/mWallpaper");
-        folder.mkdir();
+//        final File folder =
+//                Environment.getExternalStoragePublicDirectory
+//                        (
+//                                Environment.DIRECTORY_DCIM + "/MyFolderName/"
+//                        );
+        if (!folder.exists()) {
+            boolean isDirSuccess = folder.mkdirs();
+//            if (isDirSuccess) {
+//                Log.d("me", "Directory creation successful. \n\n\n");
+//            } else {
+//                Log.d("me", "Error creating directory");
+//            }
+        }
 
         pushKey = mRef.push().getKey();
 
         File file = new File(folder, pushKey + ".jpg");
-//        file.createNewFile();
+        if (file.exists()) {
+            file.delete();
+        }
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         try {
             FileOutputStream out = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
@@ -500,7 +553,20 @@ public class SingleWallpaperActivity extends AppCompatActivity {
             out.close();
             Toast.makeText(getApplicationContext(), "Image Downloaded", Toast.LENGTH_SHORT).show();
 
-            return FileProvider.getUriForFile(this,  "com.example.mWallpaper.provider", file);
+            /*when the image is downloaded it does not show the image in gallery directly to show it directly in the gallery we use broadcast to say that we have
+            * downloaded the image now update the gallery. This feature comes after the KITKAT version so if any version lower than kitkat found then we have to also
+            * provide the code for that.*/
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                final Intent scanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                final Uri contentUri = Uri.fromFile(file);
+                scanIntent.setData(contentUri);
+                sendBroadcast(scanIntent);
+            } else {
+                final Intent intent = new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://" + Environment.getExternalStorageDirectory()));
+                sendBroadcast(intent);
+            }
+
+            return FileProvider.getUriForFile(this, "com.example.mWallpaper.provider", file);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
