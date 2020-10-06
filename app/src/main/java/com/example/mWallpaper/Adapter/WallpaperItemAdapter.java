@@ -242,6 +242,7 @@ public class WallpaperItemAdapter extends RecyclerView.Adapter<WallpaperItemAdap
                                 @Override
                                 public void onSuccess(Object o) {
                                     mRef.child(userId).child("favouriteImages").child("images").child(pushId).child("userId").setValue(mList.get(position).getAnotherUserId());
+                                    mRef.child(userId).child("favouriteImages").child("images").child(pushId).child("category").setValue(mList.get(position).getCategory());
                                     mRef.child(userId).child("favouriteImages").child("images").child(pushId).child("postNumber").setValue((-(favouriteNumberOfImages + 1)));
                                     mRef.child(userId).child("favouriteImages").child("numberOfImages").setValue((favouriteNumberOfImages + 1));
                                     favouriteFilled.setVisibility(View.VISIBLE);
@@ -265,6 +266,7 @@ public class WallpaperItemAdapter extends RecyclerView.Adapter<WallpaperItemAdap
                                                 if (dataSnapshot1.child("thumbnail").getValue().toString().equals(mList.get(position).getWallpaperItemURL())) {
                                                     mRef.child(userId).child("favouriteImages").child("images").child(dataSnapshot1.getKey()).child("thumbnail").removeValue();
                                                     mRef.child(userId).child("favouriteImages").child("images").child(dataSnapshot1.getKey()).child("userId").removeValue();
+                                                    mRef.child(userId).child("favouriteImages").child("images").child(dataSnapshot1.getKey()).child("category").removeValue();
                                                     mRef.child(userId).child("favouriteImages").child("images").child(dataSnapshot1.getKey()).child("postNumber").removeValue();
                                                     mRef.child(userId).child("favouriteImages").child("numberOfImages").setValue((favouriteNumberOfImages - 1));
 
@@ -356,6 +358,7 @@ public class WallpaperItemAdapter extends RecyclerView.Adapter<WallpaperItemAdap
 
                                                                 mRef.child(userId).child("favouriteImages").child("images").child(dataSnapshot1.getKey()).child("thumbnail").removeValue();
                                                                 mRef.child(userId).child("favouriteImages").child("images").child(dataSnapshot1.getKey()).child("userId").removeValue();
+                                                                mRef.child(userId).child("favouriteImages").child("images").child(dataSnapshot1.getKey()).child("category").removeValue();
                                                                 mRef.child(userId).child("favouriteImages").child("images").child(dataSnapshot1.getKey()).child("postNumber").removeValue();
                                                                 mRef.child(userId).child("favouriteImages").child("numberOfImages").setValue(favouriteNumberOfImages - 1);
                                                             }
@@ -385,6 +388,7 @@ public class WallpaperItemAdapter extends RecyclerView.Adapter<WallpaperItemAdap
                                                             if (dataSnapshot1.child("thumbnail").getValue().toString().equals(mList.get(position).getWallpaperItemURL())) {
                                                                 mRef3.child("images").child(dataSnapshot1.getKey()).child("thumbnail").removeValue();
                                                                 mRef3.child("images").child(dataSnapshot1.getKey()).child("userId").removeValue();
+                                                                mRef3.child("images").child(dataSnapshot1.getKey()).child("category").removeValue();
                                                                 mRef3.child("images").child(dataSnapshot1.getKey()).child("postNumber").removeValue();
                                                                 mRef3.child("numberOfImages").setValue(recentNumberOfImages - 1);
 
@@ -437,6 +441,7 @@ public class WallpaperItemAdapter extends RecyclerView.Adapter<WallpaperItemAdap
                                                                                             mRef2.child(dataSnapshot1.child("category").getValue(String.class)).child("images").child(dataSnapshot4.getKey()).child("thumbnail").removeValue();
                                                                                             mRef2.child(dataSnapshot1.child("category").getValue(String.class)).child("images").child(dataSnapshot4.getKey()).child("userId").removeValue();
                                                                                             mRef2.child(dataSnapshot1.child("category").getValue(String.class)).child("images").child(dataSnapshot4.getKey()).child("postNumber").removeValue();
+                                                                                            mRef2.child(dataSnapshot1.child("category").getValue(String.class)).child("images").child(dataSnapshot4.getKey()).child("category").removeValue();
                                                                                             mRef2.child(dataSnapshot1.child("category").getValue(String.class)).child("numberOfImages").setValue((categorysnapshot.getValue(Integer.class)) - 1).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                                                 @Override
                                                                                                 public void onSuccess(Void aVoid) {
@@ -509,6 +514,7 @@ public class WallpaperItemAdapter extends RecyclerView.Adapter<WallpaperItemAdap
                 Intent intent = new Intent(mContext, SingleWallpaperActivity.class);
                 intent.putExtra("image_path", mList.get(position).getWallpaperItemURL());
                 intent.putExtra("anotherUserId", mList.get(position).getAnotherUserId());
+                intent.putExtra("category", mList.get(position).getCategory());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
             }

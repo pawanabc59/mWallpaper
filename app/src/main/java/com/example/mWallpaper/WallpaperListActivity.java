@@ -87,7 +87,7 @@ public class WallpaperListActivity extends AppCompatActivity {
                     for (final DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
 //                    mRef2 = mRef.child(dataSnapshot1.getKey());
                         try {
-                            wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("thumbnail").getValue().toString(), dataSnapshot1.child("userId").getValue().toString()));
+                            wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("thumbnail").getValue().toString(), dataSnapshot1.child("userId").getValue().toString(), dataSnapshot1.child("category").getValue(String.class)));
 //                    Log.d(TAG, "onDataChange: "+dataSnapshot1.child("thumbnail").getValue().toString());
 //                        Collections.reverse(wallpaperItemModels);
                             wallpaperItemAdapter.notifyDataSetChanged();

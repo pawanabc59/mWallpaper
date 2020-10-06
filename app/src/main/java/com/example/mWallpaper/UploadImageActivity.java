@@ -257,12 +257,14 @@ public class UploadImageActivity extends AppCompatActivity {
 //                                upload to database
                                     mRef.child("images").child(categorySelected).child("images").child(pushId).child("thumbnail").setValue(task.getResult().toString());
                                     mRef.child("images").child(categorySelected).child("images").child(pushId).child("userId").setValue(userId);
+                                    mRef.child("images").child(categorySelected).child("images").child(pushId).child("category").setValue(categorySelected);
                                     mRef.child("images").child(categorySelected).child("images").child(pushId).child("postNumber").setValue((-(categoryNumberOfImages + 1)));
                                     mRef.child("images").child(categorySelected).child("numberOfImages").setValue((categoryNumberOfImages + 1));
 
 //                                upload to firebase database recently uploaded
                                     mRef.child("recentlyUploadedImages").child("images").child(pushId).child("thumbnail").setValue(task.getResult().toString());
                                     mRef.child("recentlyUploadedImages").child("images").child(pushId).child("userId").setValue(userId);
+                                    mRef.child("recentlyUploadedImages").child("images").child(pushId).child("category").setValue(categorySelected);
                                     mRef.child("recentlyUploadedImages").child("images").child(pushId).child("postNumber").setValue((-(recentNumberOfImages + 1)));
                                     mRef.child("recentlyUploadedImages").child("numberOfImages").setValue((recentNumberOfImages + 1));
 

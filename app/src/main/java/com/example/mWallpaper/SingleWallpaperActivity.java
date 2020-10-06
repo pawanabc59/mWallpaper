@@ -19,6 +19,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -67,9 +68,10 @@ public class SingleWallpaperActivity extends AppCompatActivity {
     String userId;
     String pushKey;
     Uri setWallpaperUri;
+    TextView txtCategory;
 
     String TAG = "my";
-    String wallpaper_path;
+    String wallpaper_path, category;
     int favouriteNumberOfImages;
     ValueEventListener favouriteImagesValueEventListener, removeFavouriteValueEventListener, numberOfFavouriteImageValueEventListener;
 
@@ -95,6 +97,7 @@ public class SingleWallpaperActivity extends AppCompatActivity {
 
         final Intent intent = getIntent();
         wallpaper_path = intent.getExtras().getString("image_path");
+        category = intent.getExtras().getString("category");
         final String anotherUserId = intent.getExtras().getString("anotherUserId");
 
         wallpaperImage = findViewById(R.id.single_wallpaper_show);
@@ -106,6 +109,7 @@ public class SingleWallpaperActivity extends AppCompatActivity {
         fbtnDownload = findViewById(R.id.fbtnDownload);
         fbtnShare = findViewById(R.id.fbtnShare);
         backgroundImage = findViewById(R.id.backgroundWallpaper);
+        txtCategory = findViewById(R.id.txtCategory);
 
         btnInfo = findViewById(R.id.btnInfo);
 
@@ -120,6 +124,17 @@ public class SingleWallpaperActivity extends AppCompatActivity {
         Picasso.get().load(wallpaper_path).resize(5, 5).into(backgroundImage);
 
         Picasso.get().load(wallpaper_path).into(wallpaperImage);
+
+        txtCategory.setText("Category : "+category);
+
+        txtCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SingleWallpaperActivity.this, WallpaperListActivity.class);
+                intent.putExtra("key", category);
+                startActivity(intent);
+            }
+        });
 
         btnInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -372,6 +387,7 @@ public class SingleWallpaperActivity extends AppCompatActivity {
                     String key = mRef.child("users").push().getKey();
                     mRef.child("users").child(userId).child("favouriteImages").child("images").child(key).child("thumbnail").setValue(wallpaper_path);
                     mRef.child("users").child(userId).child("favouriteImages").child("images").child(key).child("userId").setValue(anotherUserId);
+                    mRef.child("users").child(userId).child("favouriteImages").child("images").child(key).child("category").setValue(category);
                     mRef.child("users").child(userId).child("favouriteImages").child("images").child(key).child("postNumber").setValue((-(favouriteNumberOfImages + 1)));
                     mRef.child("users").child(userId).child("favouriteImages").child("numberOfImages").setValue(favouriteNumberOfImages + 1);
 
@@ -400,6 +416,7 @@ public class SingleWallpaperActivity extends AppCompatActivity {
                                     if (dataSnapshot1.child("thumbnail").getValue().toString().equals(wallpaper_path)) {
                                         mRef.child("users").child(userId).child("favouriteImages").child("images").child(dataSnapshot1.getKey()).child("thumbnail").removeValue();
                                         mRef.child("users").child(userId).child("favouriteImages").child("images").child(dataSnapshot1.getKey()).child("userId").removeValue();
+                                        mRef.child("users").child(userId).child("favouriteImages").child("images").child(dataSnapshot1.getKey()).child("category").removeValue();
                                         mRef.child("users").child(userId).child("favouriteImages").child("images").child(dataSnapshot1.getKey()).child("postNumber").removeValue();
                                         mRef.child("users").child(userId).child("favouriteImages").child("numberOfImages").setValue(favouriteNumberOfImages - 1);
 

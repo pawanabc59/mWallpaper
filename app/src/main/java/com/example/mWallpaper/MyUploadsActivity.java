@@ -84,7 +84,7 @@ public class MyUploadsActivity extends AppCompatActivity {
                     wallpaperItemModels.clear();
                     for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                         try {
-                            wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("uploadedImage").getValue(String.class), dataSnapshot1.child("userId").getValue(String.class)));
+                            wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("uploadedImage").getValue(String.class), dataSnapshot1.child("userId").getValue(String.class), dataSnapshot1.child("category").getValue(String.class)));
 //                            Collections.reverse(wallpaperItemModels);
                             wallpaperItemAdapter.notifyDataSetChanged();
                         } catch (Exception e) {

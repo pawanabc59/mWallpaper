@@ -113,7 +113,7 @@ public class FavouriteFragment extends Fragment {
                                     wallpaperItemModels.clear();
                                     for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                                         try {
-                                            wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("thumbnail").getValue(String.class), dataSnapshot1.child("userId").getValue(String.class)));
+                                            wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("thumbnail").getValue(String.class), dataSnapshot1.child("userId").getValue(String.class), dataSnapshot1.child("category").getValue(String.class)));
                                             wallpaperItemAdapter.notifyDataSetChanged();
                                         } catch (Exception e) {
                                             e.printStackTrace();

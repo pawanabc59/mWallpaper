@@ -98,7 +98,7 @@ public class AnotherUserProfileActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 wallpaperItemModels.clear();
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("uploadedImage").getValue(String.class), dataSnapshot1.child("userId").getValue(String.class)));
+                    wallpaperItemModels.add(new WallpaperItemModel(dataSnapshot1.child("uploadedImage").getValue(String.class), dataSnapshot1.child("userId").getValue(String.class), dataSnapshot1.child("category").getValue(String.class)));
                     wallpaperItemAdapter.notifyDataSetChanged();
                 }
             }

@@ -142,12 +142,27 @@
         android:id="@+id/btnInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_250sdp"
+        android:layout_marginStart="@dimen/_250sdp"
         android:layout_marginTop="@dimen/_60sdp"
         android:background="@android:color/transparent"
         android:scaleType="fitCenter"
         android:scaleX="1.2"
         android:scaleY="1.2"
         android:src="@drawable/ic_info" />
+
+    <TextView
+        android:id="@+id/txtCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="?attr/textcolor"
+        android:background="?attr/backgroundcolor"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        android:text="Category : "
+        android:gravity="bottom"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/_35sdp"
+        android:paddingHorizontal="@dimen/_5sdp"
+        android:paddingVertical="@dimen/_2sdp"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

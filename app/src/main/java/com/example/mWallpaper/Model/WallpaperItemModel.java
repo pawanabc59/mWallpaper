@@ -2,12 +2,12 @@ package com.example.mWallpaper.Model;
 
 public class WallpaperItemModel {
 
-    String wallpaperItemURL;
-    String anotherUserId;
+    String wallpaperItemURL, anotherUserId, category ;
 
-    public WallpaperItemModel(String wallpaperItemURL, String anotherUserId) {
+    public WallpaperItemModel(String wallpaperItemURL, String anotherUserId, String category) {
         this.wallpaperItemURL = wallpaperItemURL;
         this.anotherUserId = anotherUserId;
+        this.category = category;
     }
 
     public String getWallpaperItemURL() {
@@ -24,5 +24,13 @@ public class WallpaperItemModel {
 
     public void setAnotherUserId(String anotherUserId) {
         this.anotherUserId = anotherUserId;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

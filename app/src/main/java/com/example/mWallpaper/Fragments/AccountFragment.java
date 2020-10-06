@@ -182,13 +182,14 @@ public class AccountFragment extends Fragment {
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                        if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
+
+                        if (task.isSuccessful()) {
+                            firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                             String uid = firebaseUser.getUid();
                             mRef2 = mRef.child(uid);
                             mRef2.child("email").setValue(email);
 
-                            if (task.isSuccessful()) {
+                            if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
                                 Toast.makeText(getContext(), "Welcome User", Toast.LENGTH_SHORT).show();
 
 //                            mRef2.child("favouriteImages").child("numberOfImages").setValue(0);
@@ -228,17 +229,19 @@ public class AccountFragment extends Fragment {
 
 
                             } else {
+                                firebaseAuth.signOut();
                                 loginProgressBar.setVisibility(View.GONE);
                                 btnLogin.setVisibility(View.VISIBLE);
-                                Toast.makeText(getContext(), "Sorry! Login failed", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Please verify your email address first!", Toast.LENGTH_SHORT).show();
                                 editEmail.setText("");
                                 editPassword.setText("");
                             }
 
-                        } else {
+                        }
+                        else {
                             loginProgressBar.setVisibility(View.GONE);
                             btnLogin.setVisibility(View.VISIBLE);
-                            Toast.makeText(getContext(), "Please verify your email address first!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Sorry! Login failed", Toast.LENGTH_SHORT).show();
                             editEmail.setText("");
                             editPassword.setText("");
                         }

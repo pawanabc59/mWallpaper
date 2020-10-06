@@ -38,7 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         sessionManager = new SessionManager(getApplicationContext());
-        if (sessionManager.loadNightModeState() == true) {
+        if (sessionManager.loadNightModeState()) {
 
             setTheme(R.style.darktheme);
         } else {
