@@ -8,17 +8,6 @@
     android:background="?attr/white_black"
     tools:context=".SingleWallpaperActivity">
 
-    <!--    <HorizontalScrollView-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent">-->
-
-    <!--        <ImageView-->
-    <!--            android:id="@+id/single_wallpaper_show"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="match_parent"-->
-    <!--            android:adjustViewBounds="true"-->
-    <!--            android:scaleType="centerCrop" />-->
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -35,8 +24,6 @@
             android:layout_height="match_parent" />
 
     </FrameLayout>
-
-    <!--    </HorizontalScrollView>-->
 
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/floatingMenu"
